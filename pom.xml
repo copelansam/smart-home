@@ -13,7 +13,7 @@
 
     <modules>
         <module>backend</module>
-        <module>frontend</module> <!-- optional if you have frontend code -->
+        <module>frontend</module>
     </modules>
 
 </project>
