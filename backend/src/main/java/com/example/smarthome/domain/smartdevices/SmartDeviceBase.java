@@ -8,8 +8,8 @@ public abstract class SmartDeviceBase {
     private String location;
     private DeviceType deviceType;
 
-    public SmartDeviceBase(UUID uuid, String name, String location, DeviceType deviceType){
-        this.uuid = uuid;
+    public SmartDeviceBase(String name, String location, DeviceType deviceType){
+        this.uuid = UUID.randomUUID();
         this.name = name;
         this.location = location;
         this.deviceType = deviceType;

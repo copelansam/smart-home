@@ -2,7 +2,7 @@ package com.example.smarthome.domain.smartdevices;
 
 public class SmartThermostat extends SmartDeviceBase{
 
-    public SmartThermostat(){
-        super();
+    public SmartThermostat(String name, String location, DeviceType deviceType){
+        super(name, location, deviceType);
     }
 }
