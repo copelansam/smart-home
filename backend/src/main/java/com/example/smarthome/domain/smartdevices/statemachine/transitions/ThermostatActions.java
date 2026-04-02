@@ -1,4 +1,4 @@
-package com.example.smarthome.domain.smartdevices.statemachine;
+package com.example.smarthome.domain.smartdevices.statemachine.transitions;
 
 public enum ThermostatActions {
     POWER_ON,
