@@ -21,6 +21,6 @@ public class DoorLockedState extends StateBase {
     }
 
     public TransitionResult execute(){
-        return new TransitionResult("Success", true, new DoorLockedState());
+        return new TransitionResult("Success", true, new DoorUnlockedState());
     }
 }

@@ -2,5 +2,11 @@ package com.example.smarthome.domain.smartdevices.statemachine.transitions.light
 
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 
-public class LightTransition implements ITransition {
+public class LightTransition implements ITransition<LightAction> {
+
+    private final LightAction action;
+
+    public LightTransition(LightAction action){
+        this.action = action;
+    }
 }

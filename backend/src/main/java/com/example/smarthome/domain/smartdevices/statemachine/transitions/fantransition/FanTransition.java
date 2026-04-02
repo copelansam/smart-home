@@ -2,5 +2,11 @@ package com.example.smarthome.domain.smartdevices.statemachine.transitions.fantr
 
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 
-public class FanTransition implements ITransition {
+public class FanTransition implements ITransition<FanAction> {
+
+    private FanAction action;
+
+    public FanTransition(FanAction action){
+        this.action = action;
+    }
 }
