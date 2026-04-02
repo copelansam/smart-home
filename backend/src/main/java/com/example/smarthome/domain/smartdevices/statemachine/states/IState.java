@@ -1,5 +1,7 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states;
 
+import java.util.List;
+
 public interface IState {
     public String name;
-    public ReadOnlyList<T> availableTransitions;
+    List<Transition> availableTransitions;

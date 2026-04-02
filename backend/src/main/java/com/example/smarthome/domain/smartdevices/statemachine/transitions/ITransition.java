@@ -1,6 +1,6 @@
 package com.example.smarthome.domain.smartdevices.statemachine.transitions;
 
-public enum FanActions {
-    TURN_ON,
-    TURN_OFF
+public interface ITransition<Action> {
+
+    public Action getAction();
 }
