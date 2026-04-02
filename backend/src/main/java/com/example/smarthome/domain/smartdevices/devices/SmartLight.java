@@ -1,6 +1,6 @@
-package com.example.smarthome.domain.smartdevices;
+package com.example.smarthome.domain.smartdevices.devices;
 
-public class SmartLight extends SmartDeviceBase{
+public class SmartLight extends SmartDeviceBase {
 
     private int brightnessPercentage;
     private RGB color;

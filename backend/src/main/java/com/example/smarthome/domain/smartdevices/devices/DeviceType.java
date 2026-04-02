@@ -1,4 +1,4 @@
-package com.example.smarthome.domain.smartdevices;
+package com.example.smarthome.domain.smartdevices.devices;
 
 public enum DeviceType {
     LIGHT("Light"),
