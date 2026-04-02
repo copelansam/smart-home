@@ -9,4 +9,9 @@ public class FanTransition implements ITransition<FanAction> {
     public FanTransition(FanAction action){
         this.action = action;
     }
+
+    @Override
+    public FanAction getAction() {
+        return action;
+    }
 }

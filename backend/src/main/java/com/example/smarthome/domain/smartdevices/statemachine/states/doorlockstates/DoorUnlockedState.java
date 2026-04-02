@@ -10,12 +10,11 @@ import java.util.List;
 
 public class DoorUnlockedState extends StateBase {
 
-    private final List<ITransition<DoorLockAction>> availableTransitions;
-
     public DoorUnlockedState(){
-        super("Unlocked");
-        this.availableTransitions = List.of(
-            new DoorTransition(DoorLockAction.LOCK)
+        super("Unlocked",
+                List.of(
+                        new DoorTransition(DoorLockAction.LOCK)
+                )
         );
     }
 

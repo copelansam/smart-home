@@ -10,17 +10,15 @@ import java.util.List;
 
 public class FanOnState extends StateBase {
 
-    private final List<ITransition<FanAction>> availableTransitions;
-
     public FanOnState(){
-        super("On");
-        this.availableTransitions = List.of(
+        super("On",
+                List.of(
                 new FanTransition(FanAction.TURN_OFF)
+                )
         );
     }
 
     public TransitionResult execute(){
         return new TransitionResult("Fan is now off", true, new FanOffState());
     }
-
 }

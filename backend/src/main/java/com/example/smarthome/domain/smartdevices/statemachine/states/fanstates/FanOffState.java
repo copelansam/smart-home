@@ -1,7 +1,6 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states.fanstates;
 
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.fantransition.FanAction;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.fantransition.FanTransition;
@@ -11,12 +10,11 @@ import java.util.List;
 
 public class FanOffState extends StateBase {
 
-    private final List<ITransition<FanAction>> availableTransitions;
-
     public FanOffState(){
-        super("Off");
-        this.availableTransitions = List.of(
+        super("Off",
+                List.of(
                 new FanTransition(FanAction.TURN_ON)
+                )
         );
     }
 

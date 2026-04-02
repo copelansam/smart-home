@@ -1,7 +1,6 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states.lightstates;
 
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.lighttransition.LightAction;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.lighttransition.LightTransition;
@@ -10,19 +9,15 @@ import java.util.List;
 
 public class LightOffState extends StateBase {
 
-    private final List<ITransition<LightAction>> availableTransitions;
-
     public LightOffState(){
-        super("Off");
-        this.availableTransitions = List.of(
-                new LightTransition(LightAction.TURN_ON)
+        super("Off",
+                List.of(
+                    new LightTransition(LightAction.TURN_ON)
+                )
         );
     }
 
     public TransitionResult execute(){
         return new TransitionResult("Light has been turned on", true, new LightOffState());
     }
-
-
-
 }

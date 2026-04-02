@@ -9,4 +9,9 @@ public class LightTransition implements ITransition<LightAction> {
     public LightTransition(LightAction action){
         this.action = action;
     }
+
+    @Override
+    public LightAction getAction() {
+        return action;
+    }
 }

@@ -10,13 +10,12 @@ import java.util.List;
 
 public class CoolingState extends StateBase {
 
-    private final List<ITransition<ThermostatAction>> availableTransitions;
-
     public CoolingState(){
-        super("Cooling");
-        this.availableTransitions = List.of(
+        super("Cooling",
+                List.of(
                 new ThermostatTransition(ThermostatAction.STOP_COOLING),
                 new ThermostatTransition(ThermostatAction.POWER_OFF)
+                )
         );
     }
 
