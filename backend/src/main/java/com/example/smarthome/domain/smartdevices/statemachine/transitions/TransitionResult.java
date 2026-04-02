@@ -13,4 +13,8 @@ public class TransitionResult {
         this.success = success;
         this.newState = newState;
     }
+
+    public IState getNewState(){
+        return this.newState;
+    }
 }

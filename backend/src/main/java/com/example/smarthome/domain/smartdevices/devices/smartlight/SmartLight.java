@@ -1,10 +1,15 @@
-package com.example.smarthome.domain.smartdevices.devices;
+package com.example.smarthome.domain.smartdevices.devices.smartlight;
+
+import com.example.smarthome.domain.smartdevices.devices.DeviceType;
+import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
+import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
 
 public class SmartLight extends SmartDeviceBase {
 
     private int brightnessPercentage;
     private RGB color;
     private boolean isOn;
+    private IState state;
 
     public SmartLight(String name, String location, DeviceType deviceType, int brightnessPercentage, int R, int G, int B, boolean isOn){
         super(name, location, deviceType);
@@ -28,5 +33,9 @@ public class SmartLight extends SmartDeviceBase {
 
     public RGB getColor(){
         return color;
+    }
+
+    public void setState(IState newState){
+        this.state = state.execute().getNewState();
     }
 }

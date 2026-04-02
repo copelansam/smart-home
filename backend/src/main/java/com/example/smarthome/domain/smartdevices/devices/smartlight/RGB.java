@@ -1,4 +1,4 @@
-package com.example.smarthome.domain.smartdevices.devices;
+package com.example.smarthome.domain.smartdevices.devices.smartlight;
 
 // This class will be used to represent RBG values for the smart light class.
 // Setters will enforce invariants for RBG values

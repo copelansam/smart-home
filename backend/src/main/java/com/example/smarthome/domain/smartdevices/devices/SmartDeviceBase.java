@@ -2,7 +2,7 @@ package com.example.smarthome.domain.smartdevices.devices;
 
 import java.util.UUID;
 
-public abstract class SmartDeviceBase {
+public abstract class SmartDeviceBase implements ISmartDevice{
     private UUID uuid;
     private String name;
     private String location;
