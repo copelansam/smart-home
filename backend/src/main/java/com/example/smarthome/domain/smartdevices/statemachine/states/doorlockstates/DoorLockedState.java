@@ -1,5 +1,6 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states.doorlockstates;
 
+import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
@@ -22,5 +23,10 @@ public class DoorLockedState extends StateBase {
 
     public TransitionResult execute(){
         return new TransitionResult("Success", true, new DoorUnlockedState());
+    }
+
+    @Override
+    public List<ITransition<?>> provideAvailableTransitions() {
+        return List.copyOf(availableTransitions);
     }
 }

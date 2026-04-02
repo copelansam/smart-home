@@ -9,4 +9,9 @@ public class DoorTransition implements ITransition<DoorLockAction> {
     public DoorTransition(DoorLockAction action){
         this.action = action;
     }
+
+    @Override
+    public DoorLockAction getAction() {
+        return action;
+    }
 }

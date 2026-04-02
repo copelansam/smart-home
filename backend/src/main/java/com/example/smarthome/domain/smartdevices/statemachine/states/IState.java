@@ -11,5 +11,5 @@ public interface IState {
     public TransitionResult execute();
 
     // This method will return the state's available transitions
-    public List<ITransition<IState>> provideAvailableTransitions();
+    public List<ITransition<?>> provideAvailableTransitions();
 }
