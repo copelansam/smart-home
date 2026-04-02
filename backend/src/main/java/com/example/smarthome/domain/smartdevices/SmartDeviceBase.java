@@ -24,6 +24,4 @@ public abstract class SmartDeviceBase {
     public DeviceType getDeviceType(){
         return this.deviceType;
     }
-
-
 }
