@@ -2,9 +2,13 @@ package com.example.smarthome.domain.smartdevices.statemachine.states;
 
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
+import jakarta.persistence.*;
 
 import java.util.List;
 
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "state_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class StateBase implements IState {
 
     public final String name;

@@ -5,9 +5,13 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITrans
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.fantransition.FanAction;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.fantransition.FanTransition;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 import java.util.List;
 
+@Entity
+@DiscriminatorValue("FAN_ON")
 public class FanOnState extends StateBase {
 
     public FanOnState(){

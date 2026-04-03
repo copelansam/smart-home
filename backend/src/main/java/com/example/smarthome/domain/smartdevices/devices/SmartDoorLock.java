@@ -16,7 +16,5 @@ public class SmartDoorLock extends SmartDeviceBase {
         super(name, location, deviceType);
     }
 
-    public void setState(IState newState){
-        this.state = state.execute().getNewState();
-    }
+
 }

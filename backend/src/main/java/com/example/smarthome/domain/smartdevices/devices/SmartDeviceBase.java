@@ -1,6 +1,7 @@
 package com.example.smarthome.domain.smartdevices.devices;
 
 
+import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
 import jakarta.persistence.*;
 
 import java.util.UUID;
@@ -16,6 +17,7 @@ public abstract class SmartDeviceBase implements ISmartDevice{
     private String name;
     private String location;
     protected boolean isOn;
+    private IState state;
 
     @Enumerated(EnumType.STRING)
     private DeviceType deviceType;
@@ -41,5 +43,8 @@ public abstract class SmartDeviceBase implements ISmartDevice{
     }
     public boolean getIsOn(){
         return this.isOn;
+    }
+    public void setState(IState newState){
+        this.state = state.execute().getNewState();
     }
 }
