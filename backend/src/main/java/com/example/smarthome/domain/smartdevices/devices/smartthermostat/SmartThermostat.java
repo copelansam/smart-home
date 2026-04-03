@@ -3,12 +3,18 @@ package com.example.smarthome.domain.smartdevices.devices.smartthermostat;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "smart_thermostat")
 public class SmartThermostat extends SmartDeviceBase {
 
     private Temperature desiredTemperature;
     private Temperature ambientTemperature;
     private IState state;
+
+    public SmartThermostat(){}
 
     public SmartThermostat(String name, String location, DeviceType deviceType, double desiredTemperature, double ambientTemperature){
         super(name, location, deviceType);

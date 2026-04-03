@@ -1,12 +1,25 @@
 package com.example.smarthome.domain.smartdevices.devices;
 
+
+import jakarta.persistence.*;
+
 import java.util.UUID;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class SmartDeviceBase implements ISmartDevice{
+
+    @Id
+    @GeneratedValue
     private UUID uuid;
+
     private String name;
     private String location;
+
+    @Enumerated(EnumType.STRING)
     private DeviceType deviceType;
+
+    public SmartDeviceBase(){}
 
     public SmartDeviceBase(String name, String location, DeviceType deviceType){
         this.uuid = UUID.randomUUID();
@@ -15,6 +28,7 @@ public abstract class SmartDeviceBase implements ISmartDevice{
         this.deviceType = deviceType;
     }
 
+    public UUID getUuid(){return this.uuid;}
     public String getName(){
         return this.name;
     }

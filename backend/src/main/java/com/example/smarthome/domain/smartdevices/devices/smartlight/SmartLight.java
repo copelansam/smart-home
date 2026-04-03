@@ -3,7 +3,11 @@ package com.example.smarthome.domain.smartdevices.devices.smartlight;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "smart_light")
 public class SmartLight extends SmartDeviceBase {
 
     private int brightnessPercentage;
