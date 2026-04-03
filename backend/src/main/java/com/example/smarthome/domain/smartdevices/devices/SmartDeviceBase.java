@@ -15,6 +15,7 @@ public abstract class SmartDeviceBase implements ISmartDevice{
 
     private String name;
     private String location;
+    protected boolean isOn;
 
     @Enumerated(EnumType.STRING)
     private DeviceType deviceType;
@@ -37,5 +38,8 @@ public abstract class SmartDeviceBase implements ISmartDevice{
     }
     public DeviceType getDeviceType(){
         return this.deviceType;
+    }
+    public boolean getIsOn(){
+        return this.isOn;
     }
 }

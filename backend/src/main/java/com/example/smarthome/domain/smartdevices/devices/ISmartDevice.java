@@ -4,5 +4,11 @@ import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
 
 public interface ISmartDevice {
 
-    public void setState(IState newState);
+    void setState(IState newState);
+
+    boolean getIsOn();
+
+    String getLocation();
+
+    DeviceType getDeviceType();
 }
