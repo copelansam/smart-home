@@ -1,6 +1,8 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states.fanstates;
 
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
+import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegistry;
+import com.example.smarthome.domain.smartdevices.statemachine.states.thermostatstates.ThermostatOffState;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.fantransition.FanAction;
@@ -10,12 +12,14 @@ import jakarta.persistence.Entity;
 
 import java.util.List;
 
-@Entity
-@DiscriminatorValue("FAN_ON")
 public class FanOnState extends StateBase {
 
+    static {
+        StateRegistry.register("Fan On", FanOnState::new);
+    }
+
     public FanOnState(){
-        super("On",
+        super("Fan On",
                 List.of(
                 new FanTransition(FanAction.TURN_OFF)
                 )

@@ -12,4 +12,6 @@ public interface IState {
 
     // This method will return the state's available transitions
     public List<ITransition<?>> provideAvailableTransitions();
+
+    public String getName();
 }

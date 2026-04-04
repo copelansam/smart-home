@@ -11,8 +11,6 @@ import jakarta.persistence.Table;
 @Table(name = "smart_fan")
 public class SmartFan extends SmartDeviceBase {
 
-    private FanSpeed speed;
-
     private IState state;
 
     public SmartFan(String name, String location, DeviceType deviceType){

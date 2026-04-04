@@ -2,14 +2,13 @@ package com.example.smarthome.domain.smartdevices.statemachine.states;
 
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
-import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.List;
 
-@Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "state_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class StateBase implements IState {
+
+    private static final long serialVersionUID = 1L;
 
     public final String name;
     protected final List<ITransition<?>> availableTransitions;

@@ -2,8 +2,10 @@ package com.example.smarthome.domain.smartdevices.devices;
 
 
 import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
+import com.example.smarthome.repository.StateConverter;
 import jakarta.persistence.*;
 
+import java.io.*;
 import java.util.UUID;
 
 @Entity

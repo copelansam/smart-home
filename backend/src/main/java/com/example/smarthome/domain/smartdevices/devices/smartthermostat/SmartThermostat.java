@@ -3,16 +3,23 @@ package com.example.smarthome.domain.smartdevices.devices.smartthermostat;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "smart_thermostat")
 public class SmartThermostat extends SmartDeviceBase {
 
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "temperature", column = @Column(name = "desired_temperature"))
+    })
     private Temperature desiredTemperature;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "temperature", column = @Column(name = "ambient_temperature"))
+    })
     private Temperature ambientTemperature;
-    private IState state;
 
     public SmartThermostat(){}
 
@@ -22,7 +29,4 @@ public class SmartThermostat extends SmartDeviceBase {
         this.ambientTemperature = new Temperature(ambientTemperature);
     }
 
-    public void setState(IState newState){
-        this.state = state.execute().getNewState();
-    }
 }

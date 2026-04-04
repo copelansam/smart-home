@@ -8,8 +8,6 @@ import jakarta.persistence.Table;
 @Table(name = "smart_door_lock")
 public class SmartDoorLock extends SmartDeviceBase {
 
-    private IState state;
-
     public SmartDoorLock(){}
 
     public SmartDoorLock(String name, String location, DeviceType deviceType){
