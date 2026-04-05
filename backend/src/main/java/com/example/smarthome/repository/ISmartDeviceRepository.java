@@ -10,5 +10,5 @@ import java.util.UUID;
 // This class will act as the repository for all smart devices.
 // Defined as an interface, Spring Boot will automatically instantiate it at start up
 @Repository
-public interface SmartDeviceRepository extends JpaRepository<SmartDeviceBase, UUID> {
+public interface ISmartDeviceRepository extends JpaRepository<SmartDeviceBase, UUID> {
 }

@@ -1,7 +1,8 @@
 package com.example.smarthome.domain.devicequeries;
 
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
-import com.example.smarthome.repository.SmartDeviceRepository;
+import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
+import com.example.smarthome.repository.ISmartDeviceRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,15 +13,15 @@ import java.util.List;
 // Filters will be applied based on the user's choices via the decorator pattern.
 public class AllDevicesQuery implements IDeviceQuery{
 
-    private SmartDeviceRepository repo;
+    private ISmartDeviceRepository repo;
 
-    public AllDevicesQuery(SmartDeviceRepository repo){
+    public AllDevicesQuery(ISmartDeviceRepository repo){
         this.repo = repo;
     }
 
     // Retrieves all items from the repository and returns them as an immutable list to prevent external modification
     @Override
-    public List<ISmartDevice> getItems(){
+    public List<SmartDeviceBase> getItems(){
 
         // Retrieves all SmartDeviceBase objects from the repository and treats them as ISmartDevice
         List<ISmartDevice> allItems = new ArrayList<>(repo.findAll());

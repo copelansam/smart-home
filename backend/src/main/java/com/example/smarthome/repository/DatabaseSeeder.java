@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
 
-    private final SmartDeviceRepository repo;
+    private final ISmartDeviceRepository repo;
 
-    public DatabaseSeeder(SmartDeviceRepository repo){
+    public DatabaseSeeder(ISmartDeviceRepository repo){
         this.repo = repo;
     }
 

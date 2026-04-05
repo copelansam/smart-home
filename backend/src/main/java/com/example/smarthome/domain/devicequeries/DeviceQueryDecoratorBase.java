@@ -1,6 +1,7 @@
 package com.example.smarthome.domain.devicequeries;
 
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
+import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public abstract class DeviceQueryDecoratorBase implements IDeviceQuery{
     }
 
     @Override
-    public List<ISmartDevice> getItems(){
+    public List<SmartDeviceBase> getItems(){
         return wrappedQuery.getItems();
     }
 

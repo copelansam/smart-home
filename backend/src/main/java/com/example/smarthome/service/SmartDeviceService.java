@@ -1,23 +1,43 @@
 package com.example.smarthome.service;
 
+import com.example.smarthome.domain.devicequeries.IDeviceQuery;
+import com.example.smarthome.domain.devicequeries.QueryBuilder;
 import com.example.smarthome.domain.smartdevices.devicefactories.ISmartDeviceFactory;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
-import com.example.smarthome.repository.SmartDeviceRepository;
+import com.example.smarthome.repository.ISmartDeviceRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class SmartDeviceService {
 
-    private final SmartDeviceRepository repo;
+    private final ISmartDeviceRepository repo;
     private final ISmartDeviceFactory deviceFactory;
+    private final QueryBuilder queryBuilder;
 
-    public SmartDeviceService(SmartDeviceRepository repo, ISmartDeviceFactory deviceFactory){
+    public SmartDeviceService(ISmartDeviceRepository repo, ISmartDeviceFactory deviceFactory, QueryBuilder queryBuilder){
         this.repo = repo;
         this.deviceFactory = deviceFactory;
+        this.queryBuilder = queryBuilder;
+    }
+
+    /**
+     *
+     * @param type      The type of devices that the user wants to retrieve. (default is all types)
+     * @param location  The location that the user want to retrieve devices from (default is all locations)
+     * @param isOn      The power status of devices that the users wants to retrieve (default is all devices)
+     * @return  List of devices
+     */
+    public List<SmartDeviceBase> getDevices(DeviceType type, String location, Boolean isOn){
+
+        IDeviceQuery query = queryBuilder.buildQuery(type, location, isOn);
+
+        return query.getItems();
     }
 
     /**
@@ -39,6 +59,8 @@ public class SmartDeviceService {
         repo.save(newDevice);
 
     }
+
+    @DeleteMapping
 
 
 

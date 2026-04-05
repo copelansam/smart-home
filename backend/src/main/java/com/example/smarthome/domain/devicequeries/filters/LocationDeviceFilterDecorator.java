@@ -3,6 +3,7 @@ package com.example.smarthome.domain.devicequeries.filters;
 import com.example.smarthome.domain.devicequeries.DeviceQueryDecoratorBase;
 import com.example.smarthome.domain.devicequeries.IDeviceQuery;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
+import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,13 +22,13 @@ public class LocationDeviceFilterDecorator extends DeviceQueryDecoratorBase {
 
     // Filter through the devices based on their location
     @Override
-    public List<ISmartDevice> getItems() {
+    public List<SmartDeviceBase> getItems() {
 
-        List<ISmartDevice> devices = wrappedQuery.getItems();
-        List<ISmartDevice> filteredDevices = new ArrayList<>();
+        List<SmartDeviceBase> devices = wrappedQuery.getItems();
+        List<SmartDeviceBase> filteredDevices = new ArrayList<>();
 
         // Iterate through all of the previously filtered through devices
-        for(ISmartDevice device: devices){
+        for(SmartDeviceBase device: devices){
             // If the devices location matches where the user wants to look, add it to the list of filtered devices
             if (device.getLocation().equals(location)){
                 filteredDevices.add(device);

@@ -3,6 +3,7 @@ package com.example.smarthome.domain.devicequeries.filters;
 import com.example.smarthome.domain.devicequeries.DeviceQueryDecoratorBase;
 import com.example.smarthome.domain.devicequeries.IDeviceQuery;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
+import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,12 +22,12 @@ public class OnDeviceFilterDecorator extends DeviceQueryDecoratorBase {
 
     // Filter through the devices based on their on status
     @Override
-    public List<ISmartDevice> getItems() {
-        List<ISmartDevice> filteredItems = new ArrayList<>();
-        List<ISmartDevice> devices = wrappedQuery.getItems();
+    public List<SmartDeviceBase> getItems() {
+        List<SmartDeviceBase> filteredItems = new ArrayList<>();
+        List<SmartDeviceBase> devices = wrappedQuery.getItems();
 
         // Iterate through all of the previously filtered through devices
-        for (ISmartDevice device : devices){
+        for (SmartDeviceBase device : devices){
             // If the device's on state matches what the user selected, add it to the filtered query, otherwise ignore it
             if (device.getIsOn() == isOn){
                 filteredItems.add(device);
