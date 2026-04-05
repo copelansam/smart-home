@@ -25,12 +25,19 @@ public class SmartLight extends SmartDeviceBase {
         this.brightnessPercentage = brightnessPercentage;
         this.color = new RGB(R,G,B);
         this.state = new LightOffState();
-
     }
 
     public void setBrightnessPercentage(int brightnessPercentage){
+
+        if(!isOn){ // Invariant: Light color and brightness cannot be changed if the light is off
+            throw new IllegalStateException("This light's settings cannot be altered when it is off. Please turn it on and try again.");
+        }
+
         if (brightnessPercentage < 10 || brightnessPercentage > 100){
             throw new IllegalArgumentException("Brightness must be between 10% and 100%");
+        }
+        else{
+            this.brightnessPercentage = brightnessPercentage;
         }
     }
 
@@ -39,6 +46,11 @@ public class SmartLight extends SmartDeviceBase {
     }
 
     public void setColor(int R, int G, int B){
+
+        if (!isOn){ // Invariant: Light color and brightness cannot be changed if the light is off
+            throw new IllegalStateException("This light's settings cannot be altered when it is off. Please turn it on and try again.");
+        }
+
         this.color = new RGB(R,G,B);
     }
 

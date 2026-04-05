@@ -21,6 +21,10 @@ public class SmartFan extends SmartDeviceBase {
         this.state = new FanOffState();
     }
 
+    public void setSpeed(FanSpeed speed){
+        this.speed = speed;
+    }
+
     public void setState(IState newState){
         this.state = state.execute().getNewState();
     }
