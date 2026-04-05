@@ -3,6 +3,7 @@ package com.example.smarthome.domain.smartdevices.devices.smartlight;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
+import com.example.smarthome.domain.smartdevices.statemachine.states.lightstates.LightOffState;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -17,9 +18,13 @@ public class SmartLight extends SmartDeviceBase {
     private RGB color;
     private boolean isOn;
 
+    public SmartLight(){}
+
     public SmartLight(String name, String location, DeviceType deviceType, int brightnessPercentage, int R, int G, int B, boolean isOn){
         super(name, location, deviceType);
-
+        this.brightnessPercentage = brightnessPercentage;
+        this.color = new RGB(R,G,B);
+        this.state = new LightOffState();
 
     }
 

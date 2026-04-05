@@ -6,8 +6,10 @@ import com.example.smarthome.domain.smartdevices.devices.smartfan.SmartFan;
 import com.example.smarthome.domain.smartdevices.devices.smartlight.SmartLight;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 
 // This class provides the seed data that will be added to the database upon initial start up
+@Component
 public class DatabaseSeeder implements CommandLineRunner {
 
     private final SmartDeviceRepository repo;

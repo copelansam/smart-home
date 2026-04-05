@@ -8,6 +8,12 @@ public class RGB {
     private int G;
     private int B;
 
+    public RGB(){
+        setR(0);
+        setG(0);
+        setB(0);
+    }
+
     public RGB(int R, int G, int B){
         setR(R);
         setG(G);

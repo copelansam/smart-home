@@ -5,6 +5,10 @@ public class Temperature {
 
     private double temperature;
 
+    public Temperature(){
+        this.temperature = 0;
+    }
+
     public Temperature(double temperature){
         this.temperature = temperature;
     }

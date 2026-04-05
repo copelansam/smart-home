@@ -19,7 +19,9 @@ public abstract class SmartDeviceBase implements ISmartDevice{
     private String name;
     private String location;
     protected boolean isOn;
-    private IState state;
+
+    @Convert(converter = StateConverter.class)
+    protected IState state;
 
     @Enumerated(EnumType.STRING)
     private DeviceType deviceType;
@@ -27,7 +29,6 @@ public abstract class SmartDeviceBase implements ISmartDevice{
     public SmartDeviceBase(){}
 
     public SmartDeviceBase(String name, String location, DeviceType deviceType){
-        this.uuid = UUID.randomUUID();
         this.name = name;
         this.location = location;
         this.deviceType = deviceType;

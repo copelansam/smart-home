@@ -3,6 +3,7 @@ package com.example.smarthome.domain.smartdevices.devices.smartthermostat;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
+import com.example.smarthome.domain.smartdevices.statemachine.states.thermostatstates.ThermostatOffState;
 import jakarta.persistence.*;
 
 @Entity
@@ -27,6 +28,7 @@ public class SmartThermostat extends SmartDeviceBase {
         super(name, location, deviceType);
         this.desiredTemperature = new Temperature(desiredTemperature);
         this.ambientTemperature = new Temperature(ambientTemperature);
+        this.state = new ThermostatOffState();
     }
 
 }
