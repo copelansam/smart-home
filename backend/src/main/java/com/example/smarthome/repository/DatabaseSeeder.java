@@ -1,7 +1,7 @@
 package com.example.smarthome.repository;
 
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
-import com.example.smarthome.domain.smartdevices.devices.SmartDoorLock;
+import com.example.smarthome.domain.smartdevices.devices.smartdoorlock.SmartDoorLock;
 import com.example.smarthome.domain.smartdevices.devices.smartfan.SmartFan;
 import com.example.smarthome.domain.smartdevices.devices.smartlight.SmartLight;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
@@ -31,8 +31,8 @@ public class DatabaseSeeder implements CommandLineRunner {
             repo.save(new SmartDoorLock("Front Door Lock", "Living Room", DeviceType.DOORLOCK));
             repo.save(new SmartFan("Bedroom Box Fan", "Bedroom", DeviceType.FAN));
             repo.save(new SmartFan("Kitchen Fan","Kitchen",DeviceType.FAN));
-            repo.save(new SmartLight("Living Room Ceiling Light", "Living Room", DeviceType.LIGHT, 32, 67,89,123, false));
-            repo.save(new SmartLight("Bathroom Lights", "Bathroom", DeviceType.LIGHT, 55, 100, 0, 0, false));
+            repo.save(new SmartLight("Living Room Ceiling Light", "Living Room", DeviceType.LIGHT, 32, 67,89,123));
+            repo.save(new SmartLight("Bathroom Lights", "Bathroom", DeviceType.LIGHT, 55, 100, 0, 0));
 
         }
     }

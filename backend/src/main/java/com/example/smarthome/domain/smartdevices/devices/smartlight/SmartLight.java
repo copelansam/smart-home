@@ -16,15 +16,15 @@ public class SmartLight extends SmartDeviceBase {
 
     @Embedded
     private RGB color;
-    private boolean isOn;
 
     public SmartLight(){}
 
-    public SmartLight(String name, String location, DeviceType deviceType, int brightnessPercentage, int R, int G, int B, boolean isOn){
+    public SmartLight(String name, String location, DeviceType deviceType, int brightnessPercentage, int R, int G, int B){
         super(name, location, deviceType);
         this.brightnessPercentage = brightnessPercentage;
         this.color = new RGB(R,G,B);
         this.state = new LightOffState();
+        this.isOn = false;
     }
 
     public void setBrightnessPercentage(int brightnessPercentage){
