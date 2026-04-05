@@ -27,8 +27,11 @@ public class DatabaseSeeder implements CommandLineRunner {
         if (repo.count() == 0){
 
             repo.save(new SmartThermostat("Living Room Thermostat", "Living Room", DeviceType.THERMOSTAT, 76, 78));
+            repo.save(new SmartDoorLock("Garage Door Lock", "Garage", DeviceType.DOORLOCK));
             repo.save(new SmartDoorLock("Front Door Lock", "Living Room", DeviceType.DOORLOCK));
+            repo.save(new SmartFan("Bedroom Box Fan", "Bedroom", DeviceType.FAN));
             repo.save(new SmartFan("Kitchen Fan","Kitchen",DeviceType.FAN));
+            repo.save(new SmartLight("Living Room Ceiling Light", "Living Room", DeviceType.LIGHT, 32, 67,89,123, false));
             repo.save(new SmartLight("Bathroom Lights", "Bathroom", DeviceType.LIGHT, 55, 100, 0, 0, false));
 
         }
