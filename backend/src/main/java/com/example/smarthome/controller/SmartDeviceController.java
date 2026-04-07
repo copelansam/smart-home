@@ -52,9 +52,9 @@ public class SmartDeviceController {
         deviceService.createDevice(request.name, request.location, request.deviceType, request.attributes);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<Boolean> deleteDevice(@RequestParam(required = true) UUID id){
+    public ResponseEntity<Boolean> deleteDevice(@PathVariable UUID id){
 
         boolean deleted = deviceService.deleteDeviceById(id);
         return ResponseEntity.ok(deleted);
