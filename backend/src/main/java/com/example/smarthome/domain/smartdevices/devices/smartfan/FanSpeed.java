@@ -1,7 +1,14 @@
 package com.example.smarthome.domain.smartdevices.devices.smartfan;
 
 public enum FanSpeed {
-    LOW,
-    MEDIUM,
-    HIGH
+    OFF("off"),
+    LOW("low"),
+    MEDIUM("medium"),
+    HIGH("high");
+
+    String description;
+
+    FanSpeed (String description){
+        this.description = description;
+    }
 }

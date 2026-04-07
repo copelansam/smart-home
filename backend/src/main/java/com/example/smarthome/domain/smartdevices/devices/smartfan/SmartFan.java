@@ -4,7 +4,10 @@ import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
 import com.example.smarthome.domain.smartdevices.statemachine.states.fanstates.FanOffState;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 
 
@@ -12,6 +15,7 @@ import jakarta.persistence.Table;
 @Table(name = "smart_fan")
 public class SmartFan extends SmartDeviceBase {
 
+    @Enumerated(EnumType.STRING)
     private FanSpeed speed;
 
     public SmartFan(){}
@@ -19,6 +23,7 @@ public class SmartFan extends SmartDeviceBase {
     public SmartFan(String name, String location, DeviceType deviceType){
         super(name, location, deviceType);
         this.state = new FanOffState();
+        this.speed = FanSpeed.OFF;
     }
 
     public void setSpeed(FanSpeed speed){
@@ -27,5 +32,9 @@ public class SmartFan extends SmartDeviceBase {
 
     public void setState(IState newState){
         this.state = state.execute().getNewState();
+    }
+
+    public FanSpeed getSpeed(){
+        return this.speed;
     }
 }

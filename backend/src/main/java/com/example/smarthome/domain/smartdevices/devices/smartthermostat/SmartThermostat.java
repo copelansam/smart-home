@@ -31,4 +31,12 @@ public class SmartThermostat extends SmartDeviceBase {
         this.state = new ThermostatOffState();
     }
 
+    public Temperature getDesiredTemperature(){
+        return this.desiredTemperature;
+    }
+
+    public Temperature getAmbientTemperature(){
+        return this.ambientTemperature;
+    }
+
 }

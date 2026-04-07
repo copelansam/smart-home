@@ -13,4 +13,7 @@ public class Temperature {
         this.temperature = temperature;
     }
 
+    public double getTemperature() {
+        return temperature;
+    }
 }
