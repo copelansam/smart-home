@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/devices")
@@ -20,7 +20,7 @@ public class SmartDeviceController {
         this.deviceService = deviceService;
     }
 
-    @GetMapping("get-all-devices")
+    @GetMapping
     @CrossOrigin(origins = "*")
     public ResponseEntity<List<ISmartDevice>> getDevices(
             @RequestParam(required = false)DeviceType type,
@@ -30,6 +30,19 @@ public class SmartDeviceController {
 
         List<ISmartDevice> device = deviceService.getDevices(type,location,isOn);
         return ResponseEntity.ok(device);
+    }
+
+    @GetMapping
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<ISmartDevice> getDeviceById(
+            @RequestParam(required = true)UUID uuid) {
+        ISmartDevice device = deviceService.getDeviceById(uuid);
+
+        if (device != null) {
+            return ResponseEntity.ok(device);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping("/create-device")

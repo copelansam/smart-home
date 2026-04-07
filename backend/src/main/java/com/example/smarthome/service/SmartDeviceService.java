@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class SmartDeviceService {
@@ -58,5 +59,10 @@ public class SmartDeviceService {
         // Save the device to the database
         repo.save(newDevice);
 
+    }
+
+    public ISmartDevice getDeviceById(UUID uuid){
+
+        return repo.findById(uuid).orElse(null);
     }
 }
