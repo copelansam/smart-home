@@ -18,7 +18,7 @@ public abstract class DeviceQueryDecoratorBase implements IDeviceQuery{
     }
 
     @Override
-    public List<SmartDeviceBase> getItems(){
+    public List<ISmartDevice> getItems(){
         return wrappedQuery.getItems();
     }
 

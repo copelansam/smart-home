@@ -4,10 +4,10 @@ import com.example.smarthome.domain.devicequeries.IDeviceQuery;
 import com.example.smarthome.domain.devicequeries.QueryBuilder;
 import com.example.smarthome.domain.smartdevices.devicefactories.ISmartDeviceFactory;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
+import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.repository.ISmartDeviceRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public class SmartDeviceService {
      * @param isOn      The power status of devices that the users wants to retrieve (default is all devices)
      * @return  List of devices
      */
-    public List<SmartDeviceBase> getDevices(DeviceType type, String location, Boolean isOn){
+    public List<ISmartDevice> getDevices(DeviceType type, String location, Boolean isOn){
 
         IDeviceQuery query = queryBuilder.buildQuery(type, location, isOn);
 
@@ -59,9 +59,4 @@ public class SmartDeviceService {
         repo.save(newDevice);
 
     }
-
-    @DeleteMapping
-
-
-
 }

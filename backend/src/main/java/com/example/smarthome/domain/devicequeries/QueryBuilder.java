@@ -23,17 +23,19 @@ public class QueryBuilder {
 
         IDeviceQuery query = new AllDevicesQuery(repository);
 
-        if (isOn = true) {
-            query = new OnDeviceFilterDecorator(query, true);
-        } else if (isOn = false) {
-            query = new OnDeviceFilterDecorator(query, false);
+        if (isOn != null) {
+            if (isOn == true) {
+                query = new OnDeviceFilterDecorator(query, true);
+            } else if (isOn = false) {
+                query = new OnDeviceFilterDecorator(query, false);
+            }
         }
 
         if (type != null) {
             query = new DeviceTypeDeviceFilterDecorator(query, type);
         }
 
-        if (!location.isEmpty()) {
+        if (location != null) {
             query = new LocationDeviceFilterDecorator(query, location);
         }
         return query;

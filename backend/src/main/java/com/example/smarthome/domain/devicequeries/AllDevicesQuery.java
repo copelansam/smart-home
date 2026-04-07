@@ -21,7 +21,7 @@ public class AllDevicesQuery implements IDeviceQuery{
 
     // Retrieves all items from the repository and returns them as an immutable list to prevent external modification
     @Override
-    public List<SmartDeviceBase> getItems(){
+    public List<ISmartDevice> getItems(){
 
         // Retrieves all SmartDeviceBase objects from the repository and treats them as ISmartDevice
         List<ISmartDevice> allItems = new ArrayList<>(repo.findAll());

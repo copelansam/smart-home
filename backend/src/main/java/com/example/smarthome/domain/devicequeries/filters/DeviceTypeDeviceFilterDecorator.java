@@ -3,6 +3,7 @@ package com.example.smarthome.domain.devicequeries.filters;
 import com.example.smarthome.domain.devicequeries.DeviceQueryDecoratorBase;
 import com.example.smarthome.domain.devicequeries.IDeviceQuery;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
+import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 
 import java.util.ArrayList;
@@ -23,13 +24,13 @@ public class DeviceTypeDeviceFilterDecorator extends DeviceQueryDecoratorBase {
 
     // Filter through the devices based on their device type
     @Override
-    public List<SmartDeviceBase> getItems() {
+    public List<ISmartDevice> getItems() {
 
-        List<SmartDeviceBase> devices = wrappedQuery.getItems();
-        List<SmartDeviceBase> filteredDevices = new ArrayList<>();
+        List<ISmartDevice> devices = wrappedQuery.getItems();
+        List<ISmartDevice> filteredDevices = new ArrayList<>();
 
         // Iterate through all of the previously filtered through devices
-        for (SmartDeviceBase device : devices){
+        for (ISmartDevice device : devices){
             // If the device's type matches what the user selected, add it to the filtered query, otherwise ignore it
             if (device.getDeviceType() == deviceType){
                 filteredDevices.add(device);
