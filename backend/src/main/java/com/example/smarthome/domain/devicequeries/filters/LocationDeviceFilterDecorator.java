@@ -22,13 +22,13 @@ public class LocationDeviceFilterDecorator extends DeviceQueryDecoratorBase {
 
     // Filter through the devices based on their location
     @Override
-    public List<SmartDeviceBase> getItems() {
+    public List<ISmartDevice> getItems() {
 
-        List<SmartDeviceBase> devices = wrappedQuery.getItems();
-        List<SmartDeviceBase> filteredDevices = new ArrayList<>();
+        List<ISmartDevice> devices = wrappedQuery.getItems();
+        List<ISmartDevice> filteredDevices = new ArrayList<>();
 
         // Iterate through all of the previously filtered through devices
-        for(SmartDeviceBase device: devices){
+        for(ISmartDevice device: devices){
             // If the devices location matches where the user wants to look, add it to the list of filtered devices
             if (device.getLocation().equals(location)){
                 filteredDevices.add(device);

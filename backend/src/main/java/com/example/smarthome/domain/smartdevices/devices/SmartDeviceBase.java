@@ -47,6 +47,7 @@ public abstract class SmartDeviceBase implements ISmartDevice{
     public boolean getIsOn(){
         return this.isOn;
     }
+    public String getState(){return this.state.getName();}
     public void setState(IState newState){
         this.state = state.execute().getNewState();
     }

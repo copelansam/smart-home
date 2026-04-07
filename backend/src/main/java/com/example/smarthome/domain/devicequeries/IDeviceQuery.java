@@ -1,6 +1,6 @@
 package com.example.smarthome.domain.devicequeries;
 
-import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
+import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 
 import java.util.List;
 
@@ -10,6 +10,6 @@ public interface IDeviceQuery {
 
     // Retrieves a list of devices based on the criteria defined by the concrete class.
     // Base queries and decorators can override this to modify the selection logic
-    public List<SmartDeviceBase> getItems();
+    public List<ISmartDevice> getItems();
 
 }
