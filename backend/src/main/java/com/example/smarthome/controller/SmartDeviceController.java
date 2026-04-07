@@ -34,8 +34,8 @@ public class SmartDeviceController {
 
     @PostMapping("/create-device")
     @CrossOrigin(origins = "*")
-    public void createNewDevice(String name, String location, DeviceType deviceType, Map<String, Object> attributes){
+    public void createNewDevice(@RequestBody DeviceCreationRequest request){
 
-        deviceService.createDevice(name, location, deviceType, attributes);
+        deviceService.createDevice(request.name, request.location, request.deviceType, request.attributes);
     }
 }
