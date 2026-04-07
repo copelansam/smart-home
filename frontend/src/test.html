@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Home Device Manager</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+<h1>Smart Home Device Manager</h1>
+
+<!-- GET Devices Section -->
+<h2>All Devices</h2>
+<button id="getBtn">Load Devices</button>
+<pre id="getOutput"></pre>
+
+<!-- POST Create Device Section -->
+<h2>Create New Device</h2>
+<label>Name: <input id="deviceName" type="text"></label><br>
+<label>Location: <input id="deviceLocation" type="text"></label><br>
+<label>Device Type: <input id="deviceType" type="text" placeholder="e.g., LIGHT"></label><br>
+<label>Attributes (JSON): <input id="deviceAttributes" type="text" placeholder='{"brightness":75}'></label><br>
+<button id="createBtn">Create Device</button>
+<pre id="postOutput"></pre>
+
+<script>
+  const getOutput = document.getElementById('getOutput');
+  const postOutput = document.getElementById('postOutput');
+
+  // ---------------- GET Devices ----------------
+  document.getElementById('getBtn').addEventListener('click', () => {
+    fetch('http://localhost:8080/api/devices/get-all-devices')
+      .then(res => res.json())
+      .then(data => getOutput.textContent = JSON.stringify(data, null, 2))
+      .catch(err => getOutput.textContent = "Error: " + err);
+  });
+
+  // ---------------- POST Create Device ----------------
+  document.getElementById('createBtn').addEventListener('click', () => {
+    const name = document.getElementById('deviceName').value.trim();
+    const location = document.getElementById('deviceLocation').value.trim();
+    const deviceType = document.getElementById('deviceType').value.trim();
+
+    let attributes;
+    try {
+      attributes = JSON.parse(document.getElementById('deviceAttributes').value);
+    } catch(e) {
+      postOutput.textContent = "Invalid JSON in attributes!";
+      return;
+    }
+
+    // Validate required fields
+    if (!name || !location || !deviceType || !attributes) {
+      postOutput.textContent = "All fields are required!";
+      return;
+    }
+
+    fetch('http://localhost:8080/api/devices', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, location, deviceType, attributes })
+    })
+    .then(res => {
+      if(res.ok) return res.text();
+      else throw new Error("Failed to create device");
+    })
+    .then(() => postOutput.textContent = "Device created successfully!")
+    .catch(err => postOutput.textContent = "Error: " + err);
+  });
+</script>
+</body>
+</html>

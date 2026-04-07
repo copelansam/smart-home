@@ -1,0 +1,40 @@
+<div style="padding: 20px; font-family: sans-serif;">
+  <h1>Smart Home Dashboard</h1>
+
+  <section>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+      <h3>Connected Devices</h3>
+      <button (click)="refreshList()" style="padding: 8px 16px; cursor: pointer;">
+        Refresh List
+      </button>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+      <thead>
+      <tr style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+        <th style="padding: 12px; border: 1px solid #dee2e6;">Location</th>
+        <th style="padding: 12px; border: 1px solid #dee2e6;">Name</th>
+        <th style="padding: 12px; border: 1px solid #dee2e6;">Type</th>
+        <th style="padding: 12px; border: 1px solid #dee2e6;">State</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let device of devices" style="border-bottom: 1px solid #eee;">
+        <td style="padding: 10px; border: 1px solid #dee2e6;">{{ device.location }}</td>
+        <td style="padding: 10px; border: 1px solid #dee2e6;">{{ device.name }}</td>
+        <td style="padding: 10px; border: 1px solid #dee2e6;">{{ device.type }}</td>
+        <td style="padding: 10px; border: 1px solid #dee2e6;">
+            <span [style.color]="device.state === 'ON' ? 'green' : 'red'">
+              {{ device.state || 'OFF' }}
+            </span>
+        </td>
+      </tr>
+      <tr *ngIf="devices.length === 0">
+        <td colspan="4" style="text-align: center; padding: 20px; color: #666;">
+          No devices found. Ensure your backend is running.
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
