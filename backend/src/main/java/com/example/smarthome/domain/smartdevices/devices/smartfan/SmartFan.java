@@ -10,6 +10,9 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Entity
 @Table(name = "smart_fan")
@@ -36,5 +39,12 @@ public class SmartFan extends SmartDeviceBase {
 
     public FanSpeed getSpeed(){
         return this.speed;
+    }
+
+    public Map<String, Object> getExtraProperties(){
+
+        Map<String, Object> extraProperties = new HashMap<>();
+        extraProperties.put("speed", this.speed);
+        return extraProperties;
     }
 }

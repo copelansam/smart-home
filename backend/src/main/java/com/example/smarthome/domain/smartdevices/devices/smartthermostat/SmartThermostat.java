@@ -6,6 +6,9 @@ import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
 import com.example.smarthome.domain.smartdevices.statemachine.states.thermostatstates.ThermostatOffState;
 import jakarta.persistence.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Entity
 @Table(name = "smart_thermostat")
 public class SmartThermostat extends SmartDeviceBase {
@@ -39,4 +42,11 @@ public class SmartThermostat extends SmartDeviceBase {
         return this.ambientTemperature;
     }
 
+    public Map<String,Object> getExtraProperties(){
+
+        Map<String,Object> extraProperties = new HashMap<>();
+        extraProperties.put("desiredTemperature", this.desiredTemperature);
+        extraProperties.put("ambientTemperature", this.ambientTemperature);
+        return extraProperties;
+    }
 }

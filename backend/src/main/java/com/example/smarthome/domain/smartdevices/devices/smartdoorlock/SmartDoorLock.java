@@ -6,6 +6,9 @@ import com.example.smarthome.domain.smartdevices.statemachine.states.doorlocksta
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Entity
 @Table(name = "smart_door_lock")
 public class SmartDoorLock extends SmartDeviceBase {
@@ -18,5 +21,12 @@ public class SmartDoorLock extends SmartDeviceBase {
 
         // Invariant: For UI filtering purposes, all door lock objects are considered on
         this.isOn = true;
+    }
+
+    // Door Lock has no extra properties at the moment, could receive some in the future(?)
+    public Map<String, Object> getExtraProperties(){
+
+        HashMap<String, Object> extraProperties = new HashMap<>();
+        return extraProperties;
     }
 }

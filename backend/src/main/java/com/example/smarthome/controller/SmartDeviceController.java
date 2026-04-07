@@ -1,6 +1,7 @@
 package com.example.smarthome.controller;
 
 
+import com.example.smarthome.domain.smartdevices.devices.DeviceDTO;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.service.SmartDeviceService;
@@ -22,14 +23,15 @@ public class SmartDeviceController {
 
     @GetMapping
     @CrossOrigin(origins = "*")
-    public ResponseEntity<List<ISmartDevice>> getDevices(
+    public ResponseEntity<List<DeviceDTO>> getDevices(
             @RequestParam(required = false)DeviceType type,
             @RequestParam(required = false)String location,
             @RequestParam(required = false)Boolean isOn
             ){
 
         List<ISmartDevice> device = deviceService.getDevices(type,location,isOn);
-        return ResponseEntity.ok(device);
+        List<DeviceDTO> deviceDtos = deviceService.deviceListToDto(device);
+        return ResponseEntity.ok(deviceDtos);
     }
 
     @GetMapping("/{id}")

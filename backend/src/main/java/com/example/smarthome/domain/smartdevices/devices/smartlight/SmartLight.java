@@ -8,6 +8,9 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Entity
 @Table(name = "smart_light")
 public class SmartLight extends SmartDeviceBase {
@@ -60,5 +63,12 @@ public class SmartLight extends SmartDeviceBase {
 
     public void setState(IState newState){
         this.state = state.execute().getNewState();
+    }
+
+    public Map<String, Object> getExtraProperties(){
+
+        Map<String, Object> extraProperties = new HashMap<>();
+        extraProperties.put("color", this.color);
+        return extraProperties;
     }
 }

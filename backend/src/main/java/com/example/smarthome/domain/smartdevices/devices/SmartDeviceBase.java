@@ -2,10 +2,12 @@ package com.example.smarthome.domain.smartdevices.devices;
 
 
 import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import com.example.smarthome.repository.StateConverter;
 import jakarta.persistence.*;
 
 import java.io.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -25,6 +27,9 @@ public abstract class SmartDeviceBase implements ISmartDevice{
 
     @Enumerated(EnumType.STRING)
     private DeviceType deviceType;
+
+    @Transient
+    private List<ITransition<?>> availableActions;
 
     public SmartDeviceBase(){}
 
@@ -50,5 +55,8 @@ public abstract class SmartDeviceBase implements ISmartDevice{
     public String getState(){return this.state.getName();}
     public void setState(IState newState){
         this.state = state.execute().getNewState();
+    }
+    public List<ITransition<?>> getAvailableActions(){
+        return this.availableActions;
     }
 }
