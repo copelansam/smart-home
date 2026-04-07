@@ -32,11 +32,11 @@ public class SmartDeviceController {
         return ResponseEntity.ok(device);
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     @CrossOrigin(origins = "*")
     public ResponseEntity<ISmartDevice> getDeviceById(
-            @RequestParam(required = true)UUID uuid) {
-        ISmartDevice device = deviceService.getDeviceById(uuid);
+            @RequestParam(required = true)UUID id) {
+        ISmartDevice device = deviceService.getDeviceById(id);
 
         if (device != null) {
             return ResponseEntity.ok(device);
@@ -50,5 +50,13 @@ public class SmartDeviceController {
     public void createNewDevice(@RequestBody DeviceCreationRequest request){
 
         deviceService.createDevice(request.name, request.location, request.deviceType, request.attributes);
+    }
+
+    @DeleteMapping("{id}")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<Boolean> deleteDevice(@RequestParam(required = true) UUID id){
+
+        boolean deleted = deviceService.deleteDeviceById(id);
+        return ResponseEntity.ok(deleted);
     }
 }

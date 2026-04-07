@@ -65,4 +65,16 @@ public class SmartDeviceService {
 
         return repo.findById(uuid).orElse(null);
     }
+
+
+    public boolean deleteDeviceById(UUID uuid){
+
+        if (repo.existsById(uuid)){
+            repo.deleteById(uuid);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
