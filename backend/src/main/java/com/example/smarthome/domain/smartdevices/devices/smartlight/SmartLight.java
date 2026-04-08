@@ -21,10 +21,10 @@ public class SmartLight extends SmartDeviceBase {
 
     public SmartLight(){}
 
-    public SmartLight(String name, String location, DeviceType deviceType, int brightnessPercentage, int R, int G, int B){
+    public SmartLight(String name, String location, DeviceType deviceType){
         super(name, location, deviceType);
-        this.brightnessPercentage = brightnessPercentage;
-        this.color = new RGB(R,G,B);
+        this.brightnessPercentage = 100;
+        this.color = new RGB(255,255,255);
         this.state = new LightOffState();
         this.isOn = false;
     }

@@ -46,14 +46,13 @@ public class SmartDeviceService {
      * @param name        Name of the device
      * @param location    Location of the device
      * @param deviceType  The type of the device
-     * @param attributes  A map of device specific attributes (brightness percentage, color, etc.)
-     *
+     *                    *
      */
     @PostMapping
-    public void createDevice(String name, String location, DeviceType deviceType, Map<String, Object> attributes){
+    public void createDevice(String name, String location, DeviceType deviceType){
 
         // Create the new device
-        SmartDeviceBase newDevice = deviceFactory.createDevice(name, location, deviceType, attributes);
+        SmartDeviceBase newDevice = deviceFactory.createDevice(name, location, deviceType);
 
         // Save the device to the database
         repo.save(newDevice);

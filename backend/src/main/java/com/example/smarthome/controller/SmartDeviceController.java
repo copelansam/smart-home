@@ -52,7 +52,7 @@ public class SmartDeviceController {
     @CrossOrigin(origins = "*")
     public void createNewDevice(@RequestBody DeviceCreationRequest request){
 
-        deviceService.createDevice(request.name, request.location, request.deviceType, request.attributes);
+        deviceService.createDevice(request.name, request.location, request.deviceType);
     }
 
     @DeleteMapping("/{id}")

@@ -26,10 +26,10 @@ public class SmartThermostat extends SmartDeviceBase {
 
     public SmartThermostat(){}
 
-    public SmartThermostat(String name, String location, DeviceType deviceType, double desiredTemperature, double ambientTemperature){
+    public SmartThermostat(String name, String location, DeviceType deviceType){
         super(name, location, deviceType);
-        this.desiredTemperature = new Temperature(desiredTemperature);
-        this.ambientTemperature = new Temperature(ambientTemperature);
+        this.desiredTemperature = new Temperature();
+        this.ambientTemperature = new Temperature();
         this.state = new ThermostatOffState();
     }
 

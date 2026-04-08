@@ -17,10 +17,8 @@ public interface ISmartDeviceFactory {
      * Created device is **not persisted**, persistence must happen elsewhere
      * @param name       Name for the device
      * @param location   Location of the device
-     * @param deviceType The type of device
-     * @param attributes A map that contains concrete device specific attributes (brightness, color, etc.)
-     *
+     * @param deviceType The type of device*
      * @return A new SmartDeviceBase instance
      */
-    SmartDeviceBase createDevice(String name, String location, DeviceType deviceType, Map<String, Object> attributes);
+    SmartDeviceBase createDevice(String name, String location, DeviceType deviceType);
 }
