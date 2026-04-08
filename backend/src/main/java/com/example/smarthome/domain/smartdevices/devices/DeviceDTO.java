@@ -21,12 +21,14 @@ public class DeviceDTO {
     public static DeviceDTO fromISmartDevice(ISmartDevice device){
 
         DeviceDTO dto = new DeviceDTO();
+        dto.uuid = device.getUuid();
         dto.name = device.getName();
         dto.location = device.getLocation();
         dto.deviceType = device.getDeviceType().getDeviceTypeName();
         dto.isOn = device.getIsOn();
         dto.state = device.getState();
         dto.availableActions = device.getAvailableTransitions();
+
 
         dto.properties = device.getExtraProperties();
 

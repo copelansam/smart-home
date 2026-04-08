@@ -44,7 +44,7 @@ public class SmartFan extends SmartDeviceBase {
     public Map<String, Object> getExtraProperties(){
 
         Map<String, Object> extraProperties = new HashMap<>();
-        extraProperties.put("speed", this.speed);
+        extraProperties.put("speed", this.speed.getDescription());
         return extraProperties;
     }
 }

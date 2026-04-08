@@ -5,6 +5,7 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITrans
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public interface ISmartDevice {
 
@@ -20,7 +21,9 @@ public interface ISmartDevice {
 
     Map<String, Object> getExtraProperties();
 
-    public String getState();
+    String getState();
 
-    public List<ITransition<?>> getAvailableTransitions();
+    List<ITransition<?>> getAvailableTransitions();
+
+    UUID getUuid();
 }

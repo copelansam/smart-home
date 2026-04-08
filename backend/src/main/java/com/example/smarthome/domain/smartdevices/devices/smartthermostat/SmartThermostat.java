@@ -45,8 +45,8 @@ public class SmartThermostat extends SmartDeviceBase {
     public Map<String,Object> getExtraProperties(){
 
         Map<String,Object> extraProperties = new HashMap<>();
-        extraProperties.put("desiredTemperature", this.desiredTemperature);
-        extraProperties.put("ambientTemperature", this.ambientTemperature);
+        extraProperties.put("desiredTemperature", this.desiredTemperature.getTemperature());
+        extraProperties.put("ambientTemperature", this.ambientTemperature.getTemperature());
         return extraProperties;
     }
 }

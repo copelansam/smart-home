@@ -62,4 +62,10 @@ public class RGB {
             this.B = B;
         }
     }
+
+    public int[] getColor(){
+
+        int[] color = {getR() ,getG() ,getB()};
+        return  color;
+    }
 }

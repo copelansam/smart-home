@@ -56,7 +56,12 @@ public abstract class SmartDeviceBase implements ISmartDevice{
     public void setState(IState newState){
         this.state = state.execute().getNewState();
     }
-    public List<ITransition<?>> getAvailableActions(){
+    public List<ITransition<?>> getAvailableTransitions(){
         return this.availableActions;
+    }
+
+    @PostLoad
+    public void generateAvailableActions(){
+        this.availableActions = state.provideAvailableTransitions();
     }
 }
