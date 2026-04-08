@@ -1,12 +1,13 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states;
 
+import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
 
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class StateBase implements IState {
+public abstract class StateBase<T extends ITransition<?>, D extends ISmartDevice> implements IState<T,D> {
 
     private static final long serialVersionUID = 1L;
 
@@ -21,9 +22,6 @@ public abstract class StateBase implements IState {
     public String getName(){
         return this.name;
     }
-
-    @Override
-    public abstract TransitionResult execute();
 
     @Override
     public List<ITransition<?>> provideAvailableTransitions() {

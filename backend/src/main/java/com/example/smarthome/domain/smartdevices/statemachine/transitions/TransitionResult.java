@@ -8,10 +8,9 @@ public class TransitionResult {
     private boolean success;
     private IState newState;
 
-    public TransitionResult(String message, boolean success, IState newState){
+    public TransitionResult(String message, boolean success){
         this.message = message;
         this.success = success;
-        this.newState = newState;
     }
 
     public IState getNewState(){
