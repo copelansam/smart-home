@@ -11,7 +11,7 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.doorlo
 
 import java.util.List;
 
-public class DoorUnlockedState extends StateBase<DoorTransition, SmartDoorLock> {
+public class DoorUnlockedState extends StateBase<SmartDoorLock> {
 
     static {
         StateRegistry.register("Door Unlocked", DoorUnlockedState::new);
@@ -25,9 +25,9 @@ public class DoorUnlockedState extends StateBase<DoorTransition, SmartDoorLock> 
         );
     }
 
-    public TransitionResult execute(DoorTransition transition, SmartDoorLock device){
+    public TransitionResult execute(String transition, SmartDoorLock device){
 
-        DoorLockAction action = transition.getAction();
+        DoorLockAction action = DoorLockAction.getActionFromString(transition);
 
         switch(action){
 

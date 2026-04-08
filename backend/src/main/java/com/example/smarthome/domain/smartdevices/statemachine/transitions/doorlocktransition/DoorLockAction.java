@@ -2,5 +2,15 @@ package com.example.smarthome.domain.smartdevices.statemachine.transitions.doorl
 
 public enum DoorLockAction {
     LOCK,
-    UNLOCK
+    UNLOCK;
+
+    public static DoorLockAction getActionFromString(String wantedAction){
+
+        for (DoorLockAction action : DoorLockAction.values()){
+            if (action.name().equals(wantedAction)){
+                return action;
+            }
+        }
+        return null;
+    }
 }

@@ -27,7 +27,7 @@ public interface ISmartDevice {
 
     UUID getUuid();
 
-    void execute(ITransition<?> transition);
+    void execute(String transition);
 
     void setIsOn(boolean isOn);
 }

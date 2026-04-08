@@ -6,10 +6,10 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.Transi
 
 import java.util.List;
 
-public interface IState <T extends ITransition<?>, D extends ISmartDevice>{
+public interface IState <D extends ISmartDevice>{
 
     // This method will be responsible for executing a transition in the statechart
-    TransitionResult execute(T transition, D device);
+    TransitionResult execute(String transition, D device);
 
     // This method will return the state's available transitions
     public List<ITransition<?>> provideAvailableTransitions();

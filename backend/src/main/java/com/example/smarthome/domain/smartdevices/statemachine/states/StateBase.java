@@ -7,7 +7,7 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.Transi
 import java.io.Serializable;
 import java.util.List;
 
-public abstract class StateBase<T extends ITransition<?>, D extends ISmartDevice> implements IState<T,D> {
+public abstract class StateBase<D extends ISmartDevice> implements IState<D> {
 
     private static final long serialVersionUID = 1L;
 

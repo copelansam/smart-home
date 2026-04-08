@@ -89,7 +89,7 @@ public class SmartDeviceService {
         return Collections.unmodifiableList(deviceDtos);
     }
 
-    public void executeAction(UUID uuid, ITransition<?> transition){
+    public void executeAction(UUID uuid, String transition){
         ISmartDevice device = repo.getReferenceById(uuid);
         device.execute(transition);
     }

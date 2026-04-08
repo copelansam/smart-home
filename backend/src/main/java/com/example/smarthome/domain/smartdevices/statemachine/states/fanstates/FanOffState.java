@@ -10,7 +10,7 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.fantra
 import java.util.List;
 
 
-public class FanOffState extends StateBase<FanTransition, SmartFan> {
+public class FanOffState extends StateBase<SmartFan> {
 
     static {
         StateRegistry.register("Fan Off", FanOffState::new);
@@ -24,9 +24,9 @@ public class FanOffState extends StateBase<FanTransition, SmartFan> {
         );
     }
 
-    public TransitionResult execute(FanTransition transition, SmartFan device){
+    public TransitionResult execute(String transition, SmartFan device){
 
-        FanAction action = transition.getAction();
+        FanAction action = FanAction.getActionFromString(transition);
 
         switch (action){
 

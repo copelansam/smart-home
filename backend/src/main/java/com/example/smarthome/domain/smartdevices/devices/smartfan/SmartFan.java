@@ -42,7 +42,7 @@ public class SmartFan extends SmartDeviceBase {
         return extraProperties;
     }
 
-    public void execute(ITransition<?> transition){
+    public void execute(String transition){
         state.execute(transition, this);
     }
 }

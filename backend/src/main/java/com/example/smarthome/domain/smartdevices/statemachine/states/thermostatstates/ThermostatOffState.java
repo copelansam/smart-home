@@ -9,7 +9,7 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.thermo
 
 import java.util.List;
 
-public class ThermostatOffState extends StateBase<ThermostatTransition, SmartThermostat> {
+public class ThermostatOffState extends StateBase<SmartThermostat> {
 
     static {
         StateRegistry.register("Thermostat Off", ThermostatOffState::new);
@@ -23,9 +23,13 @@ public class ThermostatOffState extends StateBase<ThermostatTransition, SmartThe
         );
     }
 
-    public TransitionResult execute(ThermostatTransition transition, SmartThermostat device){
+    public TransitionResult execute(String transition, SmartThermostat device){
 
-        ThermostatAction action = transition.getAction();
+        ThermostatAction action = ThermostatAction.getActionFromString(transition);
+
+        if (action == null){
+            return new TransitionResult();
+        }
 
         switch (action){
 

@@ -52,7 +52,7 @@ public class SmartThermostat extends SmartDeviceBase {
     }
 
     @Override
-    public void execute(ITransition<?> transition) {
+    public void execute(String transition) {
         this.state.execute(transition, this);
     }
 }

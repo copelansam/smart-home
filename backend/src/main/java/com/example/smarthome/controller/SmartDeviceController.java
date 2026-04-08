@@ -67,7 +67,7 @@ public class SmartDeviceController {
     @PutMapping("/{id}/state")
     @CrossOrigin(origins = "*")
     public void executeAction(@RequestParam(required = true) UUID uuid,
-                              @RequestParam(required = true) ITransition<?> transition){
+                              @RequestParam(required = true) String transition){
         deviceService.executeAction(uuid, transition);
     }
 }

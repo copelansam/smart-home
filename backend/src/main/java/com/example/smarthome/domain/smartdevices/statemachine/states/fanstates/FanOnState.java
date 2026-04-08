@@ -13,7 +13,7 @@ import jakarta.persistence.Entity;
 
 import java.util.List;
 
-public class FanOnState extends StateBase<FanTransition, SmartFan> {
+public class FanOnState extends StateBase<SmartFan> {
 
     static {
         StateRegistry.register("Fan On", FanOnState::new);
@@ -27,9 +27,9 @@ public class FanOnState extends StateBase<FanTransition, SmartFan> {
         );
     }
 
-    public TransitionResult execute(FanTransition transition, SmartFan device){
+    public TransitionResult execute(String transition, SmartFan device){
 
-        FanAction action = transition.getAction();
+        FanAction action = FanAction.getActionFromString(transition);
 
         switch (action){
 

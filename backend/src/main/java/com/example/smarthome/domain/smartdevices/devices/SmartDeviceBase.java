@@ -65,7 +65,7 @@ public abstract class SmartDeviceBase implements ISmartDevice{
         this.availableActions = state.provideAvailableTransitions();
     }
 
-    public abstract void execute(ITransition<?> transition);
+    public abstract void execute(String transition);
 
     public void setIsOn(boolean isOn){
         this.isOn = isOn;

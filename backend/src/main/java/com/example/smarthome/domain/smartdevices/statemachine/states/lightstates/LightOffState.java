@@ -10,7 +10,7 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.lightt
 
 import java.util.List;
 
-public class LightOffState extends StateBase<LightTransition, SmartLight> {
+public class LightOffState extends StateBase<SmartLight> {
 
     static {
         StateRegistry.register("Light Off", LightOffState::new);
@@ -24,9 +24,9 @@ public class LightOffState extends StateBase<LightTransition, SmartLight> {
         );
     }
 
-    public TransitionResult execute(LightTransition transition, SmartLight device){
+    public TransitionResult execute(String transition, SmartLight device){
 
-        LightAction action = transition.getAction();
+        LightAction action = LightAction.getActionFromString(transition);
 
         switch (action){
 

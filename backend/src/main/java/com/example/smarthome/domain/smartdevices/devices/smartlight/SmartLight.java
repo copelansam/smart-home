@@ -70,7 +70,7 @@ public class SmartLight extends SmartDeviceBase {
         return extraProperties;
     }
 
-    public void execute(ITransition<?> transition){
+    public void execute(String transition){
         this.state.execute(transition, this);
     }
 }
