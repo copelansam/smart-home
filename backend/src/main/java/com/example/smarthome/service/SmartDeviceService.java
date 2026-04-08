@@ -7,6 +7,7 @@ import com.example.smarthome.domain.smartdevices.devices.DeviceDTO;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import com.example.smarthome.repository.ISmartDeviceRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -86,5 +87,10 @@ public class SmartDeviceService {
         }
 
         return Collections.unmodifiableList(deviceDtos);
+    }
+
+    public void executeAction(UUID uuid, ITransition<?> transition){
+        ISmartDevice device = repo.getReferenceById(uuid);
+        device.execute(transition);
     }
 }

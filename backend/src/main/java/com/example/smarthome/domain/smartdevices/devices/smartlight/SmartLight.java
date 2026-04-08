@@ -4,9 +4,11 @@ import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
 import com.example.smarthome.domain.smartdevices.statemachine.states.lightstates.LightOffState;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,14 +63,14 @@ public class SmartLight extends SmartDeviceBase {
         return color;
     }
 
-    public void setState(IState newState){
-        this.state = state.execute().getNewState();
-    }
-
     public Map<String, Object> getExtraProperties(){
 
         Map<String, Object> extraProperties = new HashMap<>();
         extraProperties.put("color", this.color.getColor());
         return extraProperties;
+    }
+
+    public void execute(ITransition<?> transition){
+        this.state.execute(transition, this);
     }
 }

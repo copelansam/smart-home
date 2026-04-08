@@ -4,6 +4,7 @@ import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
 import com.example.smarthome.domain.smartdevices.statemachine.states.thermostatstates.ThermostatOffState;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import jakarta.persistence.*;
 
 import java.util.HashMap;
@@ -48,5 +49,10 @@ public class SmartThermostat extends SmartDeviceBase {
         extraProperties.put("desiredTemperature", this.desiredTemperature.getTemperature());
         extraProperties.put("ambientTemperature", this.ambientTemperature.getTemperature());
         return extraProperties;
+    }
+
+    @Override
+    public void execute(ITransition<?> transition) {
+        this.state.execute(transition, this);
     }
 }

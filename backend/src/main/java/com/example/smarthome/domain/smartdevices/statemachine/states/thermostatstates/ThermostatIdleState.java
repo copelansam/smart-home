@@ -1,5 +1,6 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states.thermostatstates;
 
+import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegistry;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
@@ -8,7 +9,7 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.thermo
 
 import java.util.List;
 
-public class ThermostatIdleState extends StateBase {
+public class ThermostatIdleState extends StateBase<ThermostatTransition, SmartThermostat> {
 
     static {
         StateRegistry.register("Thermostat Idle", ThermostatIdleState::new);
@@ -24,7 +25,7 @@ public class ThermostatIdleState extends StateBase {
         );
     }
 
-    public TransitionResult execute(){
-        return new TransitionResult("Thermostat has turned off or gone ot idle", true, new ThermostatOffState());
+    public TransitionResult execute(ThermostatTransition transition, SmartThermostat device){
+        return new TransitionResult("Thermostat has turned off or gone ot idle", true);
     }
 }

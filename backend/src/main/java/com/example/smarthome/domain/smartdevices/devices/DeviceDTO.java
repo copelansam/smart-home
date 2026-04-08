@@ -1,11 +1,13 @@
 package com.example.smarthome.domain.smartdevices.devices;
 
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@JsonPropertyOrder({"uuid", "name", "location","deviceType", "state", "isOn", "properties", "availableActions"})
 public class DeviceDTO {
 
     public UUID uuid;

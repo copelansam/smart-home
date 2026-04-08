@@ -1,5 +1,6 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states.fanstates;
 
+import com.example.smarthome.domain.smartdevices.devices.smartfan.SmartFan;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegistry;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
@@ -9,7 +10,7 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.fantra
 import java.util.List;
 
 
-public class FanOffState extends StateBase {
+public class FanOffState extends StateBase<FanTransition, SmartFan> {
 
     static {
         StateRegistry.register("Fan Off", FanOffState::new);
@@ -23,7 +24,7 @@ public class FanOffState extends StateBase {
         );
     }
 
-    public TransitionResult execute(){
-        return new TransitionResult("Fan is now on", true, new FanOnState());
+    public TransitionResult execute(FanTransition transition, SmartFan device){
+        return new TransitionResult("Fan is now on", true);
     }
 }

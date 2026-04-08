@@ -1,5 +1,6 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states.lightstates;
 
+import com.example.smarthome.domain.smartdevices.devices.smartlight.SmartLight;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegistry;
 import com.example.smarthome.domain.smartdevices.statemachine.states.thermostatstates.ThermostatOffState;
@@ -9,7 +10,7 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.lightt
 
 import java.util.List;
 
-public class LightOffState extends StateBase {
+public class LightOffState extends StateBase<LightTransition, SmartLight> {
 
     static {
         StateRegistry.register("Light Off", LightOffState::new);
@@ -23,7 +24,7 @@ public class LightOffState extends StateBase {
         );
     }
 
-    public TransitionResult execute(){
-        return new TransitionResult("Light has been turned on", true, new LightOffState());
+    public TransitionResult execute(LightTransition transition, SmartLight device){
+        return new TransitionResult("Light has been turned on", true);
     }
 }

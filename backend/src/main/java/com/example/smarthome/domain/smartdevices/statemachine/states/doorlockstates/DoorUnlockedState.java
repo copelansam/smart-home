@@ -1,5 +1,6 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states.doorlockstates;
 
+import com.example.smarthome.domain.smartdevices.devices.smartdoorlock.SmartDoorLock;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegistry;
 import com.example.smarthome.domain.smartdevices.statemachine.states.fanstates.FanOnState;
@@ -10,7 +11,7 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.doorlo
 
 import java.util.List;
 
-public class DoorUnlockedState extends StateBase {
+public class DoorUnlockedState extends StateBase<DoorTransition, SmartDoorLock> {
 
     static {
         StateRegistry.register("Door Unlocked", DoorUnlockedState::new);
@@ -24,7 +25,7 @@ public class DoorUnlockedState extends StateBase {
         );
     }
 
-    public TransitionResult execute(){
-        return new TransitionResult("Door is now locked", true, new DoorLockedState());
+    public TransitionResult execute(DoorTransition transition, SmartDoorLock lock){
+        return new TransitionResult("Door is now locked", true);
     }
 }

@@ -26,4 +26,6 @@ public interface ISmartDevice {
     List<ITransition<?>> getAvailableTransitions();
 
     UUID getUuid();
+
+    void execute(ITransition<?> transition);
 }

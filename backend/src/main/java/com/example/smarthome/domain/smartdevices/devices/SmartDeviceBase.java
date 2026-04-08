@@ -54,7 +54,7 @@ public abstract class SmartDeviceBase implements ISmartDevice{
     }
     public String getState(){return this.state.getName();}
     public void setState(IState newState){
-        this.state = state.execute().getNewState();
+        this.state = newState;
     }
     public List<ITransition<?>> getAvailableTransitions(){
         return this.availableActions;
@@ -64,4 +64,6 @@ public abstract class SmartDeviceBase implements ISmartDevice{
     public void generateAvailableActions(){
         this.availableActions = state.provideAvailableTransitions();
     }
+
+    public abstract void execute(ITransition<?> transition);
 }

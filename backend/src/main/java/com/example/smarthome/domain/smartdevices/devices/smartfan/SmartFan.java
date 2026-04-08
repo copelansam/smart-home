@@ -4,11 +4,9 @@ import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
 import com.example.smarthome.domain.smartdevices.statemachine.states.fanstates.FanOffState;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,10 +31,6 @@ public class SmartFan extends SmartDeviceBase {
         this.speed = speed;
     }
 
-    public void setState(IState newState){
-        this.state = state.execute().getNewState();
-    }
-
     public FanSpeed getSpeed(){
         return this.speed;
     }
@@ -46,5 +40,9 @@ public class SmartFan extends SmartDeviceBase {
         Map<String, Object> extraProperties = new HashMap<>();
         extraProperties.put("speed", this.speed.getDescription());
         return extraProperties;
+    }
+
+    public void execute(ITransition<?> transition){
+        state.execute(transition, this);
     }
 }
