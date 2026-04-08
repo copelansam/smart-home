@@ -38,7 +38,7 @@ public class SmartDeviceService {
 
         IDeviceQuery query = queryBuilder.buildQuery(type, location, isOn);
 
-        return query.getItems();
+        return Collections.unmodifiableList(query.getItems());
     }
 
     /**

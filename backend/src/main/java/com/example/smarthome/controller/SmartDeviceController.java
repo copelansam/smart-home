@@ -9,6 +9,7 @@ import com.example.smarthome.service.SmartDeviceService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +33,7 @@ public class SmartDeviceController {
 
         List<ISmartDevice> device = deviceService.getDevices(type,location,isOn);
         List<DeviceDTO> deviceDtos = deviceService.deviceListToDto(device);
-        return ResponseEntity.ok(deviceDtos);
+        return ResponseEntity.ok(Collections.unmodifiableList(deviceDtos));
     }
 
     @GetMapping("/{id}")
@@ -63,10 +64,10 @@ public class SmartDeviceController {
         return ResponseEntity.ok(deleted);
     }
 
-    @PutMapping("/{id}/state-change")
+    @PutMapping("/{id}/state")
     @CrossOrigin(origins = "*")
     public void executeAction(@RequestParam(required = true) UUID uuid,
-                            @RequestParam(required = true) ITransition transition){
+                              @RequestParam(required = true) ITransition<?> transition){
         deviceService.executeAction(uuid, transition);
     }
 }
