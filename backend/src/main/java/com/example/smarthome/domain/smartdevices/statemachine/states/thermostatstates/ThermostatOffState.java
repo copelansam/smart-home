@@ -18,7 +18,7 @@ public class ThermostatOffState extends StateBase<ThermostatTransition, SmartThe
     public ThermostatOffState(){
         super("Thermostat Off",
                 List.of(
-                new ThermostatTransition(ThermostatAction.POWER_ON)
+                new ThermostatTransition(ThermostatAction.POWER_THERMOSTAT_ON)
                 )
         );
     }
@@ -29,7 +29,7 @@ public class ThermostatOffState extends StateBase<ThermostatTransition, SmartThe
 
         switch (action){
 
-            case POWER_ON:
+            case POWER_THERMOSTAT_ON:
                 device.setState(new ThermostatIdleState());
                 return new TransitionResult("Thermostat has been set to idle. Awaiting further instruction",true);
 

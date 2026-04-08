@@ -19,7 +19,7 @@ public class LightOffState extends StateBase<LightTransition, SmartLight> {
     public LightOffState(){
         super("Light Off",
                 List.of(
-                    new LightTransition(LightAction.TURN_ON)
+                    new LightTransition(LightAction.TURN_LIGHT_ON)
                 )
         );
     }
@@ -30,7 +30,7 @@ public class LightOffState extends StateBase<LightTransition, SmartLight> {
 
         switch (action){
 
-            case TURN_ON:
+            case TURN_LIGHT_ON:
                 device.setState(new LightOnState());
                 device.setIsOn(true);
                 return new TransitionResult("Light has been turned on", true);

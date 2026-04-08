@@ -19,7 +19,7 @@ public class FanOffState extends StateBase<FanTransition, SmartFan> {
     public FanOffState(){
         super("Fan Off",
                 List.of(
-                new FanTransition(FanAction.TURN_ON)
+                new FanTransition(FanAction.TURN_FAN_ON)
                 )
         );
     }
@@ -30,7 +30,7 @@ public class FanOffState extends StateBase<FanTransition, SmartFan> {
 
         switch (action){
 
-            case TURN_ON:
+            case TURN_FAN_ON:
                 device.setState(new FanOnState());
                 device.setIsOn(true);
                 return new TransitionResult("Fan is now on", true);

@@ -19,7 +19,7 @@ public class ThermostatHeatingState extends StateBase<ThermostatTransition, Smar
         super("Thermostat Heating",
                 List.of(
                 new ThermostatTransition(ThermostatAction.STOP_HEATING),
-                new ThermostatTransition(ThermostatAction.POWER_OFF)
+                new ThermostatTransition(ThermostatAction.POWER_THERMOSTAT_OFF)
                 )
         );
     }
@@ -35,7 +35,7 @@ public class ThermostatHeatingState extends StateBase<ThermostatTransition, Smar
                 device.setIsOn(false);
                 return new TransitionResult("The ambient temperature has reached the desired temperature. The thermostat has gone idle.",true);
 
-            case POWER_OFF:
+            case POWER_THERMOSTAT_OFF:
                 device.setState(new ThermostatOffState());
                 device.setIsOn(false);
                 return new TransitionResult("The thermostat has been turned off.", true);

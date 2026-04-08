@@ -20,7 +20,7 @@ public class ThermostatIdleState extends StateBase<ThermostatTransition, SmartTh
                 List.of(
                 new ThermostatTransition(ThermostatAction.START_COOLING),
                 new ThermostatTransition(ThermostatAction.START_HEATING),
-                new ThermostatTransition(ThermostatAction.POWER_OFF)
+                new ThermostatTransition(ThermostatAction.POWER_THERMOSTAT_OFF)
                 )
         );
     }
@@ -31,7 +31,7 @@ public class ThermostatIdleState extends StateBase<ThermostatTransition, SmartTh
 
         switch(action){
 
-            case POWER_OFF:
+            case POWER_THERMOSTAT_OFF:
                 device.setState(new ThermostatOffState());
                 return new TransitionResult("Thermostat has been turned off",true);
 
