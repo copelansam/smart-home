@@ -39,7 +39,7 @@ public class SmartDeviceController {
     @GetMapping("/{id}")
     @CrossOrigin(origins = "*")
     public ResponseEntity<ISmartDevice> getDeviceById(
-            @RequestParam(required = true)UUID id) {
+            @PathVariable("id")UUID id) {
         ISmartDevice device = deviceService.getDeviceById(id);
 
         if (device != null) {
@@ -66,8 +66,8 @@ public class SmartDeviceController {
 
     @PutMapping("/{id}/state")
     @CrossOrigin(origins = "*")
-    public void executeAction(@RequestParam(required = true) UUID uuid,
+    public void executeAction(@PathVariable("id") UUID id,
                               @RequestParam(required = true) String transition){
-        deviceService.executeAction(uuid, transition);
+        deviceService.executeAction(id, transition);
     }
 }
