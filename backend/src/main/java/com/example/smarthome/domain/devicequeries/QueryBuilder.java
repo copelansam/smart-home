@@ -4,7 +4,6 @@ import com.example.smarthome.domain.devicequeries.filters.DeviceTypeDeviceFilter
 import com.example.smarthome.domain.devicequeries.filters.LocationDeviceFilterDecorator;
 import com.example.smarthome.domain.devicequeries.filters.OnDeviceFilterDecorator;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
-import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.repository.ISmartDeviceRepository;
 import org.springframework.stereotype.Component;
 

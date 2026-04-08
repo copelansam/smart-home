@@ -4,7 +4,6 @@ import com.example.smarthome.domain.devicequeries.DeviceQueryDecoratorBase;
 import com.example.smarthome.domain.devicequeries.IDeviceQuery;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
-import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 
 import java.util.ArrayList;
 import java.util.Collections;

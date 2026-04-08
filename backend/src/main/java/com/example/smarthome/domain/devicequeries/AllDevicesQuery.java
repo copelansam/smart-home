@@ -1,7 +1,6 @@
 package com.example.smarthome.domain.devicequeries;
 
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
-import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.repository.ISmartDeviceRepository;
 
 import java.util.ArrayList;

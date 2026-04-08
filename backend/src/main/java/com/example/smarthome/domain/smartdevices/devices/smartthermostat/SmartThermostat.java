@@ -2,9 +2,7 @@ package com.example.smarthome.domain.smartdevices.devices.smartthermostat;
 
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
-import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
 import com.example.smarthome.domain.smartdevices.statemachine.states.thermostatstates.ThermostatOffState;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import jakarta.persistence.*;
 
 import java.util.HashMap;

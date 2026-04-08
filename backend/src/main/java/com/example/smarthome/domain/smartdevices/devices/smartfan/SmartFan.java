@@ -2,10 +2,7 @@ package com.example.smarthome.domain.smartdevices.devices.smartfan;
 
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
-import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
 import com.example.smarthome.domain.smartdevices.statemachine.states.fanstates.FanOffState;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.HashMap;

@@ -2,13 +2,10 @@ package com.example.smarthome.domain.smartdevices.devices.smartlight;
 
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
-import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
 import com.example.smarthome.domain.smartdevices.statemachine.states.lightstates.LightOffState;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,7 +1,6 @@
 package com.example.smarthome.domain.devicequeries;
 
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
-import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 
 import java.util.List;
 

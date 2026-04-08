@@ -1,7 +1,6 @@
 package com.example.smarthome.domain.smartdevices.devicefactories;
 
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
-import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.devices.smartdoorlock.SmartDoorLock;
 import com.example.smarthome.domain.smartdevices.devices.smartfan.SmartFan;

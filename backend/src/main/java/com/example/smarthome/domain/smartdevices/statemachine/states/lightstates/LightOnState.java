@@ -3,7 +3,6 @@ package com.example.smarthome.domain.smartdevices.statemachine.states.lightstate
 import com.example.smarthome.domain.smartdevices.devices.smartlight.SmartLight;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegistry;
-import com.example.smarthome.domain.smartdevices.statemachine.states.thermostatstates.ThermostatOffState;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.lighttransition.LightAction;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.lighttransition.LightTransition;

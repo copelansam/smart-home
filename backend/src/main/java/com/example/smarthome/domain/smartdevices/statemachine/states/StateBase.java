@@ -2,9 +2,7 @@ package com.example.smarthome.domain.smartdevices.statemachine.states;
 
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
 
-import java.io.Serializable;
 import java.util.List;
 
 public abstract class StateBase<D extends ISmartDevice> implements IState<D> {

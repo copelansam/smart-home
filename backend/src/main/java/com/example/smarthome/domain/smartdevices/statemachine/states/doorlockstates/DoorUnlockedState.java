@@ -3,8 +3,6 @@ package com.example.smarthome.domain.smartdevices.statemachine.states.doorlockst
 import com.example.smarthome.domain.smartdevices.devices.smartdoorlock.SmartDoorLock;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegistry;
-import com.example.smarthome.domain.smartdevices.statemachine.states.fanstates.FanOnState;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.doorlocktransition.DoorLockAction;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.doorlocktransition.DoorTransition;
