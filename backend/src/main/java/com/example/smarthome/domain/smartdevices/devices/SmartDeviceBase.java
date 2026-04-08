@@ -66,4 +66,8 @@ public abstract class SmartDeviceBase implements ISmartDevice{
     }
 
     public abstract void execute(ITransition<?> transition);
+
+    public void setIsOn(boolean isOn){
+        this.isOn = isOn;
+    }
 }

@@ -28,6 +28,18 @@ public class FanOnState extends StateBase<FanTransition, SmartFan> {
     }
 
     public TransitionResult execute(FanTransition transition, SmartFan device){
-        return new TransitionResult("Fan is now off", true);
+
+        FanAction action = transition.getAction();
+
+        switch (action){
+
+            case TURN_OFF:
+                device.setState(new FanOffState());
+                device.setIsOn(false);
+                return new TransitionResult("Fan is now off", true);
+
+            default:
+                return new TransitionResult();
+        }
     }
 }

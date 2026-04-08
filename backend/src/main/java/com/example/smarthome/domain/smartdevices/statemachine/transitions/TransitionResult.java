@@ -6,14 +6,14 @@ public class TransitionResult {
 
     private String message;
     private boolean success;
-    private IState newState;
+
+    public TransitionResult(){
+        this.message = "Invalid Transition from current state";
+        this.success = false;
+    }
 
     public TransitionResult(String message, boolean success){
         this.message = message;
         this.success = success;
-    }
-
-    public IState getNewState(){
-        return this.newState;
     }
 }

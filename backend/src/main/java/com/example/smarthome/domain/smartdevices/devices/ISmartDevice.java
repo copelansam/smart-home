@@ -28,4 +28,6 @@ public interface ISmartDevice {
     UUID getUuid();
 
     void execute(ITransition<?> transition);
+
+    void setIsOn(boolean isOn);
 }

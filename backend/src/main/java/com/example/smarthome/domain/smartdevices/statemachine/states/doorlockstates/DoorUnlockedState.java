@@ -25,7 +25,19 @@ public class DoorUnlockedState extends StateBase<DoorTransition, SmartDoorLock> 
         );
     }
 
-    public TransitionResult execute(DoorTransition transition, SmartDoorLock lock){
-        return new TransitionResult("Door is now locked", true);
+    public TransitionResult execute(DoorTransition transition, SmartDoorLock device){
+
+        DoorLockAction action = transition.getAction();
+
+        switch(action){
+
+            case LOCK:
+                device.setState(new DoorLockedState());
+                return new TransitionResult("Door is now locked", true);
+
+            default:
+                return new TransitionResult();
+
+        }
     }
 }

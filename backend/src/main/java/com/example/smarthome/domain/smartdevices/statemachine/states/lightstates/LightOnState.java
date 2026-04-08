@@ -25,6 +25,18 @@ public class LightOnState extends StateBase<LightTransition, SmartLight> {
     }
 
     public TransitionResult execute(LightTransition transition, SmartLight device){
-        return new TransitionResult("Light is now off", true);
+
+        LightAction action = transition.getAction();
+
+        switch (action){
+
+            case TURN_OFF:
+                device.setState(new LightOffState());
+                device.setIsOn(false);
+                return new TransitionResult("Light is now off", true);
+
+            default:
+                return new TransitionResult();
+        }
     }
 }

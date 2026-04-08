@@ -34,7 +34,7 @@ public class DoorLockedState extends StateBase<DoorTransition, SmartDoorLock> {
                 return new TransitionResult("Success", true);
 
             default:
-                return new TransitionResult("Invalid Transition from current state",false);
+                return new TransitionResult();
         }
     }
 }

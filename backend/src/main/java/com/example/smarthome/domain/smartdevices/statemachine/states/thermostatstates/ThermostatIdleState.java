@@ -26,6 +26,27 @@ public class ThermostatIdleState extends StateBase<ThermostatTransition, SmartTh
     }
 
     public TransitionResult execute(ThermostatTransition transition, SmartThermostat device){
-        return new TransitionResult("Thermostat has turned off or gone ot idle", true);
+
+        ThermostatAction action = transition.getAction();
+
+        switch(action){
+
+            case POWER_OFF:
+                device.setState(new ThermostatOffState());
+                return new TransitionResult("Thermostat has been turned off",true);
+
+            case START_COOLING:
+                device.setState(new ThermostatCoolingState());
+                device.setIsOn(true);
+                return new TransitionResult("The ambient temperature is greater than the desired temperature. Thermostat begins cooling", true);
+
+            case START_HEATING:
+                device.setState(new ThermostatCoolingState());
+                device.setIsOn(true);
+                return new TransitionResult("The ambient temperature is lower than the desired temperature. Thermostat begins heating",true);
+
+            default:
+                return new TransitionResult();
+        }
     }
 }
