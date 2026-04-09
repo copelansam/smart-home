@@ -3,7 +3,7 @@ package com.example.smarthome.domain.smartdevices.devices.smartdoorlock;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.doorlockstates.DoorUnlockedState;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -31,7 +31,7 @@ public class SmartDoorLock extends SmartDeviceBase {
         return extraProperties;
     }
 
-    public TransitionResult execute(String transition){
+    public CallResult execute(String transition){
         return state.execute(transition, this);
     }
 }

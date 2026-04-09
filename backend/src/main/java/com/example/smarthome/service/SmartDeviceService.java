@@ -2,12 +2,13 @@ package com.example.smarthome.service;
 
 import com.example.smarthome.domain.devicequeries.IDeviceQuery;
 import com.example.smarthome.domain.devicequeries.QueryBuilder;
+import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devicefactories.ISmartDeviceFactory;
 import com.example.smarthome.domain.smartdevices.devices.DeviceDTO;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.repository.ISmartDeviceRepository;
 import jakarta.transaction.Transactional;
@@ -57,14 +58,22 @@ public class SmartDeviceService {
      *                    *
      */
     @PostMapping
-    public void createDevice(String name, String location, DeviceType deviceType){
+    public CallResult createDevice(String name, String location, DeviceType deviceType){
 
         // Create the new device
         SmartDeviceBase newDevice = deviceFactory.createDevice(name, location, deviceType);
 
-        // Save the device to the database
-        repo.save(newDevice);
-
+        if (newDevice == null){
+            return new CallResult("Item creation failed", false, null);
+        }
+        else {
+            CallResult result = new CallResult(newDevice.getName() + "Successfully created", true,
+                    new DeviceLog(newDevice.getUuid(),newDevice.getName() + " was created successfully"));
+            // Save the device to the database
+            repo.save(newDevice);
+            deviceLogRepository.save(result.getLog());
+            return result;
+        }
     }
 
     public ISmartDevice getDeviceById(UUID uuid){
@@ -95,10 +104,10 @@ public class SmartDeviceService {
         return Collections.unmodifiableList(deviceDtos);
     }
 
-    public TransitionResult executeAction(UUID uuid, String transition){
+    public CallResult executeAction(UUID uuid, String transition){
         ISmartDevice device = repo.getReferenceById(uuid);
 
-        TransitionResult result = device.execute(transition);
+        CallResult result = device.execute(transition);
 
         if (result.getIsSuccess()){
             repo.save((SmartDeviceBase) device);

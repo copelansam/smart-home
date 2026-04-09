@@ -4,7 +4,7 @@ import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegistry;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.thermostattransition.ThermostatAction;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.thermostattransition.ThermostatTransition;
 
@@ -26,35 +26,35 @@ public class ThermostatIdleState extends StateBase<SmartThermostat> {
         );
     }
 
-    public TransitionResult execute(String transition, SmartThermostat device){
+    public CallResult execute(String transition, SmartThermostat device){
 
         ThermostatAction action = ThermostatAction.getActionFromString(transition);
 
         if (action == null){
-            return new TransitionResult();
+            return new CallResult();
         }
 
         switch(action){
 
             case POWER_THERMOSTAT_OFF:
                 device.setState(new ThermostatOffState());
-                return new TransitionResult("Thermostat has been turned off",true,
-                        new DeviceLog(device.getUuid(), "State changed from Thermostat Idle -> Thermostat Off"));
+                return new CallResult("Thermostat has been turned off",true,
+                        new DeviceLog(device.getUuid(), "State changed from Thermostat Idle to Thermostat Off"));
 
             case START_COOLING:
                 device.setState(new ThermostatCoolingState());
                 device.setIsOn(true);
-                return new TransitionResult("The ambient temperature is greater than the desired temperature. Thermostat begins cooling", true,
-                        new DeviceLog(device.getUuid(), "State changed from Thermostat Idle -> Thermostat Cooling"));
+                return new CallResult("The ambient temperature is greater than the desired temperature. Thermostat begins cooling", true,
+                        new DeviceLog(device.getUuid(), "State changed from Thermostat Idle to Thermostat Cooling"));
 
             case START_HEATING:
                 device.setState(new ThermostatHeatingState());
                 device.setIsOn(true);
-                return new TransitionResult("The ambient temperature is lower than the desired temperature. Thermostat begins heating",true,
-                        new DeviceLog(device.getUuid(), "State changed from Thermostat Idle -> Thermostat Heating"));
+                return new CallResult("The ambient temperature is lower than the desired temperature. Thermostat begins heating",true,
+                        new DeviceLog(device.getUuid(), "State changed from Thermostat Idle to Thermostat Heating"));
 
             default:
-                return new TransitionResult();
+                return new CallResult();
         }
     }
 }

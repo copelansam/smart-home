@@ -5,7 +5,7 @@ import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devices.DeviceDTO;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.service.SmartDeviceService;
 import org.springframework.http.HttpStatus;
@@ -57,9 +57,16 @@ public class SmartDeviceController {
 
     @PostMapping("/create-device")
     @CrossOrigin(origins = "*")
-    public void createNewDevice(@RequestBody DeviceCreationRequest request){
+    public ResponseEntity<CallResult> createNewDevice(@RequestBody DeviceCreationRequest request){
 
-        deviceService.createDevice(request.name, request.location, request.deviceType);
+        CallResult result = deviceService.createDevice(request.name, request.location, request.deviceType);
+
+        if (!result.getIsSuccess()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, result.getMessage());
+        }
+        else{
+            return ResponseEntity.ok(result);
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -72,9 +79,9 @@ public class SmartDeviceController {
 
     @PutMapping("/{id}/state")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<TransitionResult> executeAction(@PathVariable("id") UUID id,
-                                                          @RequestParam(required = true) String transition){
-        TransitionResult result = deviceService.executeAction(id, transition);
+    public ResponseEntity<CallResult> executeAction(@PathVariable("id") UUID id,
+                                                    @RequestParam(required = true) String transition){
+        CallResult result = deviceService.executeAction(id, transition);
 
         if (!result.getIsSuccess()){
 

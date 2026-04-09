@@ -4,7 +4,7 @@ import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devices.smartdoorlock.SmartDoorLock;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegistry;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.doorlocktransition.DoorLockAction;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.doorlocktransition.DoorTransition;
 
@@ -25,18 +25,18 @@ public class DoorLockedState extends StateBase<SmartDoorLock> {
     }
 
     @Override
-    public TransitionResult execute(String transition, SmartDoorLock device){
+    public CallResult execute(String transition, SmartDoorLock device){
 
         DoorLockAction action = DoorLockAction.getActionFromString(transition);
 
         switch (action){
             case UNLOCK:
                 device.setState(new DoorUnlockedState());
-                return new TransitionResult("Success", true,
-                        new DeviceLog(device.getUuid(),"State changed from Door Locked-> Door Unlocked"));
+                return new CallResult("Success", true,
+                        new DeviceLog(device.getUuid(),"State changed from Door Locked to Door Unlocked"));
 
             default:
-                return new TransitionResult();
+                return new CallResult();
         }
     }
 }

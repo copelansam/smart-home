@@ -2,7 +2,7 @@ package com.example.smarthome.domain.smartdevices.devices;
 
 import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 
 import java.util.List;
 import java.util.Map;
@@ -28,7 +28,7 @@ public interface ISmartDevice {
 
     UUID getUuid();
 
-    TransitionResult execute(String transition);
+    CallResult execute(String transition);
 
     void setIsOn(boolean isOn);
 }

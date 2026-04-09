@@ -3,7 +3,7 @@ package com.example.smarthome.domain.smartdevices.devices.smartlight;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.lightstates.LightOffState;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -68,7 +68,7 @@ public class SmartLight extends SmartDeviceBase {
         return extraProperties;
     }
 
-    public TransitionResult execute(String transition){
+    public CallResult execute(String transition){
         return this.state.execute(transition, this);
     }
 }

@@ -4,7 +4,7 @@ import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.service.SmartDeviceService;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -44,7 +44,7 @@ public class ThermostatAutomationTask {
             // If it is hotter than what the user wants, start cooling
             if (difference >= 1){
                 if (!thermostat.getState().contains("Cooling")){
-                    TransitionResult result = thermostat.execute("START_COOLING");
+                    CallResult result = thermostat.execute("START_COOLING");
 
                     if (result != null && result.getLog() != null) {
                         logRepository.save(result.getLog());
@@ -59,7 +59,7 @@ public class ThermostatAutomationTask {
             }
             else if (difference <= -1){ // If it is colder that the user wants, start heating
                 if (!thermostat.getState().contains("Heating")){
-                    TransitionResult result = thermostat.execute("START_HEATING");
+                    CallResult result = thermostat.execute("START_HEATING");
 
                     if (result != null && result.getLog() != null) {
                         logRepository.save(result.getLog());
@@ -75,7 +75,7 @@ public class ThermostatAutomationTask {
             }
             else if (ambientTemperature <= desiredTemperature   // Checks if the cooling thermostat overshot it and
                     && thermostat.getState().contains("Cooling")){ // goes to idle. Possible if the user enters a decimal for temperatures
-                TransitionResult result = thermostat.execute("STOP_COOLING");
+                CallResult result = thermostat.execute("STOP_COOLING");
 
                 if (result != null && result.getLog() != null) {
                     logRepository.save(result.getLog());
@@ -84,7 +84,7 @@ public class ThermostatAutomationTask {
             }
             else if (ambientTemperature >= desiredTemperature  // Checks if teh heating thermostat overshot it and goes
                     && thermostat.getState().contains("Heating")){ // to idle. Possible if the user enters a decimal for temperatures
-                TransitionResult result = thermostat.execute("STOP_HEATING");
+                CallResult result = thermostat.execute("STOP_HEATING");
 
                 if (result != null && result.getLog() != null) {
                     logRepository.save(result.getLog());
