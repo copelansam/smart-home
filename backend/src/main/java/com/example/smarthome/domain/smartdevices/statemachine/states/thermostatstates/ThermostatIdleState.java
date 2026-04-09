@@ -45,7 +45,7 @@ public class ThermostatIdleState extends StateBase<SmartThermostat> {
                 return new TransitionResult("The ambient temperature is greater than the desired temperature. Thermostat begins cooling", true);
 
             case START_HEATING:
-                device.setState(new ThermostatCoolingState());
+                device.setState(new ThermostatHeatingState());
                 device.setIsOn(true);
                 return new TransitionResult("The ambient temperature is lower than the desired temperature. Thermostat begins heating",true);
 

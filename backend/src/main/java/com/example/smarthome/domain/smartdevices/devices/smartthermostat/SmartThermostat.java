@@ -53,4 +53,5 @@ public class SmartThermostat extends SmartDeviceBase {
     public void execute(String transition) {
         this.state.execute(transition, this);
     }
+
 }

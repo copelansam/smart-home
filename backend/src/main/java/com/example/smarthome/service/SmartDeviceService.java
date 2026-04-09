@@ -7,7 +7,9 @@ import com.example.smarthome.domain.smartdevices.devices.DeviceDTO;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
+import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
 import com.example.smarthome.repository.ISmartDeviceRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -90,6 +92,18 @@ public class SmartDeviceService {
     public void executeAction(UUID uuid, String transition){
         ISmartDevice device = repo.getReferenceById(uuid);
         device.execute(transition);
+        repo.save((SmartDeviceBase) device);
+    }
+
+    public List<ISmartDevice> getAllThermostats(){
+
+        List<ISmartDevice> thermostats = (queryBuilder.buildQuery(DeviceType.THERMOSTAT, null, null)).getItems();
+
+        return thermostats;
+    }
+
+    @Transactional
+    public void saveDeviceUpdate(ISmartDevice device){
         repo.save((SmartDeviceBase) device);
     }
 }

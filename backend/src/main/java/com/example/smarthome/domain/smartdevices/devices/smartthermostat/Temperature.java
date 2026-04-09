@@ -5,7 +5,7 @@ import jakarta.persistence.Transient;
 import java.util.Random;
 
 // This class represents temperatures in Fahrenheit
-public class Temperature {
+public class Temperature{
 
     private double temperature;
 
@@ -22,5 +22,9 @@ public class Temperature {
 
     public double getTemperature() {
         return temperature;
+    }
+
+    public void updateTemperature(double amount){
+        this.temperature += amount;
     }
 }
