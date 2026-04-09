@@ -1,8 +1,10 @@
 package com.example.smarthome.simulation;
 
+import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
+import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.service.SmartDeviceService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -13,10 +15,12 @@ import java.util.List;
 public class ThermostatAutomationTask {
 
     private SmartDeviceService deviceService;
+    private final DeviceLogRepository logRepository;
 
-    ThermostatAutomationTask(SmartDeviceService deviceService){
+    ThermostatAutomationTask(SmartDeviceService deviceService, DeviceLogRepository logRepository){
 
         this.deviceService = deviceService;
+        this.logRepository = logRepository;
     }
 
     @Scheduled(fixedRate = 1000)
@@ -33,16 +37,32 @@ public class ThermostatAutomationTask {
 
             // If it is hotter than what the user wants, start cooling
             if (ambientTemperature - desiredTemperature > 1){
-                thermostat.execute("START_COOLING");
+                if (!thermostat.getState().contains("Cooling")){
+                    thermostat.execute("START_COOLING");
+                }
                 thermostat.getAmbientTemperature().updateTemperature(-1);
+
+                logRepository.save(new DeviceLog(
+                        thermostat.getUuid(),
+                        "The temperature in " + thermostat.getLocation() + " has been adjusted to "
+                                + (ambientTemperature - 1)));
             }
             else if (ambientTemperature - desiredTemperature < -1){ // If it is colder that the user wants, start heating
-                thermostat.execute("START_HEATING");
+                if (!thermostat.getState().contains("Heating")){
+                    thermostat.execute("START_HEATING");
+                    }
+
                 thermostat.getAmbientTemperature().updateTemperature(1);
+
+                logRepository.save(new DeviceLog(
+                        thermostat.getUuid(),
+                        "The temperature in " + thermostat.getLocation() + " has been adjusted to "
+                                + (ambientTemperature + 1)));
             }
             else if (ambientTemperature <= desiredTemperature   // Checks if the cooling thermostat overshot it and
                     && thermostat.getState().contains("Cooling")){ // goes to idle. Possible if the user enters a decimal for temperatures
                 thermostat.execute("STOP_COOLING");
+
             }
             else if (ambientTemperature >= desiredTemperature  // Checks if teh heating thermostat overshot it and goes
                     && thermostat.getState().contains("Heating")){ // to idle. Possible if the user enters a decimal for temperatures

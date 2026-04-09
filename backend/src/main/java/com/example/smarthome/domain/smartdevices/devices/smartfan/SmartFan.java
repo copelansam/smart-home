@@ -3,6 +3,7 @@ package com.example.smarthome.domain.smartdevices.devices.smartfan;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.fanstates.FanOffState;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
 import jakarta.persistence.*;
 
 import java.util.HashMap;
@@ -39,7 +40,7 @@ public class SmartFan extends SmartDeviceBase {
         return extraProperties;
     }
 
-    public void execute(String transition){
-        state.execute(transition, this);
+    public TransitionResult execute(String transition){
+        return state.execute(transition, this);
     }
 }

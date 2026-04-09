@@ -8,8 +8,10 @@ import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
 import com.example.smarthome.repository.ISmartDeviceRepository;
 import jakarta.transaction.Transactional;
+import org.hibernate.engine.transaction.internal.TransactionImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -89,10 +91,15 @@ public class SmartDeviceService {
         return Collections.unmodifiableList(deviceDtos);
     }
 
-    public void executeAction(UUID uuid, String transition){
+    public TransitionResult executeAction(UUID uuid, String transition){
         ISmartDevice device = repo.getReferenceById(uuid);
-        device.execute(transition);
-        repo.save((SmartDeviceBase) device);
+
+        TransitionResult result = device.execute(transition);
+
+        if (result.getIsSuccess()){
+            repo.save((SmartDeviceBase) device);
+        }
+        return result;
     }
 
     public List<ISmartDevice> getAllThermostats(){

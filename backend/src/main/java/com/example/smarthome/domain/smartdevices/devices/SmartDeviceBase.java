@@ -3,6 +3,7 @@ package com.example.smarthome.domain.smartdevices.devices;
 
 import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
 import com.example.smarthome.repository.StateConverter;
 import jakarta.persistence.*;
 
@@ -65,7 +66,7 @@ public abstract class SmartDeviceBase implements ISmartDevice{
         this.availableActions = state.provideAvailableTransitions();
     }
 
-    public abstract void execute(String transition);
+    public abstract TransitionResult execute(String transition);
 
     public void setIsOn(boolean isOn){
         this.isOn = isOn;

@@ -1,5 +1,6 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states.thermostatstates;
 
+import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegistry;
@@ -37,17 +38,20 @@ public class ThermostatIdleState extends StateBase<SmartThermostat> {
 
             case POWER_THERMOSTAT_OFF:
                 device.setState(new ThermostatOffState());
-                return new TransitionResult("Thermostat has been turned off",true);
+                return new TransitionResult("Thermostat has been turned off",true,
+                        new DeviceLog(device.getUuid(), "State changed from Thermostat Idle -> Thermostat Off"));
 
             case START_COOLING:
                 device.setState(new ThermostatCoolingState());
                 device.setIsOn(true);
-                return new TransitionResult("The ambient temperature is greater than the desired temperature. Thermostat begins cooling", true);
+                return new TransitionResult("The ambient temperature is greater than the desired temperature. Thermostat begins cooling", true,
+                        new DeviceLog(device.getUuid(), "State changed from Thermostat Idle -> Thermostat Cooling"));
 
             case START_HEATING:
                 device.setState(new ThermostatHeatingState());
                 device.setIsOn(true);
-                return new TransitionResult("The ambient temperature is lower than the desired temperature. Thermostat begins heating",true);
+                return new TransitionResult("The ambient temperature is lower than the desired temperature. Thermostat begins heating",true,
+                        new DeviceLog(device.getUuid(), "State changed from Thermostat Idle -> Thermostat Heating"));
 
             default:
                 return new TransitionResult();

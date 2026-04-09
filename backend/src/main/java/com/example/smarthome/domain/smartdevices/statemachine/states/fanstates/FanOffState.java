@@ -1,5 +1,6 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states.fanstates;
 
+import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devices.smartfan.SmartFan;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegistry;
@@ -33,7 +34,8 @@ public class FanOffState extends StateBase<SmartFan> {
             case TURN_FAN_ON:
                 device.setState(new FanOnState());
                 device.setIsOn(true);
-                return new TransitionResult("Fan is now on", true);
+                return new TransitionResult("Fan is now on", true,
+                        new DeviceLog(device.getUuid(), "State changed from Light Off -> Light On"));
 
             default:
                 return new TransitionResult();

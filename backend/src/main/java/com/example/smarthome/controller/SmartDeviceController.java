@@ -1,12 +1,17 @@
 package com.example.smarthome.controller;
 
 
+import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devices.DeviceDTO;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
+import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.service.SmartDeviceService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,9 +22,11 @@ import java.util.UUID;
 public class SmartDeviceController {
 
     private final SmartDeviceService deviceService;
+    private final DeviceLogRepository deviceLogRepository;
 
-    public SmartDeviceController(SmartDeviceService deviceService){
+    public SmartDeviceController(SmartDeviceService deviceService, DeviceLogRepository deviceLogRepository){
         this.deviceService = deviceService;
+        this.deviceLogRepository = deviceLogRepository;
     }
 
     @GetMapping
@@ -65,8 +72,23 @@ public class SmartDeviceController {
 
     @PutMapping("/{id}/state")
     @CrossOrigin(origins = "*")
-    public void executeAction(@PathVariable("id") UUID id,
-                              @RequestParam(required = true) String transition){
-        deviceService.executeAction(id, transition);
+    public ResponseEntity<TransitionResult> executeAction(@PathVariable("id") UUID id,
+                                                          @RequestParam(required = true) String transition){
+        TransitionResult result = deviceService.executeAction(id, transition);
+
+        if (!result.getIsSuccess()){
+
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, result.getMessage());
+        }
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/{id}/history")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<List<DeviceLog>> getDeviceLogs(@PathVariable("id") UUID uuid){
+
+        List<DeviceLog> logs = deviceLogRepository.findByDeviceIdOrderByTimestampDesc(uuid);
+        return ResponseEntity.ok(logs);
     }
 }

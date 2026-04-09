@@ -1,5 +1,6 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states.doorlockstates;
 
+import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devices.smartdoorlock.SmartDoorLock;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegistry;
@@ -24,14 +25,15 @@ public class DoorLockedState extends StateBase<SmartDoorLock> {
     }
 
     @Override
-    public TransitionResult execute(String transition, SmartDoorLock lock){
+    public TransitionResult execute(String transition, SmartDoorLock device){
 
         DoorLockAction action = DoorLockAction.getActionFromString(transition);
 
         switch (action){
             case UNLOCK:
-                lock.setState(new DoorUnlockedState());
-                return new TransitionResult("Success", true);
+                device.setState(new DoorUnlockedState());
+                return new TransitionResult("Success", true,
+                        new DeviceLog(device.getUuid(),"State changed from Door Locked-> Door Unlocked"));
 
             default:
                 return new TransitionResult();

@@ -3,6 +3,7 @@ package com.example.smarthome.domain.smartdevices.devices.smartthermostat;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.thermostatstates.ThermostatOffState;
+import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
 import jakarta.persistence.*;
 
 import java.util.HashMap;
@@ -50,8 +51,8 @@ public class SmartThermostat extends SmartDeviceBase {
     }
 
     @Override
-    public void execute(String transition) {
-        this.state.execute(transition, this);
+    public TransitionResult execute(String transition) {
+        return this.state.execute(transition, this);
     }
 
 }

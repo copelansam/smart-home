@@ -1,5 +1,6 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states.lightstates;
 
+import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devices.smartlight.SmartLight;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegistry;
@@ -32,7 +33,8 @@ public class LightOffState extends StateBase<SmartLight> {
             case TURN_LIGHT_ON:
                 device.setState(new LightOnState());
                 device.setIsOn(true);
-                return new TransitionResult("Light has been turned on", true);
+                return new TransitionResult("Light has been turned on", true,
+                        new DeviceLog(device.getUuid(), "State changed from Light Off -> Light On"));
 
             default:
                 return new TransitionResult();

@@ -1,5 +1,6 @@
 package com.example.smarthome.domain.smartdevices.statemachine.states.thermostatstates;
 
+import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateBase;
 import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegistry;
@@ -35,7 +36,8 @@ public class ThermostatOffState extends StateBase<SmartThermostat> {
 
             case POWER_THERMOSTAT_ON:
                 device.setState(new ThermostatIdleState());
-                return new TransitionResult("Thermostat has been set to idle. Awaiting further instruction",true);
+                return new TransitionResult("Thermostat has been set to idle. Awaiting further instruction",true,
+                        new DeviceLog(device.getUuid(), "State changed from Thermostat Off -> Thermostat Idle"));
 
             default:
                 return new TransitionResult();
