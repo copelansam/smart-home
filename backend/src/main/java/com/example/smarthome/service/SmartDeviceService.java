@@ -7,11 +7,10 @@ import com.example.smarthome.domain.smartdevices.devices.DeviceDTO;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
-import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.TransitionResult;
+import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.repository.ISmartDeviceRepository;
 import jakarta.transaction.Transactional;
-import org.hibernate.engine.transaction.internal.TransactionImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -23,11 +22,16 @@ public class SmartDeviceService {
     private final ISmartDeviceRepository repo;
     private final ISmartDeviceFactory deviceFactory;
     private final QueryBuilder queryBuilder;
+    private final DeviceLogRepository deviceLogRepository;
 
-    public SmartDeviceService(ISmartDeviceRepository repo, ISmartDeviceFactory deviceFactory, QueryBuilder queryBuilder){
+    public SmartDeviceService(ISmartDeviceRepository repo,
+                              ISmartDeviceFactory deviceFactory,
+                              QueryBuilder queryBuilder,
+                              DeviceLogRepository deviceLogRepository){
         this.repo = repo;
         this.deviceFactory = deviceFactory;
         this.queryBuilder = queryBuilder;
+        this.deviceLogRepository = deviceLogRepository;
     }
 
     /**
@@ -98,6 +102,7 @@ public class SmartDeviceService {
 
         if (result.getIsSuccess()){
             repo.save((SmartDeviceBase) device);
+            deviceLogRepository.save(result.getLog());
         }
         return result;
     }
