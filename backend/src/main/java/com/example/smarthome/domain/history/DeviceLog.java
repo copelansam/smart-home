@@ -18,14 +18,20 @@ public class DeviceLog {
     private Long id;
 
     private UUID deviceId;
+    private String event;
     private String message;
     private LocalDateTime timestamp;
 
-    public DeviceLog(UUID deviceId, String message){
+    public DeviceLog(UUID deviceId, String event, String message){
 
         this.deviceId = deviceId;
         this.message = message;
         this.timestamp = LocalDateTime.now();
+    }
+
+    public DeviceLog(UUID deviceId, String message){
+        this.deviceId = deviceId;
+        this.message = message;
     }
 
     public Long getId(){
@@ -41,5 +47,8 @@ public class DeviceLog {
     }
     public LocalDateTime getTimestamp(){
         return this.timestamp;
+    }
+    public String getEvent(){
+        return  this.event;
     }
 }

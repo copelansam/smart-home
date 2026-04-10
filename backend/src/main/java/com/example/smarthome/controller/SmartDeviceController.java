@@ -47,12 +47,7 @@ public class SmartDeviceController {
     public ResponseEntity<ISmartDevice> getDeviceById(
             @PathVariable("id")UUID id) {
         ISmartDevice device = deviceService.getDeviceById(id);
-
-        if (device != null) {
-            return ResponseEntity.ok(device);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(device);
     }
 
     @PostMapping("/create-device")

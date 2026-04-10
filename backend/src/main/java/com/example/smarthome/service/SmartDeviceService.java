@@ -9,6 +9,7 @@ import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
+import com.example.smarthome.exception.DeviceNotFoundException;
 import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.repository.ISmartDeviceRepository;
 import jakarta.transaction.Transactional;
@@ -78,7 +79,14 @@ public class SmartDeviceService {
 
     public ISmartDevice getDeviceById(UUID uuid){
 
-        return repo.findById(uuid).orElse(null);
+        ISmartDevice device = repo.findById(uuid).orElse(null);
+
+        if (device == null){
+            throw new DeviceNotFoundException("Device with this ID was not found.");
+        }
+        else {
+            return device;
+        }
     }
 
 
