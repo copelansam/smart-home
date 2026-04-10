@@ -40,6 +40,7 @@ public class ThermostatAutomationTask {
             double ambientTemperature = thermostat.getAmbientTemperature().getTemperature();
             double desiredTemperature = thermostat.getDesiredTemperature().getTemperature();
             double difference = ambientTemperature - desiredTemperature;
+            boolean hasChanged = false;
 
             // If it is hotter than what the user wants, start cooling
             if (difference >= 1){
@@ -51,6 +52,7 @@ public class ThermostatAutomationTask {
                     }
                 }
                 thermostat.getAmbientTemperature().updateTemperature(-1);
+                hasChanged = true;
 
                 logRepository.save(new DeviceLog(
                         thermostat.getUuid(),
@@ -67,6 +69,7 @@ public class ThermostatAutomationTask {
                 }
 
                 thermostat.getAmbientTemperature().updateTemperature(1);
+                hasChanged = true;
 
                 logRepository.save(new DeviceLog(
                         thermostat.getUuid(),
@@ -76,6 +79,7 @@ public class ThermostatAutomationTask {
             else if (ambientTemperature <= desiredTemperature   // Checks if the cooling thermostat overshot it and
                     && thermostat.getState().contains("Cooling")){ // goes to idle. Possible if the user enters a decimal for temperatures
                 CallResult result = thermostat.execute("STOP_COOLING");
+                hasChanged = true;
 
                 if (result != null && result.getLog() != null) {
                     logRepository.save(result.getLog());
@@ -85,12 +89,17 @@ public class ThermostatAutomationTask {
             else if (ambientTemperature >= desiredTemperature  // Checks if teh heating thermostat overshot it and goes
                     && thermostat.getState().contains("Heating")){ // to idle. Possible if the user enters a decimal for temperatures
                 CallResult result = thermostat.execute("STOP_HEATING");
+                hasChanged = true;
 
                 if (result != null && result.getLog() != null) {
                     logRepository.save(result.getLog());
                 }
             }
-            deviceService.saveDeviceUpdate(thermostat);
+
+            if (hasChanged) {
+
+                deviceService.saveDeviceUpdate(thermostat);
+            }
         }
     }
 }
