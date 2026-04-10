@@ -29,6 +29,8 @@ public class GlobalExceptionHandler {
 
         logger.error("Internal Error Detected: " + exception.getMessage());
 
+        problem.setInstance(null);
+
         return problem;
     }
 
@@ -44,6 +46,8 @@ public class GlobalExceptionHandler {
 
         problem.setTitle("Unexpected Error");
         problem.setType(URI.create("https://example.com/problems/general-problems"));
+
+        problem.setInstance(null);
 
         return problem;
 
