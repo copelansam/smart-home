@@ -43,4 +43,11 @@ public class SmartFan extends SmartDeviceBase {
     public CallResult execute(String transition){
         return state.execute(transition, this);
     }
+
+    @Override
+    public void factoryReset(){
+        this.state = new FanOffState();
+        this.isOn = false;
+        this.speed = FanSpeed.OFF;
+    }
 }

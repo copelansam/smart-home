@@ -31,4 +31,6 @@ public interface ISmartDevice {
     CallResult execute(String transition);
 
     void setIsOn(boolean isOn);
+
+    void factoryReset();
 }

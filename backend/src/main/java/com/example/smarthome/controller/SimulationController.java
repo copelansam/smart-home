@@ -45,4 +45,13 @@ public class SimulationController {
             return ResponseEntity.ok(result);
         }
     }
+
+    @PostMapping("/reset")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<String> factoryResetAllDevices(){
+
+        int devicesReset = deviceService.resetAllDevices();
+        return ResponseEntity.ok("All " + devicesReset + " device(s) successfully reset to their factory conditions");
+
+    }
 }

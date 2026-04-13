@@ -53,6 +53,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problem;
     }
 
+    @ExceptionHandler(NoDevicesExcpetion.class)
+    public ProblemDetail handleNoDevicesExceptions(NoDevicesExcpetion excpetion){
+
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.CONFLICT,
+                "There are no devices in the smart home. Action cannot be performed"
+        );
+
+        problem.setType(URI.create("https://example.com/problems/no-devices"));
+        problem.setTitle("No Devices in Smart Home");
+
+        logger.error("Internal Error Detected: " + excpetion.getMessage());
+
+        problem.setInstance(null);
+
+        return problem;
+    }
+
+
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGeneralExceptions(Exception exception){
 
@@ -71,6 +90,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problem;
 
     }
-
 
 }

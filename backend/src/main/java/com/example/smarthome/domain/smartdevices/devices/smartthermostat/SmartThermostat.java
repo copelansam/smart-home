@@ -59,4 +59,12 @@ public class SmartThermostat extends SmartDeviceBase {
         return this.state.execute(transition, this);
     }
 
+    @Override
+    public void factoryReset(){
+        this.state = new ThermostatOffState();
+        this.isOn = false;
+        this.ambientTemperature = new Temperature();
+        this.desiredTemperature = new Temperature();
+    }
+
 }

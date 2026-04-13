@@ -71,4 +71,12 @@ public class SmartLight extends SmartDeviceBase {
     public CallResult execute(String transition){
         return this.state.execute(transition, this);
     }
+
+    @Override
+    public void factoryReset(){
+        this.isOn = false;
+        this.state = new LightOffState();
+        this.color = new RGB(255,255,255);
+        this.brightnessPercentage = 100;
+    }
 }

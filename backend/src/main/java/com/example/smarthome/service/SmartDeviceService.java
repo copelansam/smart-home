@@ -11,6 +11,7 @@ import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import com.example.smarthome.exception.DeviceNotFoundException;
+import com.example.smarthome.exception.NoDevicesExcpetion;
 import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.repository.ISmartDeviceRepository;
 import jakarta.transaction.Transactional;
@@ -149,11 +150,31 @@ public class SmartDeviceService {
         }
         else{
             ISmartDevice thermostat = thermostats.get(0);
-            ((SmartThermostat) thermostat).updateAmbientTemperature(temperature);
+            ((SmartThermostat) thermostat).setAmbientTemperature(temperature);
             deviceLogRepository.save(new DeviceLog(thermostat.getUuid(), "Ambient Temperature in: " + location + " was updated to: " + temperature));
             repo.save((SmartDeviceBase) thermostat);
             return "Ambient Temperature in: " + location + " was updated to: " + temperature;
         }
+    }
 
+    @Transactional
+    public int resetAllDevices(){
+
+        List<ISmartDevice> devices = getDevices(null,null,null);
+
+        if (devices.isEmpty()){
+            throw new NoDevicesExcpetion("There are no devices in the smart home, therefore I cannot reset them");
+        }
+
+        for(ISmartDevice device : devices){
+            device.factoryReset();
+            repo.save((SmartDeviceBase) device);
+
+            deviceLogRepository.save(
+                    new DeviceLog(
+                            device.getUuid(),
+                    "Device reset to factory settings"));
+        }
+        return devices.size();
     }
 }
