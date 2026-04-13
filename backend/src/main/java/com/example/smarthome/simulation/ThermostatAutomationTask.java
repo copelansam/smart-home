@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 public class ThermostatAutomationTask {
 
-    private SmartDeviceService deviceService;
+    private final SmartDeviceService deviceService;
     private final DeviceLogRepository logRepository;
 
     ThermostatAutomationTask(SmartDeviceService deviceService, DeviceLogRepository logRepository){
@@ -24,7 +24,6 @@ public class ThermostatAutomationTask {
         this.logRepository = logRepository;
     }
 
-    @Scheduled(fixedRate = 1000)
     public void simulateTemperatureChange(){
 
         List<ISmartDevice> devices = deviceService.getDevices(DeviceType.THERMOSTAT,null,null);

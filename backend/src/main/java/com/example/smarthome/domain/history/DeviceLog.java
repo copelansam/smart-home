@@ -32,6 +32,7 @@ public class DeviceLog {
     public DeviceLog(UUID deviceId, String message){
         this.deviceId = deviceId;
         this.message = message;
+        this.timestamp = LocalDateTime.now();
     }
 
     public Long getId(){
