@@ -8,6 +8,7 @@ import com.example.smarthome.domain.smartdevices.devices.DeviceDTO;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
+import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import com.example.smarthome.exception.DeviceNotFoundException;
 import com.example.smarthome.repository.DeviceLogRepository;
@@ -134,5 +135,25 @@ public class SmartDeviceService {
     @Transactional
     public void saveDeviceUpdate(ISmartDevice device){
         repo.save((SmartDeviceBase) device);
+    }
+
+    @Transactional
+    public String updateLocationAmbientTemperature(String location, double temperature){
+
+        IDeviceQuery query = queryBuilder.buildQuery(DeviceType.THERMOSTAT, location, null);
+
+        List<ISmartDevice> thermostats = query.getItems();
+
+        if (thermostats.isEmpty()){
+            throw new DeviceNotFoundException("Thermostat in " + location + " not found. Either it does not exist or it was deleted.");
+        }
+        else{
+            ISmartDevice thermostat = thermostats.get(0);
+            ((SmartThermostat) thermostat).updateAmbientTemperature(temperature);
+            deviceLogRepository.save(new DeviceLog(thermostat.getUuid(), "Ambient Temperature in: " + location + " was updated to: " + temperature));
+            repo.save((SmartDeviceBase) thermostat);
+            return "Ambient Temperature in: " + location + " was updated to: " + temperature;
+        }
+
     }
 }

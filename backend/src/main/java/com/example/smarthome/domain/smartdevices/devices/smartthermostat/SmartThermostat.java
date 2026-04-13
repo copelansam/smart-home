@@ -42,6 +42,10 @@ public class SmartThermostat extends SmartDeviceBase {
         return this.ambientTemperature;
     }
 
+    public void setAmbientTemperature(double temperature){
+        this.ambientTemperature = new Temperature(temperature);
+    }
+
     public Map<String,Object> getExtraProperties(){
 
         Map<String,Object> extraProperties = new HashMap<>();

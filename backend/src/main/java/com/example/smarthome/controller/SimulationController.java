@@ -1,6 +1,7 @@
 package com.example.smarthome.controller;
 
 
+import com.example.smarthome.service.SmartDeviceService;
 import com.example.smarthome.simulation.SimulationSettings;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 public class SimulationController {
 
     private final SimulationSettings simulationSettings;
+    private final SmartDeviceService deviceService;
 
-    public SimulationController(SimulationSettings simulationSettings){
+    public SimulationController(SimulationSettings simulationSettings, SmartDeviceService deviceService){
         this.simulationSettings = simulationSettings;
+        this.deviceService = deviceService;
     }
 
     @PostMapping("/speed")
@@ -26,6 +29,20 @@ public class SimulationController {
             simulationSettings.setTimeMultiplier(timeMultiplier);
             return ResponseEntity.ok("Simulation speed updated to: " + timeMultiplier + "x");
         }
+    }
 
+    @PostMapping("/location/temperature")
+    @CrossOrigin(origins = "*")
+    public ResponseEntity<String> updateAmbientTemperatureByLocation(
+            @RequestParam(required = true) String location,
+            @RequestParam(required = true) double ambientTemperature){
+
+        if (location.trim().isEmpty()){
+            return ResponseEntity.badRequest().body("Please enter a location");
+        }
+        else{
+            String result = deviceService.updateLocationAmbientTemperature(location, ambientTemperature);
+            return ResponseEntity.ok(result);
+        }
     }
 }
