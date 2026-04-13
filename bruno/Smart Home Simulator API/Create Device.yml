@@ -1,0 +1,15 @@
+info:
+  name: Create Device
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: http://localhost:8080/api/devices/create-device
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

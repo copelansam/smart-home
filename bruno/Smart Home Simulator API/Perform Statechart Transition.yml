@@ -1,0 +1,15 @@
+info:
+  name: Perform Statechart Transition
+  type: http
+  seq: 5
+
+http:
+  method: PUT
+  url: http://localhost:8080/api/devices/{id}/state
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
