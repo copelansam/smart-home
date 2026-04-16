@@ -17,7 +17,7 @@
       <div class="device-info">
         <h3>{{ device.name }}</h3>
         <p class="location">{{ device.location }}</p>
-        <span class="status-badge">{{ device.state.name }}</span>
+        <span class="status-badge">{{ device.state }}</span>
       </div>
 
       <div class="device-attributes">
@@ -33,6 +33,8 @@
         <p>Current Temperature: {{ device.attributes.ambientTemperature }} | Desired Temperature: {{ device.attributes.desiredTemperature }}</p>
         }
       </div>
+
+      <button (click) = "removeDevice(device.uuid)" class = "delete-button" >&times;</button>
 
       <!-- 2. Re-adding the action buttons loop -->
       <div class="device-actions">

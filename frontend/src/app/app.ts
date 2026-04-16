@@ -44,4 +44,14 @@ export class App implements OnInit{
       error: (err) => console.error('Action failed', err)
       })
     }
+
+  removeDevice(uuid: string){
+    this.deviceService.deleteDevice(uuid).subscribe({
+      next: () => {
+        console.log(`Device Deleted!`);
+        this.deviceService.fetchDevices();
+        },
+      error: (err) => console.error(`Action failed`, err)
+    })
+}
 }
