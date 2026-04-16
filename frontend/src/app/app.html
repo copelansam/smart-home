@@ -1,40 +1,54 @@
-<div style="padding: 20px; font-family: sans-serif;">
-  <h1>Smart Home Dashboard</h1>
+<main class="dashboard-container">
+  <!-- 1. Header Section -->
+  <header class="dashboard-header">
+    <h1>{{ title() }}</h1>
+    <p>Connected to: http://localhost:8080</p>
+    <button (click)="deviceService.fetchDevices()" class="refresh-btn">
+      Refresh Devices
+    </button>
+  </header>
 
-  <section>
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-      <h3>Connected Devices</h3>
-      <button (click)="refreshList()" style="padding: 8px 16px; cursor: pointer;">
-        Refresh List
-      </button>
-    </div>
+  <!-- 2. Device Grid Section -->
+  <div class="device-grid">
+    @for (device of deviceService.devices(); track device.uuid) {
+    <div class="device-card" [class.on]="device.isOn">
+      <pre>{{ device.attributes | json }}</pre>
 
-    <table style="width: 100%; border-collapse: collapse; text-align: left;">
-      <thead>
-      <tr style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
-        <th style="padding: 12px; border: 1px solid #dee2e6;">Location</th>
-        <th style="padding: 12px; border: 1px solid #dee2e6;">Name</th>
-        <th style="padding: 12px; border: 1px solid #dee2e6;">Type</th>
-        <th style="padding: 12px; border: 1px solid #dee2e6;">State</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let device of devices" style="border-bottom: 1px solid #eee;">
-        <td style="padding: 10px; border: 1px solid #dee2e6;">{{ device.location }}</td>
-        <td style="padding: 10px; border: 1px solid #dee2e6;">{{ device.name }}</td>
-        <td style="padding: 10px; border: 1px solid #dee2e6;">{{ device.type }}</td>
-        <td style="padding: 10px; border: 1px solid #dee2e6;">
-            <span [style.color]="device.state === 'ON' ? 'green' : 'red'">
-              {{ device.state || 'OFF' }}
-            </span>
-        </td>
-      </tr>
-      <tr *ngIf="devices.length === 0">
-        <td colspan="4" style="text-align: center; padding: 20px; color: #666;">
-          No devices found. Ensure your backend is running.
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </section>
-</div>
+      <div class="device-info">
+        <h3>{{ device.name }}</h3>
+        <p class="location">{{ device.location }}</p>
+        <span class="status-badge">{{ device.state.name }}</span>
+      </div>
+
+      <div class="device-attributes">
+        <!-- 1. Added @ symbols and fixed "isLight" typo -->
+        @if (isLight(device)) {
+        <p>Brightness Percentage: {{ device.attributes.brightnessPercentage }}%</p>
+        <p>Color: R:{{ device.attributes.color[0] }} | G:{{ device.attributes.color[1] }} | B:{{ device.attributes.color[2] }}</p>
+        }
+        @else if (isFan(device)) {
+        <p>Speed: {{ device.attributes.speed }}</p>
+        }
+        @else if (isThermostat(device)) {
+        <p>Current Temperature: {{ device.attributes.ambientTemperature }} | Desired Temperature: {{ device.attributes.desiredTemperature }}</p>
+        }
+      </div>
+
+      <!-- 2. Re-adding the action buttons loop -->
+      <div class="device-actions">
+        @for (t of device.state.availableTransitions; track t.action) {
+        <button (click)="handleAction(device.uuid, t.action)">
+          {{ t.action }}
+        </button>
+        }
+      </div>
+
+    </div> <!-- End device-card -->
+    } <!-- End @for loop -->
+  </div>
+
+  <!-- 3. Footer / Status Bar -->
+  <footer class="dashboard-footer">
+    <p>System Status: Online</p>
+  </footer>
+</main>

@@ -13,7 +13,7 @@ public class DeviceDTO {
     public UUID uuid;
     public String name;
     public String location;
-    public String deviceType;
+    public DeviceType deviceType;
     public boolean isOn;
     public String state;
     public List<ITransition<?>> availableActions;
@@ -26,7 +26,7 @@ public class DeviceDTO {
         dto.uuid = device.getUuid();
         dto.name = device.getName();
         dto.location = device.getLocation();
-        dto.deviceType = device.getDeviceType().getDeviceTypeName();
+        dto.deviceType = device.getDeviceType();
         dto.isOn = device.getIsOn();
         dto.state = device.getState();
         dto.availableActions = device.getAvailableTransitions();

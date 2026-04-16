@@ -6,6 +6,9 @@ info:
 http:
   method: GET
   url: http://localhost:8080/api/devices
+  body:
+    type: json
+    data: ""
   auth: inherit
 
 settings:

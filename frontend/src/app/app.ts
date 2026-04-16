@@ -1,30 +1,47 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { DeviceService } from './services/device.service';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { DeviceService } from './device';
+import { SmartDevice, SmartFan, SmartThermostat, SmartLight, SmartLock } from './device.model';
+import { CommonModule, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule], // Removed FormsModule since we have no inputs now
+  imports: [RouterOutlet, JsonPipe],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class AppComponent implements OnInit {
-  devices: any[] = [];
+export class App implements OnInit{
+  protected readonly title = signal('frontend');
+  protected deviceService = inject(DeviceService);
 
-  constructor(private deviceService: DeviceService) {}
+  ngOnInit(){
+    this.deviceService.fetchDevices();
+    }
 
-  ngOnInit() {
-    this.refreshList();
-  }
+  isLight(device: SmartDevice): device is SmartLight{
+    return device.deviceType == 'LIGHT';
+    }
 
-  refreshList() {
-    this.deviceService.getDevices().subscribe({
-      next: (data: any[]) => {
-        this.devices = data;
-        console.log('Devices refreshed:', this.devices);
-      },
-      error: (err: any) => console.error('Failed to load devices', err)
-    });
-  }
+  isFan(device: SmartDevice): device is SmartFan{
+      return device.deviceType == 'FAN';
+      }
+
+  isDoorLock(device: SmartDevice): device is SmartLock{
+      return device.deviceType == 'DOORLOCK';
+      }
+
+  isThermostat(device: SmartDevice): device is SmartThermostat{
+      return device.deviceType == 'THERMOSTAT';
+      }
+
+  handleAction(uuid: string, action: string){
+    this.deviceService.executeAction(uuid, action).subscribe({
+      next: () => {
+        console.log(`Action: ${action} sent!`);
+        this.deviceService.fetchDevices();
+        },
+      error: (err) => console.error('Action failed', err)
+      })
+    }
 }

@@ -65,6 +65,7 @@ public class SmartLight extends SmartDeviceBase {
 
         Map<String, Object> extraProperties = new HashMap<>();
         extraProperties.put("color", this.color.getColor());
+        extraProperties.put("brightnessPercentage", this.brightnessPercentage);
         return extraProperties;
     }
 
