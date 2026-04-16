@@ -45,9 +45,34 @@
         }
       </div>
 
+      <button class = "history-btn" (click)="viewLogs(device)">View Device History</button>
+
     </div> <!-- End device-card -->
     } <!-- End @for loop -->
   </div>
+
+  @if(selectedDevice()){
+  <div class="log-overlay">
+    <div class="log-modal">
+      <div class ="log-header">
+        <h2>History: {{ selectedDevice()?.name }}</h2>
+        <button (click)="closeLogs()">&times</button>
+      </div>
+
+      <div class="log-content">
+        @for(log of deviceService.currentLogs(); track log.timestamp){
+          <div class="log-item">
+            <span class="log-time">{{ log.timestamp | date:'short }}</span>
+            <span class="log-msg">{{ log.message }}</span>
+          </div>
+        } @empty{
+          <p class="empty-logs">No history found for this device.</p>
+        }
+      </div>
+    </div>
+  </div>
+
+  }
 
   <!-- 3. Footer / Status Bar -->
   <footer class="dashboard-footer">

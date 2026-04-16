@@ -53,3 +53,15 @@ export interface SmartThermostat extends SmartDeviceBase{
   }
 
 export type SmartDevice = SmartFan | SmartLight | SmartLock | SmartThermostat;
+
+// Device Logs
+
+export interface DeviceLog{
+
+  logId: number;
+  deviceUuid: UUID;
+  message: string;
+  event: string;
+  timestamp: string | Date;
+
+  }

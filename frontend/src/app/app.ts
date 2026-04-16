@@ -2,12 +2,12 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DeviceService } from './device';
 import { SmartDevice, SmartFan, SmartThermostat, SmartLight, SmartLock } from './device.model';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { CommonModule, JsonPipe, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, JsonPipe],
+  imports: [ JsonPipe, DatePipe],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -54,4 +54,15 @@ export class App implements OnInit{
       error: (err) => console.error(`Action failed`, err)
     })
 }
+
+selectedDevice = signal< SmartDevice | null>(null);
+
+viewLogs(device: SmartDevice){
+  this.selectedDevice.set(device);
+  this.deviceService.fetchLogs(device.uuid);
+  }
+
+closeLogs(){
+  this.selectedDevice.set(null)
+  }
 }

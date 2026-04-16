@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { SmartDevice, DeviceType } from './device.model'
+import { SmartDevice, DeviceType, DeviceLog } from './device.model'
 
 interface DeviceDto{
   uuid: string;
@@ -21,6 +21,7 @@ export class DeviceService {
   private apiUrl = 'http://localhost:8080/api/devices';
 
   devices = signal<SmartDevice[]>([]);
+  currentLogs = signal<DeviceLog[]>([]);
 
   fetchDevices(){
     this.http.get<DeviceDto[]>(this.apiUrl).pipe(
@@ -49,5 +50,13 @@ executeAction(uuid: string, action: string){
 
 deleteDevice(uuid: string){
   return this.http.delete(`${this.apiUrl}/${uuid}`);
+  }
+
+fetchLogs(uuid: string){
+
+  this.http.get<DeviceLog[]>(`${this.apiUrl}/${uuid}/history`).subscribe({
+    next: (logs) => this.currentLogs.set(logs),
+    error: (err) => console.error(`Action failed`, err)
+    });
   }
 }
