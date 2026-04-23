@@ -19,7 +19,7 @@ dist/
 
 # Logs
 *.log
-.gz
+*.gz
 # Environment
 .env
 
