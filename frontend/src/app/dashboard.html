@@ -1,81 +1,63 @@
-<main class="dashboard-container">
-  <!-- 1. Header Section -->
-  <header class="dashboard-header">
-    <h1>{{ title() }}</h1>
-    <p>Connected to: http://localhost:8080</p>
-    <button (click)="deviceService.fetchDevices()" class="refresh-btn">
-      Refresh Devices
-    </button>
-  </header>
+<div class="grid">
+  <div class="col-12 md:col-6 lg:col-4" *ngFor="let device of deviceService.devices()">
+    <div class="card">
+      <h2>{{ device.name }}</h2>
+      <p> {{ device.deviceType }}</p>
+      <h5>Location: {{ device.location }}</h5>
+      <h5>Current State: {{ device.state }}</h5>
 
-  <!-- 2. Device Grid Section -->
-  <div class="device-grid">
-    @for (device of deviceService.devices(); track device.uuid) {
-    <div class="device-card" [class.on]="device.isOn">
-      <pre>{{ device.attributes | json }}</pre>
+      <small> {{ device.uuid }}</small>
 
-      <div class="device-info">
-        <h3>{{ device.name }}</h3>
-        <p class="location">{{ device.location }}</p>
-        <span class="status-badge">{{ device.state }}</span>
+      <div class="mt-3"></div>
+
+      <div class="extra-info">
+
+        @if(isFan(device)){
+        <span> Speed: {{ device.name }}</span>
+        }
+
+        @if(isThermostat(device)){
+        <span>Ambient Temp: {{device.name}} </span> <br>
+        <span>Desired Temp: {{device.name}} </span>
+        }
+
+        @if(isLight(device)){
+        <span>Brightness: <input type="range" id="slider" min="10" max="100" value="50"> </span> <br>
+        <span>Color: {{ device.name }}</span>
+        }
+
+        <br>
+        @if(isDoorLock(device)){
+        <button>Lock/Unlock</button>
+        }
+
       </div>
 
-      <div class="device-attributes">
-        <!-- 1. Added @ symbols and fixed "isLight" typo -->
-        @if (isLight(device)) {
-        <p>Brightness Percentage: {{ device.attributes.brightnessPercentage }}%</p>
-        <p>Color: R:{{ device.attributes.color[0] }} | G:{{ device.attributes.color[1] }} | B:{{ device.attributes.color[2] }}</p>
-        }
-        @else if (isFan(device)) {
-        <p>Speed: {{ device.attributes.speed }}</p>
-        }
-        @else if (isThermostat(device)) {
-        <p>Current Temperature: {{ device.attributes.ambientTemperature }} | Desired Temperature: {{ device.attributes.desiredTemperature }}</p>
-        }
-      </div>
-
-      <button (click) = "removeDevice(device.uuid)" class = "delete-button" >&times;</button>
-
-      <!-- 2. Re-adding the action buttons loop -->
-      <div class="device-actions">
-        @for (t of device.state.availableTransitions; track t.action) {
-        <button (click)="handleAction(device.uuid, t.action)">
-          {{ t.action }}
-        </button>
-        }
-      </div>
-
-      <button class = "history-btn" (click)="viewLogs(device)">View Device History</button>
-
-    </div> <!-- End device-card -->
-    } <!-- End @for loop -->
-  </div>
-
-  @if(selectedDevice()){
-  <div class="log-overlay">
-    <div class="log-modal">
-      <div class ="log-header">
-        <h2>History: {{ selectedDevice()?.name }}</h2>
-        <button (click)="closeLogs()">&times</button>
-      </div>
-
-      <div class="log-content">
-        @for(log of deviceService.currentLogs(); track log.timestamp){
-        <div class="log-item">
-          <span class="log-time">{{ log.timestamp | date:'short }}</span>
-          <span class="log-msg">{{ log.message }}</span>
-        </div>
-        } @empty{
-        <p class="empty-logs">No history found for this device.</p>
-        }
-      </div>
+      <button pButton label="View Device History" class="p-button-sm p-button-info" (click)="viewLogs(device)">View Device History</button>
+      <button pButton label="Delete Device" class="p-button-sm p-button-danger ml-2" (click)="removeDevice(device.uuid)">Delete Device</button>
     </div>
   </div>
+</div>
 
-  }
+@if(selectedDevice()){
+<div class="log-overlay">
+  <div class="log-modal">
+    <div class ="log-header">
+      <h2>History: {{ selectedDevice()?.name }}</h2>
+      <button (click)="closeLogs()">Close Device Logs</button>
+    </div>
 
-  <!-- 3. Footer / Status Bar -->
-  <footer class="dashboard-footer">
-    <p>System Status: Online</p>
-  </footer>
-</main>
+    <div class="log-content">
+      @for(log of deviceService.currentLogs(); track log.timestamp){
+      <div class="log-item">
+        <span class="log-time"> Date/Time: {{ log.timestamp | date:'short' }}: </span> <br>
+        <span class ="log-event"> Event type: {{ log.event }}</span> <br>
+        <span class="log-msg"> Message: {{ log.message }}</span>
+      </div>
+      } @empty{
+      <p class="empty-logs">No history found for this device.</p>
+      }
+    </div>
+  </div>
+</div>
+}

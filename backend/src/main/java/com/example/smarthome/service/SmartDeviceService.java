@@ -96,6 +96,7 @@ public class SmartDeviceService {
 
         if (repo.existsById(uuid)){
             repo.deleteById(uuid);
+            deviceLogRepository.save(new DeviceLog(uuid, "Device Deletion", "This device has been deleted."));
             return true;
         }
         else{

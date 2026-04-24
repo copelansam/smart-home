@@ -52,4 +52,13 @@ export class DashboardComponent implements OnInit {
   closeLogs() {
     this.selectedDevice.set(null);
   }
+
+  factoryResetDevices(){
+    this.deviceService.factoryResetAllDevices().subscribe({
+      next: () => {
+        console.log(`All devices have been reset to their factory settings`);
+        },
+      error: (err) => console.error(`Device Reset Failed`, err)
+    });
+  }
 }

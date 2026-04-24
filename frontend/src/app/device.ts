@@ -19,6 +19,7 @@ interface DeviceDto{
 export class DeviceService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/api/devices';
+  private simulationUrl = 'http://localhost:8080/api/simulation';
 
   devices = signal<SmartDevice[]>([]);
   currentLogs = signal<DeviceLog[]>([]);
@@ -59,4 +60,8 @@ fetchLogs(uuid: string){
     error: (err) => console.error(`Action failed`, err)
     });
   }
+
+  factoryResetAllDevices(){
+    return this.http.post(`${this.simulationUrl}/reset`, null, null);
+    }
 }
