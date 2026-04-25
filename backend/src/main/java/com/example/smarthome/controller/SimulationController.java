@@ -6,6 +6,8 @@ import com.example.smarthome.simulation.SimulationSettings;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/simulation")
 public class SimulationController {
@@ -48,10 +50,11 @@ public class SimulationController {
 
     @PostMapping("/reset")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<String> factoryResetAllDevices(){
+    public ResponseEntity<Map<String,String>> factoryResetAllDevices(){
 
         int devicesReset = deviceService.resetAllDevices();
-        return ResponseEntity.ok("All " + devicesReset + " device(s) successfully reset to their factory conditions");
+        return ResponseEntity.ok(Map.of(
+                "message","All " + devicesReset + " device(s) successfully reset to their factory conditions"));
 
     }
 }

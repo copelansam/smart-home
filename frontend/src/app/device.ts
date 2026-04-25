@@ -62,6 +62,6 @@ fetchLogs(uuid: string){
   }
 
   factoryResetAllDevices(){
-    return this.http.post(`${this.simulationUrl}/reset`, null, null);
+    return this.http.post(`${this.simulationUrl}/reset`, null);
     }
 }

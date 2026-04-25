@@ -13,26 +13,33 @@
       <div class="extra-info">
 
         @if(isFan(device)){
-        <span> Speed: {{ device.name }}</span>
+        <span>Fan Speed: {{ device.attributes['speed']}}</span> <br>
+        <button>Turn On/Off</button>
         }
 
         @if(isThermostat(device)){
-        <span>Ambient Temp: {{device.name}} </span> <br>
-        <span>Desired Temp: {{device.name}} </span>
+        <span>Ambient Temperature: {{ device.attributes['ambientTemperature']}}</span><br>
+        <span>Desired Temperature: {{ device.attributes['desiredTemperature']}}</span> <br>
+        <button>Turn On/Off</button>
+
+
         }
 
         @if(isLight(device)){
-        <span>Brightness: <input type="range" id="slider" min="10" max="100" value="50"> </span> <br>
-        <span>Color: {{ device.name }}</span>
-        }
+          <span>Brightness Percentage: {{ device.attributes['brightnessPercentage']}}</span> <br>
+        <div>
+          <span>Color: </span>
+          <div style="width: 20px; height: 20px; border: 1px solid black; display: inline-block;"
+                       [style.backgroundColor]="getRGBString(device.attributes['color'])"></div>
+        </div> <br>
+        <button>Turn On/Off</button>
 
-        <br>
+        }
         @if(isDoorLock(device)){
         <button>Lock/Unlock</button>
         }
 
-      </div>
-
+        <br>
       <button pButton label="View Device History" class="p-button-sm p-button-info" (click)="viewLogs(device)">View Device History</button>
       <button pButton label="Delete Device" class="p-button-sm p-button-danger ml-2" (click)="removeDevice(device.uuid)">Delete Device</button>
     </div>

@@ -25,6 +25,7 @@ export interface SmartDeviceBase{
   deviceType: DeviceType;
   isOn: boolean;
   state: IState;
+  attributes: Record<string, any>
   }
 
 export interface SmartLight extends SmartDeviceBase{

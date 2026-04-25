@@ -17,6 +17,10 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.deviceService.fetchDevices();
+
+     setTimeout(() => {
+        console.log(this.deviceService.devices());
+      }, 1000);
   }
 
   isLight(device: SmartDevice): device is SmartLight { return device.deviceType == 'LIGHT'; }
@@ -53,12 +57,8 @@ export class DashboardComponent implements OnInit {
     this.selectedDevice.set(null);
   }
 
-  factoryResetDevices(){
-    this.deviceService.factoryResetAllDevices().subscribe({
-      next: () => {
-        console.log(`All devices have been reset to their factory settings`);
-        },
-      error: (err) => console.error(`Device Reset Failed`, err)
-    });
+getRGBString(color : any) : string{
+  if (!color) return `black`;
+  return `rgb(${color.r}, ${color.g}, ${color.b})`;
   }
 }

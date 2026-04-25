@@ -22,7 +22,7 @@ import { DeviceService } from '../../device';
         <div class="layout-topbar-actions">
             <div class="layout-config-menu">
                 <button> Add a Device </button>
-                <button (click)="deviceService.factoryResetAllDevices()"> Factory Reset Devices </button>
+                <button (click)="factoryResetDevices()"> Factory Reset Devices </button>
                 <button> Update A Location's Temperature </button>
                 <button> Change Simulation Speed </button>
             </div>
@@ -34,4 +34,14 @@ export class AppTopbar {
 
     layoutService = inject(LayoutService);
     deviceService = inject(DeviceService);
+
+    factoryResetDevices() {
+        this.deviceService.factoryResetAllDevices().subscribe({
+          next: (res : any) => {
+            console.log(res.message);
+            this.deviceService.fetchDevices(); // refresh UI across app
+          },
+          error: (err) => console.error('Device Reset Failed', err)
+         });
+  }
 }
