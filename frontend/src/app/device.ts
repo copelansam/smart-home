@@ -64,4 +64,13 @@ fetchLogs(uuid: string){
   factoryResetAllDevices(){
     return this.http.post(`${this.simulationUrl}/reset`, null);
     }
+
+  updateSimulationSpeed(speed: number){
+    return this.http.post(`${this.simulationUrl}/speed`, { speed });
+    }
+
+  updateLocationTemperature(location: string, temperature: number){
+
+    return this.http.post(`${this.simulationUrl}/location/temperature`, {location, temperature}, { responseType: 'text' });
+  }
 }

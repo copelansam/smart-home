@@ -3,6 +3,7 @@ package com.example.smarthome.controller;
 
 import com.example.smarthome.service.SmartDeviceService;
 import com.example.smarthome.simulation.SimulationSettings;
+import com.example.smarthome.simulation.TempRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,14 +37,13 @@ public class SimulationController {
     @PostMapping("/location/temperature")
     @CrossOrigin(origins = "*")
     public ResponseEntity<String> updateAmbientTemperatureByLocation(
-            @RequestParam(required = true) String location,
-            @RequestParam(required = true) double ambientTemperature){
+            @RequestBody TempRequest tempRequest){
 
-        if (location.trim().isEmpty()){
+        if (tempRequest.location.trim().isEmpty()){
             return ResponseEntity.badRequest().body("Please enter a location");
         }
         else{
-            String result = deviceService.updateLocationAmbientTemperature(location, ambientTemperature);
+            String result = deviceService.updateLocationAmbientTemperature(tempRequest.location, tempRequest.temperature);
             return ResponseEntity.ok(result);
         }
     }
