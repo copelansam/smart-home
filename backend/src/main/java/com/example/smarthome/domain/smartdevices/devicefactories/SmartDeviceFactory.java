@@ -25,12 +25,18 @@ public class SmartDeviceFactory implements ISmartDeviceFactory{
                 return new SmartFan(request.name, request.location);
 
             case LIGHT:
-                return new SmartLight(request.name, request.location,
-                        ((Number) request.attributes.get("brightnessPercentage")).intValue(), // Bast brightness and colors to ints
-                        ((Number) request.attributes.get("redValue")).intValue(),
-                        ((Number) request.attributes.get("greenValue")).intValue(),
-                        ((Number) request.attributes.get("blueValue")).intValue()
-                        );
+                // If there isn't a brightness and color set, use the constructor that assigns default values
+                if (request.attributes == null){
+                    return new SmartLight(request.name, request.location);
+                }
+                else { // Otherwise pass properties into the constructor appropriately
+                    return new SmartLight(request.name, request.location,
+                            ((Number) request.attributes.get("brightnessPercentage")).intValue(), // Bast brightness and colors to ints
+                            ((Number) request.attributes.get("redValue")).intValue(),
+                            ((Number) request.attributes.get("greenValue")).intValue(),
+                            ((Number) request.attributes.get("blueValue")).intValue()
+                    );
+                }
 
             case DOORLOCK:
                 return new SmartDoorLock(request.name, request.location);
