@@ -27,6 +27,7 @@ public class SmartThermostat extends SmartDeviceBase {
 
     public SmartThermostat(){}
 
+    // Constructor with no temperatures specified, temperatures will be set to a random value between 60 and 80
     public SmartThermostat(String name, String location){
         super(name, location, DeviceType.THERMOSTAT);
         this.desiredTemperature = new Temperature();
@@ -36,7 +37,7 @@ public class SmartThermostat extends SmartDeviceBase {
 
     public SmartThermostat(String name, String location, double desiredTemperature, double ambientTemperature){
         super(name, location, DeviceType.THERMOSTAT);
-        this.desiredTemperature = new Temperature();
+        setDesiredTemperature(desiredTemperature);
         this.ambientTemperature = new Temperature();
         this.state = new ThermostatOffState();
         this.desiredTemperature = new Temperature(desiredTemperature);
@@ -53,6 +54,14 @@ public class SmartThermostat extends SmartDeviceBase {
 
     public void setAmbientTemperature(double temperature){
         this.ambientTemperature = new Temperature(temperature);
+    }
+
+    public void setDesiredTemperature(double desiredTemperature){
+        if (desiredTemperature < 60 || desiredTemperature > 80){
+            throw new IllegalArgumentException("Desired temperature must be between 60 and 80 degrees fahrenheit (inclusive)");
+        }else{
+            this.desiredTemperature = new Temperature(desiredTemperature);
+        }
     }
 
     public Map<String,Object> getExtraProperties(){
@@ -75,5 +84,4 @@ public class SmartThermostat extends SmartDeviceBase {
         this.ambientTemperature = new Temperature();
         this.desiredTemperature = new Temperature();
     }
-
 }
