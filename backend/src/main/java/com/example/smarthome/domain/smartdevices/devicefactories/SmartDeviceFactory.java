@@ -1,5 +1,6 @@
 package com.example.smarthome.domain.smartdevices.devicefactories;
 
+import com.example.smarthome.controller.DeviceCreationRequest;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.devices.smartdoorlock.SmartDoorLock;
@@ -16,24 +17,31 @@ import java.util.Map;
 @Component
 public class SmartDeviceFactory implements ISmartDeviceFactory{
 
-    public SmartDeviceBase createDevice(String name, String location, DeviceType deviceType){
+    public SmartDeviceBase createDevice(DeviceCreationRequest request){
 
-        switch (deviceType){
+        switch (request.deviceType){
 
             case FAN:
-                return new SmartFan(name, location, DeviceType.FAN);
+                return new SmartFan(request.name, request.location);
 
             case LIGHT:
-                return new SmartLight(name, location, DeviceType.LIGHT);
+                return new SmartLight(request.name, request.location,
+                        ((Number) request.attributes.get("brightnessPercentage")).intValue(), // Bast brightness and colors to ints
+                        ((Number) request.attributes.get("redValue")).intValue(),
+                        ((Number) request.attributes.get("greenValue")).intValue(),
+                        ((Number) request.attributes.get("blueValue")).intValue()
+                        );
 
             case DOORLOCK:
-                return new SmartDoorLock(name, location, DeviceType.DOORLOCK);
+                return new SmartDoorLock(request.name, request.location);
 
             case THERMOSTAT:
-               return new SmartThermostat(name, location, DeviceType.THERMOSTAT);
+               return new SmartThermostat(request.name, request.location,
+                       ((Number) request.attributes.get("desiredTemperature")).doubleValue(), // Cast the temperature values to doubles
+                       ((Number) request.attributes.get("ambientTemperature")).doubleValue());
 
             default:
-                throw new IllegalArgumentException("You must input all requested information");
+                throw new IllegalArgumentException("Selected device type either not supported or empty");
         }
     }
 }

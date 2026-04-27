@@ -13,7 +13,7 @@ public class Temperature{
     private Random rand = new Random();
 
     public Temperature(){
-        this.temperature = rand.nextInt(60,80);
+        this.temperature = rand.nextInt(60,81);
     }
 
     public Temperature(double temperature){

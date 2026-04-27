@@ -1,6 +1,7 @@
 package com.example.smarthome.repository;
 
 
+import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,4 +12,6 @@ import java.util.UUID;
 // Defined as an interface, Spring Boot will automatically instantiate it at start up
 @Repository
 public interface ISmartDeviceRepository extends JpaRepository<SmartDeviceBase, UUID> {
+
+    boolean existsByDeviceTypeAndLocation(DeviceType deviceType, String location);
 }

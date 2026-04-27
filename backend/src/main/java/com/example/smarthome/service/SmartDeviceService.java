@@ -1,5 +1,6 @@
 package com.example.smarthome.service;
 
+import com.example.smarthome.controller.DeviceCreationRequest;
 import com.example.smarthome.domain.devicequeries.IDeviceQuery;
 import com.example.smarthome.domain.devicequeries.QueryBuilder;
 import com.example.smarthome.domain.history.DeviceLog;
@@ -12,6 +13,7 @@ import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartTh
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import com.example.smarthome.exception.DeviceNotFoundException;
 import com.example.smarthome.exception.NoDevicesExcpetion;
+import com.example.smarthome.exception.ThermostatAlreadyExistsException;
 import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.repository.ISmartDeviceRepository;
 import jakarta.transaction.Transactional;
@@ -55,26 +57,35 @@ public class SmartDeviceService {
     /**
      * Creates a new device and saves it to the repository
      *
-     * @param name        Name of the device
-     * @param location    Location of the device
-     * @param deviceType  The type of the device
      *                    *
      */
     @PostMapping
-    public CallResult createDevice(String name, String location, DeviceType deviceType){
+    public CallResult createDevice(DeviceCreationRequest request){
 
-        // Create the new device
-        SmartDeviceBase newDevice = deviceFactory.createDevice(name, location, deviceType);
 
-        if (newDevice == null){
-            return new CallResult("Item creation failed", false, null);
+
+        // Format the location so each word starts with a capital letter
+        request.setLocation(makeLocationPretty(request.location));
+
+        // If the user tries to create a thermostat in a location that already has one, throw an exception
+        if (request.deviceType == DeviceType.THERMOSTAT && doesLocationHaveThermostat(request.location)) {
+            throw new ThermostatAlreadyExistsException(request.location + " already has a thermostat");
         }
         else {
-            CallResult result = new CallResult(newDevice.getName() + "Successfully created", true,
-                    new DeviceLog(newDevice.getUuid(),newDevice.getName() + " was created successfully"));
-            // Save the device to the database
+
+            // Create the new device
+            SmartDeviceBase newDevice = deviceFactory.createDevice(request);
+
+           // Save the device to the database
             repo.save(newDevice);
+
+            // Create call result to save and send back to user
+            CallResult result = new CallResult(newDevice.getName() + "Successfully created", true,
+                    new DeviceLog(newDevice.getUuid(),"Device Creation", newDevice.getName() + " was created successfully"));
+
+            // Save creation log
             deviceLogRepository.save(result.getLog());
+            // return call result
             return result;
         }
     }
@@ -152,11 +163,12 @@ public class SmartDeviceService {
         else{
             ISmartDevice thermostat = thermostats.get(0);
             ((SmartThermostat) thermostat).setAmbientTemperature(temperature);
-            deviceLogRepository.save(new DeviceLog(thermostat.getUuid(), "Ambient Temperature in: " + location + " was updated to: " + temperature));
+            deviceLogRepository.save(new DeviceLog(thermostat.getUuid(),"Location Temperature Update" , "Ambient Temperature in: " + location + " was updated to: " + temperature));
             repo.save((SmartDeviceBase) thermostat);
             return "Ambient Temperature in: " + location + " was updated to: " + temperature;
         }
     }
+
 
     @Transactional
     public int resetAllDevices(){
@@ -174,8 +186,32 @@ public class SmartDeviceService {
             deviceLogRepository.save(
                     new DeviceLog(
                             device.getUuid(),
+                    "Reset device",
                     "Device reset to factory settings"));
         }
         return devices.size();
+    }
+
+    public String makeLocationPretty(String location) throws  IllegalArgumentException{
+
+        // If there isn't a location provided, throw an exception
+        if (location == null || location.isBlank()){
+            throw new IllegalArgumentException("Location cannot be blank");
+        }
+
+        // Split the location into words that we can manipulate individually before reattaching
+        String[] words = location.trim().toLowerCase().split("\\s+");
+        StringBuilder prettyString = new StringBuilder();
+
+        for (String word : words){
+            // Make the first letter capital while the rest stay lowercase and attach to final string with a space before the next word
+            prettyString.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
+        }
+        // Trim off the trailing space and return
+        return prettyString.toString().trim();
+    }
+
+    public boolean doesLocationHaveThermostat(String location){
+        return repo.existsByDeviceTypeAndLocation(DeviceType.THERMOSTAT, location);
     }
 }

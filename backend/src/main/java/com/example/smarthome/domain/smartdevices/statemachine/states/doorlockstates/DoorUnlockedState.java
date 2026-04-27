@@ -33,7 +33,7 @@ public class DoorUnlockedState extends StateBase<SmartDoorLock> {
             case LOCK:
                 device.setState(new DoorLockedState());
                 return new CallResult("Door is now locked", true,
-                        new DeviceLog(device.getUuid(), "State changed from Door Unlocked to Door Locked"));
+                        new DeviceLog(device.getUuid(),"State Change", "State changed from Door Unlocked to Door Locked"));
 
             default:
                 return new CallResult();

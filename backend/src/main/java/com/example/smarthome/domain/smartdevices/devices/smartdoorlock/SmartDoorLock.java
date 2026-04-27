@@ -16,8 +16,8 @@ public class SmartDoorLock extends SmartDeviceBase {
 
     public SmartDoorLock(){}
 
-    public SmartDoorLock(String name, String location, DeviceType deviceType){
-        super(name, location, deviceType);
+    public SmartDoorLock(String name, String location){
+        super(name, location, DeviceType.DOORLOCK);
         this.state = new DoorUnlockedState();
 
         // Invariant: For UI filtering purposes, all door lock objects are considered on

@@ -73,4 +73,8 @@ fetchLogs(uuid: string){
 
     return this.http.post(`${this.simulationUrl}/location/temperature`, {location, temperature}, { responseType: 'text' });
   }
+
+createNewDevice(newDevice: any){
+  return this.http.post(`${this.apiUrl}/create-device`, newDevice)
+  }
 }

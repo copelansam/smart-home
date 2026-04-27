@@ -34,7 +34,7 @@ public class LightOffState extends StateBase<SmartLight> {
                 device.setState(new LightOnState());
                 device.setIsOn(true);
                 return new CallResult("Light has been turned on", true,
-                        new DeviceLog(device.getUuid(), "State changed from Light Off to Light On"));
+                        new DeviceLog(device.getUuid(),"State Change", "State changed from Light Off to Light On"));
 
             default:
                 return new CallResult();

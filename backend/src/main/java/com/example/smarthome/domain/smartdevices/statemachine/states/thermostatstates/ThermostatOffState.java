@@ -37,7 +37,7 @@ public class ThermostatOffState extends StateBase<SmartThermostat> {
             case POWER_THERMOSTAT_ON:
                 device.setState(new ThermostatIdleState());
                 return new CallResult("Thermostat has been set to idle. Awaiting further instruction",true,
-                        new DeviceLog(device.getUuid(), "State changed from Thermostat Off to Thermostat Idle"));
+                        new DeviceLog(device.getUuid(),"State Change", "State changed from Thermostat Off to Thermostat Idle"));
 
             default:
                 return new CallResult();

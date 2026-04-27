@@ -59,6 +59,6 @@ export class DashboardComponent implements OnInit {
 
 getRGBString(color : any) : string{
   if (!color) return `black`;
-  return `rgb(${color.r}, ${color.g}, ${color.b})`;
+  return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
   }
 }

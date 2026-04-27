@@ -26,13 +26,13 @@ public class DatabaseSeeder implements CommandLineRunner {
         // If there are no records in the database, add seed data. Otherwise, skip this
         if (repo.count() == 0){
 
-            repo.save(new SmartThermostat("Living Room Thermostat", "Living Room", DeviceType.THERMOSTAT));
-            repo.save(new SmartDoorLock("Garage Door Lock", "Garage", DeviceType.DOORLOCK));
-            repo.save(new SmartDoorLock("Front Door Lock", "Living Room", DeviceType.DOORLOCK));
-            repo.save(new SmartFan("Bedroom Box Fan", "Bedroom", DeviceType.FAN));
-            repo.save(new SmartFan("Kitchen Fan","Kitchen",DeviceType.FAN));
-            repo.save(new SmartLight("Living Room Ceiling Light", "Living Room", DeviceType.LIGHT));
-            repo.save(new SmartLight("Bathroom Lights", "Bathroom", DeviceType.LIGHT));
+            repo.save(new SmartThermostat("Living Room Thermostat", "Living Room"));
+            repo.save(new SmartDoorLock("Garage Door Lock", "Garage"));
+            repo.save(new SmartDoorLock("Front Door Lock", "Living Room"));
+            repo.save(new SmartFan("Bedroom Box Fan", "Bedroom"));
+            repo.save(new SmartFan("Kitchen Fan","Kitchen"));
+            repo.save(new SmartLight("Living Room Ceiling Light", "Living Room"));
+            repo.save(new SmartLight("Bathroom Lights", "Bathroom"));
 
         }
     }

@@ -19,8 +19,8 @@ public class SmartFan extends SmartDeviceBase {
 
     public SmartFan(){}
 
-    public SmartFan(String name, String location, DeviceType deviceType){
-        super(name, location, deviceType);
+    public SmartFan(String name, String location){
+        super(name, location, DeviceType.FAN);
         this.state = new FanOffState();
         this.speed = FanSpeed.OFF;
     }

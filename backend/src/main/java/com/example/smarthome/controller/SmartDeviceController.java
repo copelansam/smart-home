@@ -54,7 +54,7 @@ public class SmartDeviceController {
     @CrossOrigin(origins = "*")
     public ResponseEntity<CallResult> createNewDevice(@RequestBody DeviceCreationRequest request){
 
-        CallResult result = deviceService.createDevice(request.name, request.location, request.deviceType);
+        CallResult result = deviceService.createDevice(request);
 
         if (!result.getIsSuccess()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, result.getMessage());

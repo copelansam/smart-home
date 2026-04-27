@@ -35,16 +35,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problem;
     }
 
-    @ExceptionHandler(InvalidStatechartTransitionException.class)
-    public ProblemDetail handleInvalidStatechartTransition(InvalidStatechartTransitionException exception){
+    @ExceptionHandler(ThermostatAlreadyExistsException.class)
+    public ProblemDetail handleInvalidStatechartTransition(ThermostatAlreadyExistsException exception){
 
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
                 HttpStatus.CONFLICT,
-                "The provided action is not valid from the current state."
+                "The provided location already has a thermostat"
         );
 
-        problem.setType(URI.create("https://example.com/problems/invalid-transition"));
-        problem.setTitle("Invalid Transition");
+        problem.setType(URI.create("https://example.com/problems/theromstat-already-exists"));
+        problem.setTitle("Thermostat Already Exists");
 
         logger.error("Internal Error Detected: " + exception.getMessage());
 

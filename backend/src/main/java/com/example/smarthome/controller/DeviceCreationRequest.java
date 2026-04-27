@@ -9,4 +9,9 @@ public class DeviceCreationRequest {
     public String location;
     public DeviceType deviceType;
     public Map<String, Object> attributes;
+
+    public void setLocation(String location){
+        this.location = location;
+    }
+
 }

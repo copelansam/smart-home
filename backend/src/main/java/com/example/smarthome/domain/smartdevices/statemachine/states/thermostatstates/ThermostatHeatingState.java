@@ -39,13 +39,13 @@ public class ThermostatHeatingState extends StateBase<SmartThermostat> {
                 device.setState(new ThermostatIdleState());
                 device.setIsOn(false);
                 return new CallResult("The ambient temperature has reached the desired temperature. The thermostat has gone idle.",true,
-                        new DeviceLog(device.getUuid(), "State changed from Thermostat Heating to Thermostat Idle"));
+                        new DeviceLog(device.getUuid(),"State Change", "State changed from Thermostat Heating to Thermostat Idle"));
 
             case POWER_THERMOSTAT_OFF:
                 device.setState(new ThermostatOffState());
                 device.setIsOn(false);
                 return new CallResult("The thermostat has been turned off.", true,
-                        new DeviceLog(device.getUuid(), "State changed from Thermostat Heating to Thermostat Off"));
+                        new DeviceLog(device.getUuid(),"State Change", "State changed from Thermostat Heating to Thermostat Off"));
 
             default:
                 return new CallResult();

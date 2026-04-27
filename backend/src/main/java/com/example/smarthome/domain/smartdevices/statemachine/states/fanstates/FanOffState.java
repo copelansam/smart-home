@@ -35,7 +35,7 @@ public class FanOffState extends StateBase<SmartFan> {
                 device.setState(new FanOnState());
                 device.setIsOn(true);
                 return new CallResult("Fan is now on", true,
-                        new DeviceLog(device.getUuid(), "State changed from Light Off to Light On"));
+                        new DeviceLog(device.getUuid(),"State Change", "State changed from Light Off to Light On"));
 
             default:
                 return new CallResult();

@@ -55,6 +55,7 @@ public class ThermostatAutomationTask {
 
                 logRepository.save(new DeviceLog(
                         thermostat.getUuid(),
+                        "Temperature Update",
                         "The temperature in " + thermostat.getLocation() + " has been adjusted to "
                                 + (ambientTemperature - 1)));
             }
@@ -72,6 +73,7 @@ public class ThermostatAutomationTask {
 
                 logRepository.save(new DeviceLog(
                         thermostat.getUuid(),
+                        "Temperature Update",
                         "The temperature in " + thermostat.getLocation() + " has been adjusted to "
                                 + (ambientTemperature + 1)));
             }

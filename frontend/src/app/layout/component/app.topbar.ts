@@ -23,7 +23,8 @@ import { InputTextModule } from 'primeng/inputtext';
               Smart Home Simulation
             </span>
         </div>
-<button (click)="op.toggle($event)">Simulation Controls</button>
+<button (click)="op.toggle($event)" class="p-button-sm p-button-info">Simulation Controls</button>
+
 
 <p-popover #op>
 
@@ -51,15 +52,52 @@ import { InputTextModule } from 'primeng/inputtext';
 
         <div class="layout-topbar-actions">
             <div class="layout-config-menu">
-                <button> Add a Device </button>
+                <button class="p-button-sm p-button-info" (click)="createDevicePopover.toggle($event)"> Add a Device </button>
+
+                <p-popover #createDevicePopover [style]="{ width: '33vw' }">
+                  <div class="shared-info">
+                    <h3>Create a Device</h3>
+                    <hr/>
+                    Device Type: <p-select [options]=deviceTypes [(ngModel)]="newDeviceType" optionLabel="label" optionValue="value" placeholder="Select a Device Type" class="flex-1"></p-select> <br>
+                    <span>Name: <input pInputText [(ngModel)]="newDeviceName" type="string" placeholder="Device Name"/></span> <br>
+                    <span>Location: <input pInputText [(ngModel)]="newDeviceLocation" type="string" placeholder="Location"></span>
+                  </div>
+                  <div class="unique-info">
+                    @if(this.newDeviceType==="THERMOSTAT"){
+                      <label class="w-4">Desired Temperature: </label><input pInputText [(ngModel)]="desiredTemp" class="w-8" type="number" min="60" max="80" placeholder="Desired Temperature (60 - 80)"><br>
+                      <label class="w-4">Ambient Temperature: </label><input pInputText [(ngModel)]="ambientTemp" class="w-8" type="number" placeholder="Ambient Temperature">
+                      }
+                    @if(this.newDeviceType==="LIGHT"){
+                      <label class="w-4">Brightness Percentage: </label><input pInputText [(ngModel)]="brightnessPercentage" class="w-8" type="number" min="10" max="100" placeholder="Brightness Percentage (10 - 100)"> <br>
+                      <label class="w-3">Color: </label> <br>
+                      <input pInputText [(ngModel)]="redValue" class="w-4" type="number" min="0" max="255" placeholder="R Value (0 - 255)">
+                      <input pInputText [(ngModel)]="greenValue" class="w-4" type="number" min="0" max="255" placeholder="G Value (0 - 255)">
+                      <input pInputText [(ngModel)]="blueValue" class="w-4" type="number" min="0" max="255" placeholder="B Value (0 - 255)">
+                      }
+                  </div>
+                  <hr>
+
+                  <button pButton (click)="createDevice()" (click)="createDevicePopover.toggle($event)">Create Device</button>
+                </p-popover>
             </div>
         </div>
     </div>`
 })
 export class AppTopbar {
 
+// List of device types
+  deviceTypes = [
+    {label: 'Thermostat' , value: 'THERMOSTAT'},
+    {label: 'Light' , value: 'LIGHT'},
+    {label: 'Door Lock' , value: 'DOORLOCK'},
+    {label: 'Fan' , value: 'FAN'}
+    ];
+
+// Simulation Variables
   selectedSpeed: number = 1;
+
   selectedLocation: string | null = null;
+
   tempValue: number;
     items: MenuItem[]
     speeds = [
@@ -67,6 +105,23 @@ export class AppTopbar {
       {label: '5x', value: 5},
       {label: '10x', value: 10}
       ];
+
+// Variables used for device creation
+
+  // Variables shared across all device types
+  newDeviceName: string = '';
+  newDeviceLocation: string = '';
+  newDeviceType: string = 'THERMOSTAT';
+
+  // Thermostat exclusive variables
+  desiredTemp?: number;
+  ambientTemp?: number;
+
+  // Light exclusive variables
+  brightnessPercentage?: number;
+  redValue?: number;
+  greenValue?: number;
+  blueValue?: number;
 
 
     layoutService = inject(LayoutService);
@@ -107,4 +162,38 @@ export class AppTopbar {
       console.log("New Simulation Speed: ", this.selectedSpeed ,"X");
       this.deviceService.updateSimulationSpeed(this.selectedSpeed);
       }
+
+    createDevice(){
+
+      // Assign device specific attributes
+      const attributes : any = {};
+
+      if (this.newDeviceType === 'THERMOSTAT'){
+        attributes.ambientTemperature = this.ambientTemp;
+        attributes.desiredTemperature = this.desiredTemp;
+        }
+
+      if (this.newDeviceType === 'LIGHT'){
+        attributes.brightnessPercentage = this.brightnessPercentage;
+        attributes.redValue = this.redValue;
+        attributes.greenValue = this.greenValue;
+        attributes.blueValue = this.blueValue;
+        }
+
+      // assign fields common to all devices
+      const newDevice: any = {
+              deviceType: this.newDeviceType,
+              name: this.newDeviceName,
+              location: this.newDeviceLocation,
+              attributes: attributes
+              }
+
+      console.log("Creating Device!", newDevice);
+      this.deviceService.createNewDevice(newDevice).subscribe({
+        next: () => {
+          this.deviceService.fetchDevices();
+          },
+        error: (err) => console.log('Device Creation Failed', err)
+      });
+    }
 }
