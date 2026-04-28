@@ -61,7 +61,7 @@ public abstract class SmartDeviceBase implements ISmartDevice{
     }
 
     @PostLoad
-    public void generateAvailableActions(){
+    public void generateAvailableTransitions(){
         this.availableActions = state.provideAvailableTransitions();
     }
 

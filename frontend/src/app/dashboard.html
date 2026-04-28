@@ -4,7 +4,7 @@
       <h2>{{ device.name }}</h2>
       <p> {{ device.deviceType }}</p>
       <h5>Location: {{ device.location }}</h5>
-      <h5>Current State: {{ device.state }}</h5>
+      <h5>Current State: {{ device.state.name }}</h5>
 
       <small> {{ device.uuid }}</small>
 
@@ -38,6 +38,19 @@
         @if(isDoorLock(device)){
         <button>Lock/Unlock</button>
         }
+
+        <div class="available-transitions">
+          <strong>Available Transitions: </strong>
+          <ul>
+          @for(transition of device.state?.availableTransitions; track transition.action){
+            <li>{{ transition.action }}</li>
+          } @empty{
+            <li>No Transitions Available</li>
+          }
+
+          </ul>
+
+        </div>
 
         <br>
       <button pButton label="View Device History" class="p-button-sm p-button-info" (click)="viewLogs(device)">View Device History</button>
