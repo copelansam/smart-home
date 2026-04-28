@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
   selectedDevice = signal<SmartDevice | null>(null);
 
   ngOnInit() {
-    this.deviceService.fetchDevices();
+    this.deviceService.fetchDevices('null', 'null', null);
 
      setTimeout(() => {
         console.log(this.deviceService.devices());
@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit {
     this.deviceService.executeAction(uuid, action).subscribe({
       next: () => {
         console.log(`Action: ${action} sent!`);
-        this.deviceService.fetchDevices();
+        this.deviceService.fetchDevices('null', 'null', null);
       },
       error: (err) => console.error('Action failed', err)
     });
@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
     this.deviceService.deleteDevice(uuid).subscribe({
       next: () => {
         console.log(`Device Deleted!`);
-        this.deviceService.fetchDevices();
+        this.deviceService.fetchDevices('null', 'null', null);
       },
       error: (err) => console.error(`Action failed`, err)
     });

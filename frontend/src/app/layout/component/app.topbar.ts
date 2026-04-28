@@ -41,7 +41,7 @@ import { InputTextModule } from 'primeng/inputtext';
           <label class="block font-bold mb-2">Update Ambient Temperature By Location</label>
 
            <div class="flex gap-2">
-                      <p-select [options]="getThermostatLocations()" [(ngModel)]="selectedLocation" optionLabel="label" optionValue="value" placeholder=Select a Location class="flex-1"></p-select>
+                      <p-select [options]="deviceService.getThermostatLocations()" [(ngModel)]="selectedLocation" optionLabel="label" optionValue="value" placeholder=Select a Location class="flex-1"></p-select>
                       <input pInputText type="number" [(ngModel)]="tempValue" class="w-full" placeholder="°F" />
                       <button pButton [disabled]="!selectedLocation" (click)="updateTemperature()"> Update Temperature </button>
 
@@ -85,14 +85,6 @@ import { InputTextModule } from 'primeng/inputtext';
 })
 export class AppTopbar {
 
-// List of device types
-  deviceTypes = [
-    {label: 'Thermostat' , value: 'THERMOSTAT'},
-    {label: 'Light' , value: 'LIGHT'},
-    {label: 'Door Lock' , value: 'DOORLOCK'},
-    {label: 'Fan' , value: 'FAN'}
-    ];
-
 // Simulation Variables
   selectedSpeed: number = 1;
 
@@ -127,22 +119,18 @@ export class AppTopbar {
     layoutService = inject(LayoutService);
     deviceService = inject(DeviceService);
 
+    // List of device types
+    deviceTypes = this.deviceService.getDeviceTypes();
+
     factoryResetDevices() {
         this.deviceService.factoryResetAllDevices().subscribe({
           next: (res : any) => {
             console.log(res.message);
-            this.deviceService.fetchDevices(); // refresh UI across app
+            this.deviceService.fetchDevices('null', 'null', null); // refresh UI across app
           },
           error: (err) => console.error('Device Reset Failed', err)
          });
   }
-
-    getThermostatLocations(){
-
-      const devices = this.deviceService.devices() || [];
-      return devices.filter(device => device.deviceType === 'THERMOSTAT').map(device => ({label: device.location, value: device.location}));
-
-      }
 
     updateTemperature(){
       if (!this.selectedLocation || this.tempValue === null) return;
@@ -150,7 +138,7 @@ export class AppTopbar {
       this.deviceService.updateLocationTemperature(this.selectedLocation, this.tempValue).subscribe({
         next: (res: any) =>{
           console.log(`Updating the temperature in: ${this.selectedLocation} to: ${this.tempValue} degrees F`),
-          this.deviceService.fetchDevices();
+          this.deviceService.fetchDevices('null', 'null', null);
           },
         error: (err: any) => {
                     console.error('Temperature update failed', err);
@@ -191,7 +179,7 @@ export class AppTopbar {
       console.log("Creating Device!", newDevice);
       this.deviceService.createNewDevice(newDevice).subscribe({
         next: () => {
-          this.deviceService.fetchDevices();
+          this.deviceService.fetchDevices('null', 'null', null);
           },
         error: (err) => console.log('Device Creation Failed', err)
       });
