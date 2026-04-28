@@ -39,6 +39,19 @@
         <button>Lock/Unlock</button>
         }
 
+        <div class="available-transitions">
+          <strong>Available Transitions: </strong>
+          <ul>
+          @for(transition of device.state?.availableTransitions; track transition.action){
+            <li>{{ transition.action }}</li>
+          } @empty{
+            <li>No Transitions Available</li>
+          }
+
+          </ul>
+
+        </div>
+
         <br>
       <button pButton label="View Device History" class="p-button-sm p-button-info" (click)="viewLogs(device)">View Device History</button>
       <button pButton label="Delete Device" class="p-button-sm p-button-danger ml-2" (click)="removeDevice(device.uuid)">Delete Device</button>

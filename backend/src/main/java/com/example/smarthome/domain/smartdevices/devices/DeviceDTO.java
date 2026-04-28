@@ -16,7 +16,7 @@ public class DeviceDTO {
     public DeviceType deviceType;
     public boolean isOn;
     public String state;
-    public List<ITransition<?>> availableActions;
+    public List<ITransition<?>> availableTransitions;
 
     public Map<String,Object> properties;
 
@@ -29,7 +29,7 @@ public class DeviceDTO {
         dto.deviceType = device.getDeviceType();
         dto.isOn = device.getIsOn();
         dto.state = device.getState();
-        dto.availableActions = device.getAvailableTransitions();
+        dto.availableTransitions = device.getAvailableTransitions();
 
 
         dto.properties = device.getExtraProperties();

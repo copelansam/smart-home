@@ -1,7 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { SmartDevice, DeviceType, DeviceLog } from './device.model'
+import { SmartDevice, DeviceType, DeviceLog, ITransition } from './device.model'
 import { computed } from '@angular/core';
 
 interface DeviceDto{
@@ -9,8 +9,9 @@ interface DeviceDto{
   name: string;
   location: string;
   deviceType: DeviceType;
-  state: any;
+  state: string;
   isOn: boolean;
+  availableTransitions: ITransition[];
   properties: Record<string, any>;
   }
 
@@ -73,7 +74,10 @@ private mapDtoToModel(dto : DeviceDto){
       name: dto.name,
       location: dto.location,
       deviceType: dto.deviceType,
-      state: dto.state,
+      state: {
+        name: dto.state,
+        availableTransitions: dto.availableTransitions || []
+        },
       isOn: dto.isOn,
       attributes: { ...dto.properties }
     } as SmartDevice;
