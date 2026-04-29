@@ -2,8 +2,14 @@ package com.example.smarthome.domain.smartdevices.statemachine.transitions.light
 
 
 public enum LightAction {
-    TURN_LIGHT_ON,
-    TURN_LIGHT_OFF;
+    TURN_LIGHT_ON("Turn On"),
+    TURN_LIGHT_OFF("Turn Off");
+
+    String label;
+
+    LightAction(String message){
+        this.label = message;
+    }
 
     public static LightAction getActionFromString(String wantedAction){
 

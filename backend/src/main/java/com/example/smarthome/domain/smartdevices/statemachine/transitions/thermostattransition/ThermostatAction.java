@@ -1,12 +1,18 @@
 package com.example.smarthome.domain.smartdevices.statemachine.transitions.thermostattransition;
 
 public enum ThermostatAction {
-    POWER_THERMOSTAT_ON,
-    POWER_THERMOSTAT_OFF,
-    START_HEATING,
-    STOP_HEATING,
-    START_COOLING,
-    STOP_COOLING;
+    POWER_THERMOSTAT_ON("Turn On"),
+    POWER_THERMOSTAT_OFF("Turn Off"),
+    START_HEATING(null),
+    STOP_HEATING(null),
+    START_COOLING(null),
+    STOP_COOLING(null);
+
+    String label;
+
+    ThermostatAction(String message){
+        this.label = message;
+    }
 
     public static ThermostatAction getActionFromString(String wantedAction){
 

@@ -1,8 +1,14 @@
 package com.example.smarthome.domain.smartdevices.statemachine.transitions.doorlocktransition;
 
 public enum DoorLockAction {
-    LOCK,
-    UNLOCK;
+    LOCK("Lock"),
+    UNLOCK("Unlock");
+
+    String label;
+
+    DoorLockAction(String message){
+        this.label = message;
+    }
 
     public static DoorLockAction getActionFromString(String wantedAction){
 

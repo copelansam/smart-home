@@ -7,6 +7,7 @@ export type DeviceType = 'LIGHT' | 'FAN' | 'DOORLOCK' | 'THERMOSTAT'
 // Transitions
 export interface ITransition{
   action: string;
+  label: string;
   }
 
 // States
@@ -26,6 +27,7 @@ export interface SmartDeviceBase{
   isOn: boolean;
   state: IState;
   attributes: Record<string, any>
+  availableTransitions: Array<{ action: string, label: string }>;
   }
 
 export interface SmartLight extends SmartDeviceBase{

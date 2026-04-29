@@ -4,14 +4,19 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITrans
 
 public class DoorTransition implements ITransition<DoorLockAction> {
 
-    private DoorLockAction action;
+    private DoorLockAction doorLockAction;
 
     public DoorTransition(DoorLockAction action){
-        this.action = action;
+        this.doorLockAction = action;
     }
 
     @Override
     public DoorLockAction getAction() {
-        return action;
+        return doorLockAction;
+    }
+
+    @Override
+    public String getLabel(){
+        return this.doorLockAction.label;
     }
 }

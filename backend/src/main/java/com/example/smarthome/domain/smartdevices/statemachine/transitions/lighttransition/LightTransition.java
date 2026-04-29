@@ -4,14 +4,19 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITrans
 
 public class LightTransition implements ITransition<LightAction> {
 
-    private final LightAction action;
+    private final LightAction lightAction;
 
     public LightTransition(LightAction action){
-        this.action = action;
+        this.lightAction = action;
     }
 
     @Override
     public LightAction getAction() {
-        return action;
+        return lightAction;
+    }
+
+    @Override
+    public String getLabel(){
+        return this.lightAction.label;
     }
 }

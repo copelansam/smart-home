@@ -4,14 +4,19 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITrans
 
 public class FanTransition implements ITransition<FanAction> {
 
-    private FanAction action;
+    private FanAction fanAction;
 
     public FanTransition(FanAction action){
-        this.action = action;
+        this.fanAction = action;
     }
 
     @Override
     public FanAction getAction() {
-        return action;
+        return fanAction;
+    }
+
+    @Override
+    public String getLabel(){
+        return this.fanAction.label;
     }
 }

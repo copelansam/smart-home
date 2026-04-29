@@ -14,16 +14,13 @@
 
         @if(isFan(device)){
         <span>Fan Speed: {{ device.attributes['speed']}}</span> <br>
-        <button>Turn On/Off</button>
+
         }
 
         @if(isThermostat(device)){
         <span>Ambient Temperature: {{ device.attributes['ambientTemperature']}}</span><br>
         <span>Desired Temperature: {{ device.attributes['desiredTemperature']}}</span><br>
         <span>Mode: {{ device.attributes['mode'] }}</span><br>
-        <button>Turn On/Off</button>
-
-
         }
 
         @if(isLight(device)){
@@ -33,30 +30,19 @@
           <div style="width: 20px; height: 20px; border: 1px solid black; display: inline-block;"
                        [style.backgroundColor]="getRGBString(device.attributes['color'])"></div>
         </div> <br>
-        <button>Turn On/Off</button>
-
         }
-        @if(isDoorLock(device)){
-        <button>Lock/Unlock</button>
+        @for(transition of device.state?.availableTransitions; track transition.action){
+        @if(transition.label) {
+          <button (click)="handleAction(device.uuid, transition.action)">
+            {{ transition.label }}
+          </button>
         }
-
-        <div class="available-transitions">
-          <strong>Available Transitions: </strong>
-          <ul>
-          @for(transition of device.state?.availableTransitions; track transition.action){
-            <li>{{ transition.action }}</li>
-          } @empty{
-            <li>No Transitions Available</li>
-          }
-
-          </ul>
-
-        </div>
+        }
 
         <br>
       <button pButton label="View Device History" class="p-button-sm p-button-info" (click)="viewLogs(device)">View Device History</button>
       <button pButton label="Delete Device" class="p-button-sm p-button-danger ml-2" (click)="removeDevice(device.uuid)">Delete Device</button>
-    </div>
+      </div>
   </div>
 </div>
 

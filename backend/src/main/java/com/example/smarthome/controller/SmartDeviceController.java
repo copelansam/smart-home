@@ -76,8 +76,9 @@ public class SmartDeviceController {
     @PutMapping("/{id}/state")
     @CrossOrigin(origins = "*")
     public ResponseEntity<CallResult> executeAction(@PathVariable("id") UUID id,
-                                                    @RequestParam(required = true) String transition){
-        CallResult result = deviceService.executeAction(id, transition);
+                                                    @RequestParam(required = true) String action){
+        System.out.println("Transition: " + action);
+        CallResult result = deviceService.executeAction(id, action);
 
         if (!result.getIsSuccess()){
 

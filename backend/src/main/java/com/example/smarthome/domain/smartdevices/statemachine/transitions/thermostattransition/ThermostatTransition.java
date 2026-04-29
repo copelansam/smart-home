@@ -14,4 +14,9 @@ public class ThermostatTransition implements ITransition<ThermostatAction> {
     public ThermostatAction getAction(){
         return this.thermostatAction;
     }
+
+    @Override
+    public String getLabel(){
+        return this.thermostatAction.label;
+    }
 }

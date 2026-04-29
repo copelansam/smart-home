@@ -28,16 +28,6 @@ export class DashboardComponent implements OnInit {
   isDoorLock(device: SmartDevice): device is SmartLock { return device.deviceType == 'DOORLOCK'; }
   isThermostat(device: SmartDevice): device is SmartThermostat { return device.deviceType == 'THERMOSTAT'; }
 
-  handleAction(uuid: string, action: string) {
-    this.deviceService.executeAction(uuid, action).subscribe({
-      next: () => {
-        console.log(`Action: ${action} sent!`);
-        this.deviceService.fetchDevices('null', 'null', null);
-      },
-      error: (err) => console.error('Action failed', err)
-    });
-  }
-
   removeDevice(uuid: string) {
     this.deviceService.deleteDevice(uuid).subscribe({
       next: () => {
@@ -61,4 +51,13 @@ getRGBString(color : any) : string{
   if (!color) return `black`;
   return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
   }
+handleAction(uuid: string, action: string) {
+  this.deviceService.executeAction(uuid, action).subscribe({
+    next: () => {
+      console.log(`${action} successful`);
+      this.deviceService.fetchDevices('null','null',null);
+    },
+    error: (err) => alert('Action failed: ' + err.message)
+  });
+}
 }

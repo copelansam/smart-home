@@ -84,7 +84,8 @@ private mapDtoToModel(dto : DeviceDto){
   }
 
 executeAction(uuid: string, action: string){
-  return this.http.post(`${this.apiUrl}/${uuid}/state`, {action});
+  console.log('executing action: ', action);
+  return this.http.put(`${this.apiUrl}/${uuid}/state`, {}, {params: {action: action} });
   }
 
 deleteDevice(uuid: string){
