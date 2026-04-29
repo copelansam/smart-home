@@ -49,7 +49,7 @@ export interface SmartThermostat extends SmartDeviceBase{
   attributes:{
     ambientTemperature: Temperature;
     desiredTemperature: Temperature;
-
+    mode: string;
     };
   }
 

@@ -19,7 +19,8 @@
 
         @if(isThermostat(device)){
         <span>Ambient Temperature: {{ device.attributes['ambientTemperature']}}</span><br>
-        <span>Desired Temperature: {{ device.attributes['desiredTemperature']}}</span> <br>
+        <span>Desired Temperature: {{ device.attributes['desiredTemperature']}}</span><br>
+        <span>Mode: {{ device.attributes['mode'] }}</span><br>
         <button>Turn On/Off</button>
 
 

@@ -31,7 +31,6 @@ public class DeviceDTO {
         dto.state = device.getState();
         dto.availableTransitions = device.getAvailableTransitions();
 
-
         dto.properties = device.getExtraProperties();
 
         return dto;

@@ -25,6 +25,9 @@ public class SmartThermostat extends SmartDeviceBase {
     })
     private Temperature ambientTemperature;
 
+    @Enumerated(EnumType.STRING)
+    private ThermostatMode mode;
+
     public SmartThermostat(){}
 
     // Constructor with no temperatures specified, temperatures will be set to a random value between 60 and 80
@@ -33,6 +36,7 @@ public class SmartThermostat extends SmartDeviceBase {
         this.desiredTemperature = new Temperature();
         this.ambientTemperature = new Temperature();
         this.state = new ThermostatOffState();
+        this.mode = ThermostatMode.AUTO;
     }
 
     public SmartThermostat(String name, String location, double desiredTemperature, double ambientTemperature){
@@ -42,6 +46,7 @@ public class SmartThermostat extends SmartDeviceBase {
         this.state = new ThermostatOffState();
         this.desiredTemperature = new Temperature(desiredTemperature);
         this.ambientTemperature = new Temperature(ambientTemperature);
+        this.mode = ThermostatMode.AUTO;
     }
 
     public Temperature getDesiredTemperature(){
@@ -64,11 +69,20 @@ public class SmartThermostat extends SmartDeviceBase {
         }
     }
 
+    public ThermostatMode getMode(){
+        return this.mode;
+    }
+
+    public void setMode(ThermostatMode mode){
+        this.mode = mode;
+    }
+
     public Map<String,Object> getExtraProperties(){
 
         Map<String,Object> extraProperties = new HashMap<>();
         extraProperties.put("desiredTemperature", this.desiredTemperature.getTemperature());
         extraProperties.put("ambientTemperature", this.ambientTemperature.getTemperature());
+        extraProperties.put("mode", this.mode);
         return extraProperties;
     }
 
@@ -81,7 +95,8 @@ public class SmartThermostat extends SmartDeviceBase {
     public void factoryReset(){
         this.state = new ThermostatOffState();
         this.isOn = false;
-        this.ambientTemperature = new Temperature();
-        this.desiredTemperature = new Temperature();
+        this.ambientTemperature = new Temperature(70);
+        this.desiredTemperature = new Temperature(75);
+        this.mode = ThermostatMode.AUTO;
     }
 }

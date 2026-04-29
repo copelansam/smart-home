@@ -10,6 +10,9 @@ public class DeviceCreationRequest {
     public DeviceType deviceType;
     public Map<String, Object> attributes;
 
+    public DeviceCreationRequest() {
+    }
+
     public DeviceCreationRequest(String name, String location, DeviceType deviceType, Map<String, Object> attributes) {
         this.name = name;
         this.location = location;

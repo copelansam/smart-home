@@ -47,6 +47,7 @@ public class SmartDeviceController {
     public ResponseEntity<ISmartDevice> getDeviceById(
             @PathVariable("id")UUID id) {
         ISmartDevice device = deviceService.getDeviceById(id);
+        System.out.println(device.getExtraProperties());
         return ResponseEntity.ok(device);
     }
 

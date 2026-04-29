@@ -4,6 +4,7 @@ import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
+import com.example.smarthome.domain.smartdevices.devices.smartthermostat.ThermostatMode;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.service.SmartDeviceService;
@@ -41,9 +42,10 @@ public class ThermostatAutomationTask {
             double difference = ambientTemperature - desiredTemperature;
             boolean hasChanged = false;
 
-            // If it is hotter than what the user wants, start cooling
+            // If it is hotter than what the user wants and the thermostat is either in auto or cooling mode, start cooling
             if (difference >= 1){
-                if (!thermostat.getState().contains("Cooling")){
+                if (!thermostat.getState().contains("Cooling") &&
+                        (thermostat.getMode() == ThermostatMode.AUTO || thermostat.getMode() == ThermostatMode.COOL)){
                     CallResult result = thermostat.execute("START_COOLING");
 
                     if (result != null && result.getLog() != null) {
@@ -59,8 +61,9 @@ public class ThermostatAutomationTask {
                         "The temperature in " + thermostat.getLocation() + " has been adjusted to "
                                 + (ambientTemperature - 1)));
             }
-            else if (difference <= -1){ // If it is colder that the user wants, start heating
-                if (!thermostat.getState().contains("Heating")){
+            else if (difference <= -1){ // If it is colder that the user wants and the thermostat is in auto or heating mode, start heating
+                if (!thermostat.getState().contains("Heating") &&
+                        (thermostat.getMode() == ThermostatMode.AUTO || thermostat.getMode() == ThermostatMode.HEAT)){
                     CallResult result = thermostat.execute("START_HEATING");
 
                     if (result != null && result.getLog() != null) {
