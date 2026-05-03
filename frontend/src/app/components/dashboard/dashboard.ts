@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { DeviceService } from './device';
-import { SmartDevice, SmartFan, SmartThermostat, SmartLight, SmartLock, FAN_SPEEDS, THERMOSTAT_MODES } from './device.model';
+import { DeviceService } from '../../services/device.service';
+import { SmartDevice, SmartFan, SmartThermostat, SmartLight, SmartLock, FAN_SPEEDS, THERMOSTAT_MODES } from '../../models/device.model';
 import { CommonModule, JsonPipe, DatePipe } from '@angular/common';
 import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
@@ -14,7 +14,7 @@ import { MessageService } from 'primeng/api';
   imports: [CommonModule, JsonPipe, DatePipe, SelectModule, FormsModule, PopoverModule, ToastModule ],
   providers: [ MessageService ],
   templateUrl: './dashboard.html',
-  styleUrl: './app.css'
+  styleUrl: '../../app.css'
 })
 export class DashboardComponent implements OnInit {
   private messageService = inject(MessageService);

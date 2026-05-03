@@ -2,7 +2,7 @@ import { Injectable, inject, signal, NgZone } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { RxStomp } from '@stomp/rx-stomp';
 import { map, tap } from 'rxjs/operators';
-import { SmartDevice, DeviceType, DeviceLog, ITransition } from './device.model'
+import { SmartDevice, DeviceType, DeviceLog, ITransition } from '../models/device.model'
 import { computed } from '@angular/core';
 
 interface DeviceDto{

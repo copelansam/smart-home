@@ -1,9 +1,9 @@
 import { Component, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { AppTopbar } from './app.topbar';
-import { LayoutService } from '@/app/layout/service/layout.service';
-import { AppFilterBar } from './app.filterbar';
+import { AppTopbar } from '../dashboard/app.topbar';
+import { LayoutService } from '../../services/layout.service';
+import { AppFilterBar } from '../dashboard/app.filterbar';
 
 @Component({
     selector: 'app-layout',

@@ -59,12 +59,14 @@ export interface SmartThermostat extends SmartDeviceBase{
 
 export type SmartDevice = SmartFan | SmartLight | SmartLock | SmartThermostat;
 
+// Fan Speeds
 export const FAN_SPEEDS = [
   { label: 'Low', value: 'LOW'},
   { label: 'Medium', value: 'MEDIUM'},
   { label: 'High', value: 'HIGH'}
   ];
 
+// Thermostat Modes
 export const THERMOSTAT_MODES = [
   { label: 'Auto', value: 'AUTO'},
   { label: 'Cool', value: 'COOL'},
@@ -72,7 +74,6 @@ export const THERMOSTAT_MODES = [
   ];
 
 // Device Logs
-
 export interface DeviceLog{
 
   logId: number;
