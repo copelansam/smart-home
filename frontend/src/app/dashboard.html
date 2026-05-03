@@ -1,3 +1,5 @@
+<p-toast/>
+
 <!-- Iterate through the list of locations and display the devices in that location -->
 @for(location of deviceService.locations(); track location.value){
 <div class="location-section mb-5">
@@ -124,7 +126,7 @@
 
               <hr/>
               <!-- Delete device button -->
-              <button pButton label="Delete Device" class="p-button-sm p-button-danger ml-2" (click)="removeDevice(device.uuid)">Delete Device</button>
+              <button pButton label="Delete Device" class="p-button-sm p-button-danger ml-2" (click)="removeDevice(device)">Delete Device</button>
             </div>
           </p-popover>
 

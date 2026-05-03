@@ -1,6 +1,7 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject, signal, NgZone } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { RxStomp } from '@stomp/rx-stomp';
+import { map, tap } from 'rxjs/operators';
 import { SmartDevice, DeviceType, DeviceLog, ITransition } from './device.model'
 import { computed } from '@angular/core';
 
@@ -21,8 +22,43 @@ interface DeviceDto{
 })
 export class DeviceService {
   private http = inject(HttpClient);
+   private zone = inject(NgZone);
   private apiUrl = 'http://localhost:8080/api/devices';
   private simulationUrl = 'http://localhost:8080/api/simulation';
+
+  private rxStomp = new RxStomp();
+
+  constructor() {
+      this.initializeWebSocket();
+    }
+
+    private initializeWebSocket() {
+      this.rxStomp.configure({
+        brokerURL: 'ws://localhost:8080/ws/websocket',
+        reconnectDelay: 5000, // Auto-reconnect after 5 seconds if connection drops
+        debug: (str) => console.log(str),
+      });
+
+     this.rxStomp.activate();
+
+          this.rxStomp.watch('/topic/devices').pipe(
+                map(message => JSON.parse(message.body) as DeviceDto),
+                map(dto => this.mapDtoToModel(dto))
+              ).subscribe((updatedDevice: SmartDevice) => {
+
+                this.zone.run(() => {
+                  this.devices.update(currentDevices => {
+
+                    const updatedArray = currentDevices.map(device =>
+                      device.uuid === updatedDevice.uuid ? updatedDevice : device
+                    );
+
+                    return [...updatedArray];
+                  });
+                });
+
+              });
+       }
 
   getDeviceTypes() {
       return [
@@ -40,6 +76,7 @@ export class DeviceService {
   locations = computed(() => {
     const allLocations = this.devices().map(d => d.location);
 
+    // Creates a list of all unique locations and assigns them a label and value so that they can be selected by the user
     return Array.from(new Set(allLocations)).map(loc => ({
       label: loc,
       value: loc
@@ -50,6 +87,7 @@ export class DeviceService {
 
     let params = new HttpParams();
 
+    // Check to make sure that all of the filters have some sort of value and store them in params to pass to the backend
     if (deviceType && deviceType !== 'null'){
       params = params.set('type', deviceType);
     }

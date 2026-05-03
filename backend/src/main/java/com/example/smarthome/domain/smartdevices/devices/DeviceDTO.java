@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@JsonPropertyOrder({"uuid", "name", "location","deviceType", "state", "isOn", "properties", "availableActions, updatableFields"})
+@JsonPropertyOrder({"uuid", "name", "location","deviceType", "state", "isOn", "properties", "availableActions", "updatableFields"})
 public class DeviceDTO {
 
     public UUID uuid;

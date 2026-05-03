@@ -1,6 +1,7 @@
 package com.example.smarthome.simulation;
 
 import com.example.smarthome.domain.history.DeviceLog;
+import com.example.smarthome.domain.smartdevices.devices.DeviceDTO;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
@@ -12,6 +13,8 @@ import com.example.smarthome.domain.smartdevices.statemachine.states.thermostats
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.service.SmartDeviceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,6 +24,8 @@ public class ThermostatAutomationTask {
 
     private final SmartDeviceService deviceService;
     private final DeviceLogRepository logRepository;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     ThermostatAutomationTask(SmartDeviceService deviceService, DeviceLogRepository logRepository){
 
@@ -110,6 +115,12 @@ public class ThermostatAutomationTask {
             if (hasChanged) {
 
                 deviceService.saveDeviceUpdate(thermostat);
+
+                ISmartDevice updatedDevice = deviceService.getDeviceById(thermostat.getUuid());
+
+                DeviceDTO dto = DeviceDTO.fromISmartDevice(updatedDevice);
+
+                messagingTemplate.convertAndSend("/topic/devices", dto);
             }
         }
     }
