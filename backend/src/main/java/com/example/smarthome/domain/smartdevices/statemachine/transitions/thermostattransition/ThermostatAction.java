@@ -6,7 +6,9 @@ public enum ThermostatAction {
     START_HEATING(null),
     STOP_HEATING(null),
     START_COOLING(null),
-    STOP_COOLING(null);
+    STOP_COOLING(null),
+    UPDATE_DESIRED_TEMP("Update Desired Temp"),
+    UPDATE_MODE("Update Mode");
 
     String label;
 

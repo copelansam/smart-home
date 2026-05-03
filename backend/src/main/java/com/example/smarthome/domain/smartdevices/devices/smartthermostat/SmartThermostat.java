@@ -87,11 +87,6 @@ public class SmartThermostat extends SmartDeviceBase {
     }
 
     @Override
-    public CallResult execute(String transition) {
-        return this.state.execute(transition, this);
-    }
-
-    @Override
     public void factoryReset(){
         this.state = new ThermostatOffState();
         this.isOn = false;

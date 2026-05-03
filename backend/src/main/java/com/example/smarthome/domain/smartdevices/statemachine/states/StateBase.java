@@ -3,6 +3,7 @@ package com.example.smarthome.domain.smartdevices.statemachine.states;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
 
+import java.util.Collections;
 import java.util.List;
 
 public abstract class StateBase<D extends ISmartDevice> implements IState<D> {
@@ -11,10 +12,12 @@ public abstract class StateBase<D extends ISmartDevice> implements IState<D> {
 
     public final String name;
     protected final List<ITransition<?>> availableTransitions;
+    protected final List<ITransition<?>> transitionsRepresentingUpdatableFields;
 
-    public StateBase(String name, List<ITransition<?>> availableTransitions){
+    public StateBase(String name, List<ITransition<?>> availableTransitions, List<ITransition<?>> transitionsRepresentingUpdatableFields){
         this.name = name;
         this.availableTransitions = availableTransitions;
+        this.transitionsRepresentingUpdatableFields = transitionsRepresentingUpdatableFields;
     }
 
     public String getName(){
@@ -23,6 +26,11 @@ public abstract class StateBase<D extends ISmartDevice> implements IState<D> {
 
     @Override
     public List<ITransition<?>> provideAvailableTransitions() {
-        return List.copyOf(availableTransitions);
+        return Collections.unmodifiableList(availableTransitions);
+    }
+
+    @Override
+    public List<ITransition<?>> provideUpdatableFields(){
+        return Collections.unmodifiableList(transitionsRepresentingUpdatableFields);
     }
 }

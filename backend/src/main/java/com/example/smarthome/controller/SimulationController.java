@@ -30,6 +30,7 @@ public class SimulationController {
         }
         else{
             simulationSettings.setTimeMultiplier(timeMultiplier);
+            System.out.println("The speed has been changed to: " + timeMultiplier + "x");
             return ResponseEntity.ok("Simulation speed updated to: " + timeMultiplier + "x");
         }
     }

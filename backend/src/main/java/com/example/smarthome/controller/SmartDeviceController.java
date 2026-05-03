@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -36,6 +37,8 @@ public class SmartDeviceController {
             @RequestParam(required = false)String location,
             @RequestParam(required = false)Boolean isOn
             ){
+
+        System.out.println("Retriving devices with these filters: Type: " + type + " location: " + location + " isOn: " + isOn);
 
         List<ISmartDevice> device = deviceService.getDevices(type,location,isOn);
         List<DeviceDTO> deviceDtos = deviceService.deviceListToDto(device);
@@ -76,9 +79,12 @@ public class SmartDeviceController {
     @PutMapping("/{id}/state")
     @CrossOrigin(origins = "*")
     public ResponseEntity<CallResult> executeAction(@PathVariable("id") UUID id,
-                                                    @RequestParam(required = true) String action){
+                                                    @RequestParam(required = true) String action,
+                                                    @RequestBody(required = false) Map<String, Object> parameters){
         System.out.println("Transition: " + action);
-        CallResult result = deviceService.executeAction(id, action);
+        System.out.println("Parameters: " + parameters);
+
+        CallResult result = deviceService.executeAction(id, action, parameters);
 
         if (!result.getIsSuccess()){
 

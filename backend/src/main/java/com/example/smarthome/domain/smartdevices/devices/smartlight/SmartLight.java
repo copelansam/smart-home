@@ -25,7 +25,7 @@ public class SmartLight extends SmartDeviceBase {
     public SmartLight(String name, String location){
         super(name, location, DeviceType.LIGHT);
         this.brightnessPercentage = 100;
-        setColor(255,255,255);
+        setColor(new RGB(255,255,255));
         this.state = new LightOffState();
         this.isOn = false;
     }
@@ -52,9 +52,9 @@ public class SmartLight extends SmartDeviceBase {
         return brightnessPercentage;
     }
 
-    public void setColor(int R, int G, int B){
+    public void setColor(RGB color){
 
-        this.color = new RGB(R,G,B);
+        this.color = color;
     }
 
     public RGB getColor(){
@@ -69,15 +69,11 @@ public class SmartLight extends SmartDeviceBase {
         return extraProperties;
     }
 
-    public CallResult execute(String transition){
-        return this.state.execute(transition, this);
-    }
-
     @Override
     public void factoryReset(){
         this.isOn = false;
         this.state = new LightOffState();
-        this.color = new RGB(255,255,255);
+        setColor(new RGB(255,255,255));
         this.brightnessPercentage = 100;
     }
 }

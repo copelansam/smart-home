@@ -15,6 +15,7 @@ export interface IState{
 
   name: string;
   availableTransitions: ITransition[];
+  updatableFields: ITransition[];
 
   }
 
@@ -26,8 +27,9 @@ export interface SmartDeviceBase{
   deviceType: DeviceType;
   isOn: boolean;
   state: IState;
-  attributes: Record<string, any>
+  attributes: Record<string, any>;
   availableTransitions: Array<{ action: string, label: string }>;
+  updatableFields: Array< { action: string, label: string}>;
   }
 
 export interface SmartLight extends SmartDeviceBase{
@@ -57,6 +59,18 @@ export interface SmartThermostat extends SmartDeviceBase{
 
 export type SmartDevice = SmartFan | SmartLight | SmartLock | SmartThermostat;
 
+export const FAN_SPEEDS = [
+  { label: 'Low', value: 'LOW'},
+  { label: 'Medium', value: 'MEDIUM'},
+  { label: 'High', value: 'HIGH'}
+  ];
+
+export const THERMOSTAT_MODES = [
+  { label: 'Auto', value: 'AUTO'},
+  { label: 'Cool', value: 'COOL'},
+  { label: 'Heat', value: 'HEAT'}
+  ];
+
 // Device Logs
 
 export interface DeviceLog{
@@ -66,5 +80,5 @@ export interface DeviceLog{
   message: string;
   event: string;
   timestamp: string | Date;
-
   }
+

@@ -68,4 +68,9 @@ public class RGB {
         int[] color = {getR() ,getG() ,getB()};
         return  color;
     }
+
+    @Override
+    public String toString(){
+        return "Red: " + this.R + " Green: " + this.G + " Blue: " + this.B;
+    }
 }

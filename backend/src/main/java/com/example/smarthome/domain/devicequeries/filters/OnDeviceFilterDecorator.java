@@ -27,6 +27,7 @@ public class OnDeviceFilterDecorator extends DeviceQueryDecoratorBase {
 
         // Iterate through all of the previously filtered through devices
         for (ISmartDevice device : devices){
+            System.out.println(device.getName() + " -> " + device.getIsOn());
             // If the device's on state matches what the user selected, add it to the filtered query, otherwise ignore it
             if (device.getIsOn() == isOn){
                 filteredItems.add(device);

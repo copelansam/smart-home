@@ -13,6 +13,7 @@ interface DeviceDto{
   isOn: boolean;
   availableTransitions: ITransition[];
   properties: Record<string, any>;
+  updatableFields: ITransition[];
   }
 
 @Injectable({
@@ -76,16 +77,18 @@ private mapDtoToModel(dto : DeviceDto){
       deviceType: dto.deviceType,
       state: {
         name: dto.state,
-        availableTransitions: dto.availableTransitions || []
+        availableTransitions: dto.availableTransitions || [],
+        updatableFields: dto.updatableFields || []
         },
       isOn: dto.isOn,
       attributes: { ...dto.properties }
     } as SmartDevice;
   }
 
-executeAction(uuid: string, action: string){
+executeAction(uuid: string, action: string, parameters: any){
   console.log('executing action: ', action);
-  return this.http.put(`${this.apiUrl}/${uuid}/state`, {}, {params: {action: action} });
+  console.log('action parameters: ', parameters)
+  return this.http.put(`${this.apiUrl}/${uuid}/state`, parameters , {params: {action: action} });
   }
 
 deleteDevice(uuid: string){
@@ -104,8 +107,9 @@ fetchLogs(uuid: string){
     return this.http.post(`${this.simulationUrl}/reset`, null);
     }
 
-  updateSimulationSpeed(speed: number){
-    return this.http.post(`${this.simulationUrl}/speed`, { speed });
+  updateSimulationSpeed(timeMultiplier: number){
+    console.log('Updating speed to: ' + timeMultiplier);
+    return this.http.post(`${this.simulationUrl}/speed`, null , {params: { 'timeMultiplier': timeMultiplier}, responseType: 'text'} );
     }
 
   getThermostatLocations(){
@@ -125,4 +129,11 @@ fetchLogs(uuid: string){
   createNewDevice(newDevice: any){
     return this.http.post(`${this.apiUrl}/create-device`, newDevice)
   }
+
+  updateAttribute(uuid: string, attribute: string, newValue: any){
+
+    return this.http.patch(`${this.apiUrl}/${uuid}/attribute`,
+      { [attribute]: newValue
+        });
+    }
 }

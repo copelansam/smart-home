@@ -9,6 +9,7 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.doorlo
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.doorlocktransition.DoorTransition;
 
 import java.util.List;
+import java.util.Map;
 
 public class DoorLockedState extends StateBase<SmartDoorLock> {
 
@@ -20,12 +21,13 @@ public class DoorLockedState extends StateBase<SmartDoorLock> {
         super("Door Locked",
                 List.of(
                 new DoorTransition(DoorLockAction.UNLOCK)
-                )
+                ),
+                List.of()
         );
     }
 
     @Override
-    public CallResult execute(String transition, SmartDoorLock device){
+    public CallResult execute(String transition, SmartDoorLock device, Map<String, Object> parameters){
 
         DoorLockAction action = DoorLockAction.getActionFromString(transition);
 

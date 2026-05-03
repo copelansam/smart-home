@@ -126,14 +126,17 @@ public class SmartDeviceService {
         return Collections.unmodifiableList(deviceDtos);
     }
 
-    public CallResult executeAction(UUID uuid, String transition){
+    public CallResult executeAction(UUID uuid, String transition, Map<String, Object> parameters){
         ISmartDevice device = repo.getReferenceById(uuid);
 
-        CallResult result = device.execute(transition);
+        CallResult result = device.execute(transition, parameters);
 
         if (result.getIsSuccess()){
             repo.save((SmartDeviceBase) device);
             deviceLogRepository.save(result.getLog());
+        }
+        else{
+            throw new IllegalStateException(result.getMessage());
         }
         return result;
     }

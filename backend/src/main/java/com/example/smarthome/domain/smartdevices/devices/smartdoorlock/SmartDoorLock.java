@@ -31,10 +31,6 @@ public class SmartDoorLock extends SmartDeviceBase {
         return extraProperties;
     }
 
-    public CallResult execute(String transition){
-        return state.execute(transition, this);
-    }
-
     public void factoryReset(){
         this.state = new DoorUnlockedState();
     }

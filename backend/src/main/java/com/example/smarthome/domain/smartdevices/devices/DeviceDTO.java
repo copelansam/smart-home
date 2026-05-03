@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@JsonPropertyOrder({"uuid", "name", "location","deviceType", "state", "isOn", "properties", "availableActions"})
+@JsonPropertyOrder({"uuid", "name", "location","deviceType", "state", "isOn", "properties", "availableActions, updatableFields"})
 public class DeviceDTO {
 
     public UUID uuid;
@@ -17,6 +17,7 @@ public class DeviceDTO {
     public boolean isOn;
     public String state;
     public List<ITransition<?>> availableTransitions;
+    public List<ITransition<?>> updatableFields;
 
     public Map<String,Object> properties;
 
@@ -30,6 +31,7 @@ public class DeviceDTO {
         dto.isOn = device.getIsOn();
         dto.state = device.getState();
         dto.availableTransitions = device.getAvailableTransitions();
+        dto.updatableFields = device.getUpdatableFields();
 
         dto.properties = device.getExtraProperties();
 

@@ -2,14 +2,13 @@ import { Component, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AppTopbar } from './app.topbar';
-import { AppFooter } from './app.footer';
 import { LayoutService } from '@/app/layout/service/layout.service';
 import { AppFilterBar } from './app.filterbar';
 
 @Component({
     selector: 'app-layout',
     standalone: true,
-    imports: [CommonModule, AppTopbar, RouterModule, AppFooter, AppFilterBar],
+    imports: [CommonModule, AppTopbar, RouterModule, AppFilterBar],
     template: `<div class="layout-wrapper" [ngClass]="containerClass()">
         <app-topbar></app-topbar>
         <app-filterbar></app-filterbar>
@@ -17,7 +16,7 @@ import { AppFilterBar } from './app.filterbar';
             <div class="layout-main">
                 <router-outlet></router-outlet>
             </div>
-            <app-footer></app-footer>
+
         </div>
         <div class="layout-mask"></div>
     </div> `

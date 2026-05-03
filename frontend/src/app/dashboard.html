@@ -1,70 +1,168 @@
-<div class="grid">
-  <div class="col-12 md:col-6 lg:col-4" *ngFor="let device of deviceService.devices()">
-    <div class="card">
-      <h2>{{ device.name }}</h2>
-      <p> {{ device.deviceType }}</p>
-      <h5>Location: {{ device.location }}</h5>
-      <h5>Current State: {{ device.state.name }}</h5>
+<!-- Iterate through the list of locations and display the devices in that location -->
+@for(location of deviceService.locations(); track location.value){
+<div class="location-section mb-5">
+  <h1>{{ location.label }}</h1>
+  <hr/>
 
-      <small> {{ device.uuid }}</small>
+  <div class="grid">
 
-      <div class="mt-3"></div>
+    <!-- Iterate through the list of devices and display the devices in the current location in the location iteration -->
+    @for(device of deviceService.devices(); track device.uuid){
+    @if (device.location == location.value){
 
-      <div class="extra-info">
+    <div class="col-12 md:col-6 lg:col-6" >
+      <div class="card h-full border-round-xl">
+        <div class="flex flex-column align-items-center">
+        <h2>{{ device.name }}</h2>
+        <p> {{ device.deviceType }}</p>
+        <h5>Current State: {{ device.state.name }}</h5>
 
-        @if(isFan(device)){
-        <span>Fan Speed: {{ device.attributes['speed']}}</span> <br>
+        </div>
 
-        }
+        <!-- Device specific attributes -->
+        <div class="extra-info flex flex-column align-items-center">
 
-        @if(isThermostat(device)){
-        <span>Ambient Temperature: {{ device.attributes['ambientTemperature']}}</span><br>
-        <span>Desired Temperature: {{ device.attributes['desiredTemperature']}}</span><br>
-        <span>Mode: {{ device.attributes['mode'] }}</span><br>
-        }
-
-        @if(isLight(device)){
+          @if(isFan(device)){
+          <!-- Fan Attributes-->
+          <span>Fan Speed: {{ device.attributes['speed']}}</span><br>
+          } @else if(isThermostat(device)){
+          <!-- Thermostat Attributes-->
+          <span>Ambient Temperature: {{ device.attributes['ambientTemperature']}}</span><br>
+          <span>Desired Temperature: {{ device.attributes['desiredTemperature']}}</span><br>
+          <span>Mode: {{ device.attributes['mode'] }}</span><br>
+          } @else if(isLight(device)){
+          <!-- Light Attributes-->
           <span>Brightness Percentage: {{ device.attributes['brightnessPercentage']}}</span> <br>
-        <div>
-          <span>Color: </span>
-          <div style="width: 20px; height: 20px; border: 1px solid black; display: inline-block;"
-                       [style.backgroundColor]="getRGBString(device.attributes['color'])"></div>
-        </div> <br>
-        }
-        @for(transition of device.state?.availableTransitions; track transition.action){
-        @if(transition.label) {
-          <button (click)="handleAction(device.uuid, transition.action)">
-            {{ transition.label }}
-          </button>
-        }
-        }
+          <div> <!-- A little square that shows what color the light is set to -->
+            <span>Color: </span>
+            <div style="width: 20px; height: 20px; border: 1px solid black; display: inline-block;"
+                 [style.backgroundColor]="getRGBString(device.attributes['color'])"></div>
+          </div>
+          }
+          <!-- There are no unique attributes for door lock devices, if some are added in the future just add an
+          else if (isDoorLook(device)) conditional branch -->
 
-        <br>
-      <button pButton label="View Device History" class="p-button-sm p-button-info" (click)="viewLogs(device)">View Device History</button>
-      <button pButton label="Delete Device" class="p-button-sm p-button-danger ml-2" (click)="removeDevice(device.uuid)">Delete Device</button>
+          <hr/>
+
+          <!-- Direct transition buttons (Turn On / Off , Lock / Unlock). Dynamically determines what button to
+           display based on the available actions provided by the device's state-->
+          @for(transition of device.state?.availableTransitions; track transition.action){
+          @if(transition.label) { <!-- Only display the transitions that have user facing labels -->
+          <button class="p-button-sm p-button-info" (click)="handleAction(device.uuid, transition.action)"> {{ transition.label }} </button>
+          }
+          }
+          <br>
+
+          <!-- Extra Buttons (View Logs and Edit Device) -->
+          <div class="flex justify-content-evenly gap-2">
+            <button pButton label="View Device History" class="p-button-sm p-button-info" (click)="viewLogs(device); logs.toggle($event)">View Device History</button>
+
+            <!-- Load relevant fields when the user wants to edit a device -->
+            <button pButton class="p-button-sm p-button-info"
+                    (click)="isFan(device) ? prepareOnFanEdit(device.attributes['speed']) : null;
+                    isThermostat(device) ? prepareOnThermostatEdit(device.attributes['mode'], device.attributes['desiredTemperature']) : null;
+                    isLight(device) ? prepareOnLightEdit(device.attributes['brightnessPercentage'], device.attributes['color'][0], device.attributes['color'][1], device.attributes['color'][2]) : null;
+                    op.toggle($event)">Edit Device</button>
+          </div>
+          <!-- Popover menu to edit a device's fields or delete the device -->
+          <p-popover #op>
+            <div class="edit-popover">
+              <h4>Edit {{ device.name }}</h4>
+
+              @if (isThermostat(device)) {
+              <!-- Thermostat fields (ALWAYS visible) -->
+              <label>Desired Temperature: </label>
+              <input [(ngModel)]="selectedDesiredTemp" type="number" min="60" max="80"> <br>
+              <small>Note: Desired Temperature must be between 60 and 80 °F</small> <br>
+
+              <label>Mode: </label>
+              <p-select
+                [options]="thermostatModes"
+                [(ngModel)]="selectedThermostatMode"
+                [placeholder]="device.attributes.mode"
+                optionLabel="label"
+                optionValue="value"
+                class="flex-1">
+              </p-select>
+
+              } @else if (!device.isOn) {
+              <!-- Non-thermostat devices must be ON -->
+              <small>You must turn this device on before you can update any of its properties.</small>
+
+              } @else if (isFan(device)) {
+              <!-- Fan fields -->
+              <label>Fan Speed</label>
+              <div class="flex gap-2">
+                <p-select
+                  [options]="fanSpeeds"
+                  [(ngModel)]="selectedFanSpeed"
+                  [placeholder]="device.attributes.speed"
+                  optionLabel="label"
+                  optionValue="value"
+                  class="flex-1">
+                </p-select>
+              </div>
+
+              } @else if (isLight(device)) {
+              <!-- Light fields -->
+              <label>Brightness Percentage: </label>
+              <input [(ngModel)]="selectedBrightness" type="number" min="10" max="100"> <br>
+              <small>Note: brightness percentage must be between 10 and 100 percent</small> <br>
+
+              <label>Color: </label>
+              R: <input [(ngModel)]="selectedRedValue" type="number" min="0" max="255">
+              G: <input [(ngModel)]="selectedGreenValue" type="number" min="0" max="255">
+              B: <input [(ngModel)]="selectedBlueValue" type="number" min="0" max="255"> <br>
+              <small>Note: each color value must be between 0 and 255</small>
+              }
+              <br>
+
+              @for (field of device.state.updatableFields; track field.action) {
+              <!-- Lists buttons for updating fields per device. Will dynamically load based on the updatable fields decided by the device's state-->
+              <button (click)="handleAction(device.uuid, field.action)"> {{ field.label || field.action }} </button>
+              }
+
+              <hr/>
+              <!-- Delete device button -->
+              <button pButton label="Delete Device" class="p-button-sm p-button-danger ml-2" (click)="removeDevice(device.uuid)">Delete Device</button>
+            </div>
+          </p-popover>
+
+          <!-- Popover menu to view a device's logs -->
+          <p-popover #logs>
+            @if(selectedDevice()){
+            <!-- Display a selected device's logs -->
+            <div class="log-overlay">
+              <div class="log-modal">
+                <div class ="log-header">
+                  <h2>History: {{ selectedDevice()?.name }}</h2>
+                  <button (click)="closeLogs()">Close Device Logs</button>
+                </div>
+                <div class="log-content">
+                  <!-- Iterates through the device's logs displaying relevant info (date/time, event type, message) -->
+                  @for(log of deviceService.currentLogs(); track log.timestamp){
+                  <div class="log-item">
+                    <span class="log-time"> Date/Time: {{ log.timestamp | date:'short' }}: </span> <br>
+                    <span class ="log-event"> Event type: {{ log.event }}</span> <br>
+                    <span class="log-msg"> Message: {{ log.message }}</span>
+                  </div>
+                  } @empty {
+                  <p class="empty-logs">No history found for this device.</p>
+                  }
+                </div>
+              </div>
+            </div>
+            }
+
+          </p-popover>
+
+        </div>
       </div>
-  </div>
-</div>
-
-@if(selectedDevice()){
-<div class="log-overlay">
-  <div class="log-modal">
-    <div class ="log-header">
-      <h2>History: {{ selectedDevice()?.name }}</h2>
-      <button (click)="closeLogs()">Close Device Logs</button>
     </div>
 
-    <div class="log-content">
-      @for(log of deviceService.currentLogs(); track log.timestamp){
-      <div class="log-item">
-        <span class="log-time"> Date/Time: {{ log.timestamp | date:'short' }}: </span> <br>
-        <span class ="log-event"> Event type: {{ log.event }}</span> <br>
-        <span class="log-msg"> Message: {{ log.message }}</span>
-      </div>
-      } @empty{
-      <p class="empty-logs">No history found for this device.</p>
-      }
-    </div>
+    }
+    }
+
   </div>
 </div>
 }

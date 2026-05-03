@@ -26,9 +26,11 @@ public interface ISmartDevice {
 
     List<ITransition<?>> getAvailableTransitions();
 
+    List<ITransition<?>> getUpdatableFields();
+
     UUID getUuid();
 
-    CallResult execute(String transition);
+    CallResult execute(String transition, Map<String, Object> parameters);
 
     void setIsOn(boolean isOn);
 

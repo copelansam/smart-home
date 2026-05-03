@@ -7,7 +7,9 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallRe
 import com.example.smarthome.repository.StateConverter;
 import jakarta.persistence.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Entity
@@ -31,6 +33,9 @@ public abstract class SmartDeviceBase implements ISmartDevice{
     @Transient
     private List<ITransition<?>> availableActions;
 
+    @Transient
+    private List<ITransition<?>> updatableFields;
+
     public SmartDeviceBase(){}
 
     public SmartDeviceBase(String name, String location, DeviceType deviceType){
@@ -53,19 +58,26 @@ public abstract class SmartDeviceBase implements ISmartDevice{
         return this.isOn;
     }
     public String getState(){return this.state.getName();}
+    public IState getStateObject(){return this.state;}
     public void setState(IState newState){
         this.state = newState;
     }
     public List<ITransition<?>> getAvailableTransitions(){
-        return this.availableActions;
+        return Collections.unmodifiableList(this.availableActions);
+    }
+    public List<ITransition<?>>  getUpdatableFields(){
+        return this.updatableFields;
     }
 
     @PostLoad
-    public void generateAvailableTransitions(){
+    public void onPostLoad(){
         this.availableActions = state.provideAvailableTransitions();
+        this.updatableFields = state.provideUpdatableFields();
     }
 
-    public abstract CallResult execute(String transition);
+    public CallResult execute(String transition, Map<String, Object> parameters){
+        return this.state.execute(transition, this, parameters);
+    }
 
     public void setIsOn(boolean isOn){
         this.isOn = isOn;

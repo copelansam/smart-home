@@ -2,7 +2,8 @@ package com.example.smarthome.domain.smartdevices.statemachine.transitions.fantr
 
 public enum FanAction {
     TURN_FAN_ON("Turn On"),
-    TURN_FAN_OFF("Turn Off");
+    TURN_FAN_OFF("Turn Off"),
+    UPDATE_SPEED("Update Speed");
 
     String label;
 

@@ -25,7 +25,7 @@ public class QueryBuilder {
         if (isOn != null) {
             if (isOn == true) {
                 query = new OnDeviceFilterDecorator(query, true);
-            } else if (isOn = false) {
+            } else if (isOn == false) {
                 query = new OnDeviceFilterDecorator(query, false);
             }
         }

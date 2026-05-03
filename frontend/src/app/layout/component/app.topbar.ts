@@ -20,35 +20,9 @@ import { InputTextModule } from 'primeng/inputtext';
         <div class="layout-topbar-logo-container">
 
             <span>
-              Smart Home Simulation
+              <b>Smart Home Simulation</b>
             </span>
         </div>
-<button (click)="op.toggle($event)" class="p-button-sm p-button-info">Simulation Controls</button>
-
-
-<p-popover #op>
-
- <div class="control-section">
-            <label class="block font-bold mb-2">Update Speed</label>
-            <div class="flex gap-2">
-              <p-select [options]="speeds" [(ngModel)]="selectedSpeed" optionLabel="label" optionValue="value" placeholder="Select Speed" class="flex-1"></p-select>
-              <button pButton icon="pi pi-check" (click)="updateSimulationSpeed()"></button>
-            </div>
-          </div>
-
-          <hr />
-
-          <label class="block font-bold mb-2">Update Ambient Temperature By Location</label>
-
-           <div class="flex gap-2">
-                      <p-select [options]="deviceService.getThermostatLocations()" [(ngModel)]="selectedLocation" optionLabel="label" optionValue="value" placeholder=Select a Location class="flex-1"></p-select>
-                      <input pInputText type="number" [(ngModel)]="tempValue" class="w-full" placeholder="°F" />
-                      <button pButton [disabled]="!selectedLocation" (click)="updateTemperature()"> Update Temperature </button>
-
-                  </div>
-           <hr />
-  <button class="p-button-sm p-button-danger ml-2" (click)="factoryResetDevices()">Factory Reset Devices</button>
-</p-popover>
 
         <div class="layout-topbar-actions">
             <div class="layout-config-menu">
@@ -79,6 +53,33 @@ import { InputTextModule } from 'primeng/inputtext';
 
                   <button pButton (click)="createDevice()" (click)="createDevicePopover.toggle($event)">Create Device</button>
                 </p-popover>
+
+                <button (click)="op.toggle($event)" class="p-button-sm p-button-info">Simulation Controls</button>
+
+                <p-popover #op>
+
+                 <div class="control-section">
+                            <label class="block font-bold mb-2">Update Speed</label>
+                            <div class="flex gap-2">
+                              <p-select [options]="speeds" [(ngModel)]="selectedSpeed" optionLabel="label" optionValue="value" placeholder="Select Speed" class="flex-1"></p-select>
+                              <button pButton (click)="updateSimulationSpeed()">Update Simulation Speed</button>
+                            </div>
+                          </div>
+
+                          <hr />
+
+                          <label class="block font-bold mb-2">Update Ambient Temperature By Location</label>
+
+                           <div class="flex gap-2">
+                                      <p-select [options]="deviceService.getThermostatLocations()" [(ngModel)]="selectedLocation" optionLabel="label" optionValue="value" placeholder=Select a Location class="flex-1"></p-select>
+                                      <input pInputText type="number" [(ngModel)]="tempValue" class="w-full" placeholder="°F" />
+                                      <button pButton [disabled]="!selectedLocation" (click)="updateTemperature()"> Update Temperature </button>
+
+                                  </div>
+                           <hr />
+                  <button class="p-button-sm p-button-danger ml-2" (click)="factoryResetDevices()">Factory Reset Devices</button>
+                </p-popover>
+
             </div>
         </div>
     </div>`
@@ -148,7 +149,10 @@ export class AppTopbar {
 
     updateSimulationSpeed(){
       console.log("New Simulation Speed: ", this.selectedSpeed ,"X");
-      this.deviceService.updateSimulationSpeed(this.selectedSpeed);
+      this.deviceService.updateSimulationSpeed(this.selectedSpeed).subscribe({
+        next: (res) => console.log('Speed updated successfully',res),
+        error: (err) => console.error('Failed', err)
+        });
       }
 
     createDevice(){
