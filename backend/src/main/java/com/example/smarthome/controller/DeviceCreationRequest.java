@@ -4,10 +4,32 @@ import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 
 import java.util.Map;
 
+/***
+ * Request object used to create a new smart device
+ *
+ * Contains basic data required to register a new device in the system
+ * including name, location, device type, and configuration metadata
+ */
 public class DeviceCreationRequest {
+
+    /***
+     * Name of the device
+     */
     public String name;
+
+    /***
+     * Location of the device
+     */
     public String location;
+
+    /***
+     * Type of device (LIGHT, FAN, DOORLOCK, THERMOSTAT)
+     */
     public DeviceType deviceType;
+
+    /***
+     * Device specific attributes
+     */
     public Map<String, Object> attributes;
 
     public DeviceCreationRequest() {

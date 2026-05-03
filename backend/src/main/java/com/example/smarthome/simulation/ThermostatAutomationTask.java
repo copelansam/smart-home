@@ -19,6 +19,18 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Automates thermostat behavior in the smart home simulation.
+ *
+ * Periodically evaluates all thermostat devices and adjusts their state
+ * and ambient temperature based on desired temperature settings.
+ *
+ * Handles:
+ * - Heating and cooling state transitions
+ * - Temperature adjustments toward target values
+ * - Logging of device activity
+ * - Broadcasting updates to connected WebSocket clients
+ */
 @Component
 public class ThermostatAutomationTask {
 
@@ -33,6 +45,13 @@ public class ThermostatAutomationTask {
         this.logRepository = logRepository;
     }
 
+    /**
+     * Executes one simulation cycle for all thermostat devices.
+     *
+     * Evaluates current and desired temperatures, updates thermostat state
+     * (heating, cooling, idle), persists logs, and broadcasts updates
+     * to connected clients if changes occur.
+     */
     public void simulateTemperatureChange(){
 
         List<ISmartDevice> devices = deviceService.getDevices(DeviceType.THERMOSTAT,null,null);

@@ -8,6 +8,13 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import java.time.Instant;
 import java.util.Date;
 
+/***
+ * Configures dynamic scheduling for the smart home simulation system
+ *
+ * Uses a custom scheduling trigger that adjusts execution frequency based on simulation settings (time multiplier)
+ *
+ * Specifically schedules periodic thermostat updates
+ */
 @Configuration
 @EnableScheduling
 public class SimulationScheduleConfig implements SchedulingConfigurer {
@@ -21,6 +28,12 @@ public class SimulationScheduleConfig implements SchedulingConfigurer {
         this.settings = settings;
     }
 
+    /***
+     * Registers a dynamically triggered task that simulates thermostat temperature updates
+     *
+     * The execution interval determined by simulation settings and adjusts in real time based on the configured time multiplier
+     *
+     */
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar){
 

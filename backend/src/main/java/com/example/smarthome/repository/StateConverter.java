@@ -5,20 +5,39 @@ import com.example.smarthome.domain.smartdevices.statemachine.states.StateRegist
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
-// This class will be responsible for converting IStates into Strings that the database can store.
-// The database cannot store interfaces, so I need to convert them
+/***
+ * JPA attribute converter for persisting state machine states
+ *
+ * Converts {@link IState} objects to their String representation for database storage, and reconstructs state instances
+ * from stored state names when loading from the database
+ *
+ * This is required because JPA cannot persist interface types directly
+ *
+ */
 @Converter(autoApply = true)
 public class StateConverter implements AttributeConverter<IState, String> {
 
-    // Convert interface state into something the database can store (String in this instance)
+    /***
+     * Converts a state into is String representation so that it can be stored in the database
+     *
+     * @param state The state to convert
+     * @return The state's corresponding String that will be stored
+     */
     @Override
     public String convertToDatabaseColumn(IState state){
         if (state == null){
             return null;
         }
+        // Retrieves the String field name from the state which will be stored in the database
         return state.getName();
     }
 
+    /***
+     * Converts a string representing a state into its corresponding state class
+     *
+     * @param stateName A String that represents a state
+     * @return corresponding {@link IState} instance
+     */
     @Override
     public IState convertToEntityAttribute(String stateName){
         return stateName == null? null : StateRegistry.create(stateName);

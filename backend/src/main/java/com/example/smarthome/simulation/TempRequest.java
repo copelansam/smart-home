@@ -1,6 +1,36 @@
 package com.example.smarthome.simulation;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+/***
+ *  Request payload for updating the temperature of a location.
+ *
+ *  Contains the target location and the desired temperature value.
+ */
 public class TempRequest {
-    public String location;
-    public Double temperature;
+
+    @NotBlank
+    private String location;
+
+    @NotNull
+    private Double temperature;
+
+    public TempRequest(){}
+
+    public void setLocation(String location){
+        this.location = location;
+    }
+
+    public String getLocation(){
+        return this.location;
+    }
+
+    public void setTemperature(Double temperature){
+        this.temperature = temperature;
+    }
+
+    public Double getTemperature(){
+        return this.temperature;
+    }
 }

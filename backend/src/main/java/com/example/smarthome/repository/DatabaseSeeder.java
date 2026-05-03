@@ -2,17 +2,21 @@ package com.example.smarthome.repository;
 
 import com.example.smarthome.controller.DeviceCreationRequest;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
-import com.example.smarthome.domain.smartdevices.devices.smartdoorlock.SmartDoorLock;
-import com.example.smarthome.domain.smartdevices.devices.smartfan.SmartFan;
-import com.example.smarthome.domain.smartdevices.devices.smartlight.SmartLight;
-import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
 import com.example.smarthome.service.SmartDeviceService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-// This class provides the seed data that will be added to the database upon initial start up
+/***
+ * Seeds the database with initial smart device data on application startup.
+ *
+ * This component runs once at startup via {@link CommandLineRunner}.
+ * It checks whether the database is empty and, if so, creates a predefined
+ * set of smart devices for development and testing purposes.
+ *
+ * If data already exists, seeding is skipped to avoid duplication.
+ */
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
 
@@ -26,8 +30,6 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args){
-
-        repo.flush();
 
         // If there are no records in the database, add seed data. Otherwise, skip this
         if (repo.count() == 0){

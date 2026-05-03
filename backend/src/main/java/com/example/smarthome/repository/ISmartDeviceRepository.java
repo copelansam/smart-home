@@ -8,8 +8,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-// This class will act as the repository for all smart devices.
-// Defined as an interface, Spring Boot will automatically instantiate it at start up
+/**
+ * Repository for managing smart device persistence.
+ *
+ * Provides CRUD operations for SmartDevice entities and supports
+ * custom query methods for device lookups based on business rules.
+ */
 @Repository
 public interface ISmartDeviceRepository extends JpaRepository<SmartDeviceBase, UUID> {
 
