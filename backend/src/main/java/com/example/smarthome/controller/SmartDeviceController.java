@@ -119,8 +119,9 @@ public class SmartDeviceController {
 
             // return a response saying it was successful
             return ResponseEntity.ok(deleted);
+        }else{
+            return ResponseEntity.ok(false);
         }
-
     }
 
     /***

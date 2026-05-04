@@ -8,15 +8,19 @@ import java.util.Map;
 
 
 /**
- *  Factory for creating SmartDevice instances based on device type.
- *  This factory only creates the device in memory, it does not persist them.
+ * Factory interface for creating {@link SmartDeviceBase} instances.
+ *
+ * Implementations determine the specific device type to create based on
+ * the provided {@link DeviceCreationRequest}. This factory is responsible
+ * only for object creation and does not handle persistence.
  */
 public interface ISmartDeviceFactory {
 
     /**
-     * Method for creating SmartDevice instances based on device type.
-     * Created device is **not persisted**, persistence must happen elsewhere
-     * @return A new SmartDeviceBase instance
+     * Creates a new smart device instance based on the given request.
+     *
+     * @param request the request containing device configuration data
+     * @return a newly created SmartDeviceBase instance
      */
     SmartDeviceBase createDevice(DeviceCreationRequest request);
 }

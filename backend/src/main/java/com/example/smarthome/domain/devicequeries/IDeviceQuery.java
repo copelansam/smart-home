@@ -4,12 +4,18 @@ import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 
 import java.util.List;
 
-// Interface for queries in the decorator pattern.
-// Defines the standard operations that both the base query and decorators must implement.
+/**
+ * Represents a query for retrieving smart devices based on specific criteria.
+ *
+ * Implementations define how devices are filtered and returned.
+ */
 public interface IDeviceQuery {
 
-    // Retrieves a list of devices based on the criteria defined by the concrete class.
-    // Base queries and decorators can override this to modify the selection logic
+    /**
+     * Returns the devices that match the query criteria.
+     *
+     * @return list of matching devices
+     */
     public List<ISmartDevice> getItems();
 
 }

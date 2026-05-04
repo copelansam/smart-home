@@ -58,12 +58,12 @@ public class SimulationController {
             @RequestBody TempRequest tempRequest){
 
         // Make sure that a location has been specified, if not return an error
-        if (tempRequest.location.trim().isEmpty()){
+        if (tempRequest.getLocation().trim().isEmpty()){
             return ResponseEntity.badRequest().body("Please enter a location");
         }
         else{ // Otherwise, pass the request to the service
 
-            String result = deviceService.updateLocationAmbientTemperature(tempRequest.location, tempRequest.temperature);
+            String result = deviceService.updateLocationAmbientTemperature(tempRequest.getLocation(), tempRequest.getTemperature());
 
             // return result
             return ResponseEntity.ok(result);

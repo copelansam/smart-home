@@ -22,11 +22,14 @@ public class StateConverter implements AttributeConverter<IState, String> {
      *
      * @param state The state to convert
      * @return The state's corresponding String that will be stored
+     * @throws IllegalStateException if a device does not have a state persisted.
+     * All device's should have their state persisted
      */
     @Override
     public String convertToDatabaseColumn(IState state){
+        // Null check the state field. State should not be null
         if (state == null){
-            return null;
+            throw new IllegalStateException("Device with out a state");
         }
         // Retrieves the String field name from the state which will be stored in the database
         return state.getName();
@@ -40,6 +43,8 @@ public class StateConverter implements AttributeConverter<IState, String> {
      */
     @Override
     public IState convertToEntityAttribute(String stateName){
+
+        // If the
         return stateName == null? null : StateRegistry.create(stateName);
     }
 }

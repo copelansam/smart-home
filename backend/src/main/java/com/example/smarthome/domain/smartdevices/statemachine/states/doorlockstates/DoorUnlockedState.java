@@ -11,12 +11,40 @@ import com.example.smarthome.domain.smartdevices.statemachine.transitions.doorlo
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Concrete state representing a door in the "unlocked" state.
+ *
+ * <p>
+ * This state is part of the smart door lock state machine. It defines:
+ * <ul>
+ *     <li>Which transitions are allowed while the door is unlocked</li>
+ *     <li>How those transitions modify the device</li>
+ *     <li>How the system should respond to those transitions</li>
+ * </ul>
+ * </p>
+ *
+ * <p>
+ * This state is registered in the {@link StateRegistry} using a static initializer,
+ * ensuring it is available for reconstruction from persisted state names.
+ * </p>
+ */
 public class DoorUnlockedState extends StateBase<SmartDoorLock> {
 
+    /**
+     * Registers this state in the global {@link StateRegistry} so it can be
+     * reconstructed from its string representation ("Door Unlocked").
+     */
     static {
         StateRegistry.register("Door Unlocked", DoorUnlockedState::new);
     }
 
+    /**
+     * Constructs the Door Unlocked state with:
+     * <ul>
+     *     <li>Allowed transition: LOCK</li>
+     *     <li>No updatable fields in this state</li>
+     * </ul>
+     */
     public DoorUnlockedState(){
         super("Door Unlocked",
                 List.of(
@@ -26,6 +54,21 @@ public class DoorUnlockedState extends StateBase<SmartDoorLock> {
         );
     }
 
+    /**
+     * Executes a transition while the device is in the locked state.
+     *
+     * <p>
+     * Supported transitions:
+     * <ul>
+     *     <li>LOCK → transitions device to {@link DoorLockedState}</li>
+     * </ul>
+     * </p>
+     *
+     * @param transition string representation of the action
+     * @param device the door lock being modified
+     * @param parameters optional parameters (not used in this state)
+     * @return result of the state transition execution
+     */
     public CallResult execute(String transition, SmartDoorLock device, Map<String, Object> parameters){
 
         DoorLockAction action = DoorLockAction.getActionFromString(transition);
@@ -33,6 +76,7 @@ public class DoorUnlockedState extends StateBase<SmartDoorLock> {
         switch(action){
 
             case LOCK:
+                // Lock the door by transitioning to the locked state
                 device.setState(new DoorLockedState());
                 return new CallResult("Door is now locked", true,
                         new DeviceLog(device.getUuid(),"State Change", "State changed from Door Unlocked to Door Locked"));

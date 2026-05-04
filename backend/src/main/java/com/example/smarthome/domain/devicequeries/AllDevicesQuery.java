@@ -7,22 +7,33 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// This class will represent a query that will return all devices with no filters applied to it.
-// This serves as the base query in the decorator pattern
-// Filters will be applied based on the user's choices via the decorator pattern.
+/**
+ * Base query that retrieves all smart devices with no filtering applied.
+ *
+ * Serves as the foundation of the device query system and is typically
+ * wrapped by query decorators to apply filtering criteria.
+ */
 public class AllDevicesQuery implements IDeviceQuery{
 
-    private ISmartDeviceRepository repo;
+    private final ISmartDeviceRepository repo;
 
+    /**
+     * Creates a query that retrieves all devices from the repository.
+     *
+     * @param repo the repository used to access device data
+     */
     public AllDevicesQuery(ISmartDeviceRepository repo){
         this.repo = repo;
     }
 
-    // Retrieves all items from the repository and returns them as an immutable list to prevent external modification
-    @Override
+    /**
+     * Retrieves all devices from the repository.
+     *
+     * @return an immutable list of all smart devices
+     */    @Override
     public List<ISmartDevice> getItems(){
 
-        // Retrieves all SmartDeviceBase objects from the repository and treats them as ISmartDevice
+        // Retrieve a list of all devices
         List<ISmartDevice> allItems = new ArrayList<>(repo.findAll());
 
         // Returns an immutable list of the items
