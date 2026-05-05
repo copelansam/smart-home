@@ -6,10 +6,6 @@ import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.ThermostatMode;
-import com.example.smarthome.domain.smartdevices.statemachine.states.IState;
-import com.example.smarthome.domain.smartdevices.statemachine.states.thermostatstates.ThermostatCoolingState;
-import com.example.smarthome.domain.smartdevices.statemachine.states.thermostatstates.ThermostatHeatingState;
-import com.example.smarthome.domain.smartdevices.statemachine.states.thermostatstates.ThermostatIdleState;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.service.SmartDeviceService;
@@ -64,8 +60,8 @@ public class ThermostatAutomationTask {
                 continue;
             }
 
-            double ambientTemperature = thermostat.getAmbientTemperature().getTemperature();
-            double desiredTemperature = thermostat.getDesiredTemperature().getTemperature();
+            double ambientTemperature = thermostat.getAmbientTemperature().temperature();
+            double desiredTemperature = thermostat.getDesiredTemperature().temperature();
             double difference = ambientTemperature - desiredTemperature;
             boolean hasChanged = false;
             ThermostatMode mode = thermostat.getMode();
@@ -83,7 +79,7 @@ public class ThermostatAutomationTask {
                             logRepository.save(result.getLog());
                         }
                     }
-                    thermostat.getAmbientTemperature().updateTemperature(-1);
+                    thermostat.updateTemperature(-1);
                     hasChanged = true;
                     logRepository.save(new DeviceLog(
                             thermostat.getUuid(),
@@ -101,7 +97,7 @@ public class ThermostatAutomationTask {
                             logRepository.save(result.getLog());
                         }
                     }
-                    thermostat.getAmbientTemperature().updateTemperature(1);
+                    thermostat.updateTemperature(1);
                     hasChanged = true;
 
                     logRepository.save(new DeviceLog(

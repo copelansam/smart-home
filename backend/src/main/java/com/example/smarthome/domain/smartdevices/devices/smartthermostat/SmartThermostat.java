@@ -147,10 +147,29 @@ public class SmartThermostat extends SmartDeviceBase {
     public Map<String,Object> getExtraProperties(){
 
         Map<String,Object> extraProperties = new HashMap<>();
-        extraProperties.put("desiredTemperature", this.desiredTemperature.getTemperature());
-        extraProperties.put("ambientTemperature", this.ambientTemperature.getTemperature());
+        extraProperties.put("desiredTemperature", this.desiredTemperature.temperature());
+        extraProperties.put("ambientTemperature", this.ambientTemperature.temperature());
         extraProperties.put("mode", this.mode);
         return extraProperties;
+    }
+
+    /**
+     * Adjusts the current temperature by a delta value.
+     *
+     * <p>
+     * Positive values increase temperature, negative values decrease it.
+     * This method is primarily used for simulation and thermostat automation.
+     * </p>
+     *
+     * @param amount change in temperature (can be positive or negative)
+     */
+    public void updateTemperature(int amount){
+
+        // Calculate the new temperature by retrieving the current and adding the delta
+        double newTemp = this.ambientTemperature.temperature() + amount;
+
+        // Create a new temperature object with the new temperature value
+        this.ambientTemperature = new Temperature(newTemp);
     }
 
     /**

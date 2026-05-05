@@ -12,112 +12,60 @@ package com.example.smarthome.domain.smartdevices.devices.smartlight;
  * This class is used by smart light devices to represent and manage color state.
  * </p>
  */
-public class RGB {
+public record RGB(
 
-    /** Red component [0–255]. */
-    private int R;
+        /** Red component [0–255]. */
+        int R,
 
-    /** Green component [0–255]. */
-    private int G;
+        /** Green component [0–255]. */
+        int G,
 
-    /** Blue component [0–255]. */
-    private int B;
+        /** Blue component [0–255]. */
+        int B
+
+) {
+
+    /**
+     * Compact constructor used for validation.
+     *
+     * @throws IllegalArgumentException if any value is outside [0, 255]
+     */
+    public RGB {
+        validate(R, "R");
+        validate(G, "G");
+        validate(B, "B");
+    }
 
     /**
      * Constructs a color initialized to black (0, 0, 0).
      */
-    public RGB(){
-        setR(0);
-        setG(0);
-        setB(0);
+    public RGB() {
+        this(0, 0, 0);
     }
 
     /**
-     * Constructs an RGB color with specified values.
-     *
-     * @param R red component [0–255]
-     * @param G green component [0–255]
-     * @param B blue component [0–255]
-     * @throws IllegalArgumentException if any value is outside [0, 255]
+     * Validates a color component.
      */
-    public RGB(int R, int G, int B){
-        setR(R);
-        setG(G);
-        setB(B);
-    }
-
-    public int getR(){
-        return this.R;
-    }
-
-    /**
-     * Sets the red component.
-     *
-     * @param R value between 0 and 255
-     * @throws IllegalArgumentException if value is out of range
-     */
-    public void setR(int R){
-
-        if (R < 0 || R > 255){
-            throw new IllegalArgumentException("The R value must be between 0 and 255. Try again!");
-        }
-        else {
-            this.R = R;
-        }
-    }
-
-    public int getG(){
-        return this.G;
-    }
-
-    /**
-     * Sets the green component.
-     *
-     * @param G value between 0 and 255
-     * @throws IllegalArgumentException if value is out of range
-     */
-    public void setG(int G){
-        if (G < 0 || G > 255) {
-            throw new IllegalArgumentException("The G value must be between 0 and 255. Try again!");
-        }
-        else{
-            this.G = G;
-        }
-    }
-
-    public int getB(){
-        return this.B;
-    }
-
-    /**
-     * Sets the blue component.
-     *
-     * @param B value between 0 and 255
-     * @throws IllegalArgumentException if value is out of range
-     */
-    public void setB(int B){
-        if (B < 0 || B > 255) {
-            throw new IllegalArgumentException("The B value must be between 0 and 255. Try again!");
-        }
-        else{
-            this.B = B;
+    private static void validate(int value, String component) {
+        if (value < 0 || value > 255) {
+            throw new IllegalArgumentException(
+                    component + " value must be between 0 and 255."
+            );
         }
     }
 
     /**
      * @return the RGB color as an array in the format [R, G, B]
      */
-    public int[] getColor(){
-
-        int[] color = {getR() ,getG() ,getB()};
-        return  color;
+    public int[] getColor() {
+        return new int[]{R, G, B};
     }
 
     /**
      * @return a human-readable string representation of the color
      */
     @Override
-    public String toString(){
-        return "Red: " + this.R + " Green: " + this.G + " Blue: " + this.B;
+    public String toString() {
+        return "Red: " + R + " Green: " + G + " Blue: " + B;
     }
 }
