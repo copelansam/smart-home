@@ -10,10 +10,10 @@ import jakarta.validation.constraints.NotNull;
  */
 public class TempRequest {
 
-    @NotBlank
+    @NotBlank(message = "Location is required")
     private String location;
 
-    @NotNull
+    @NotNull(message = "temperature is required")
     private Double temperature;
 
     public TempRequest(){}

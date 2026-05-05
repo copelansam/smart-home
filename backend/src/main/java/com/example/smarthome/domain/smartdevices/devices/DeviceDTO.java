@@ -1,6 +1,7 @@
 package com.example.smarthome.domain.smartdevices.devices;
 
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.List;
@@ -20,42 +21,54 @@ import java.util.UUID;
  * available transitions and updatable fields.
  * </p>
  */
-@JsonPropertyOrder({"uuid", "name", "location","deviceType", "state", "isOn", "properties", "availableActions", "updatableFields"})
-public class DeviceDTO {
+@JsonPropertyOrder({
+        "uuid",
+        "name",
+        "location",
+        "deviceType",
+        "state",
+        "isOn",
+        "properties",
+        "availableActions",
+        "updatableFields"
+})
+public record DeviceDTO(
 
-    /** Unique identifier of the device. */
-    public UUID uuid;
+        /** Unique identifier of the device. */
+        UUID uuid,
 
-    /** Human-readable name of the device. */
-    public String name;
+        /** Human-readable name of the device. */
+        String name,
 
-    /** Location of the device within the smart home. */
-    public String location;
+        /** Location of the device within the smart home. */
+        String location,
 
-    /** Type of the device (e.g., LIGHT, FAN, THERMOSTAT). */
-    public DeviceType deviceType;
+        /** Type of the device (e.g., LIGHT, FAN, THERMOSTAT). */
+        DeviceType deviceType,
 
-    /** Indicates whether the device is currently powered on. */
-    public boolean isOn;
+        /** Indicates whether the device is currently powered on. */
+        boolean isOn,
 
-    /** Current state of the device (state machine name). */
-    public String state;
+        /** Current state of the device (state machine name). */
+        String state,
 
-    /** List of transitions/actions that can be executed in the current state. */
-    public List<ITransition<?>> availableTransitions;
+        /** List of transitions/actions that can be executed in the current state. */
+        List<ITransition<?>> availableTransitions,
 
-    /** List of fields that can be updated in the current state. */
-    public List<ITransition<?>> updatableFields;
+        /** List of fields that can be updated in the current state. */
+        List<ITransition<?>> updatableFields,
 
-    /**
-     * Additional device-specific properties.
-     *
-     * <p>
-     * The structure varies depending on the device type
-     * (e.g., brightness for lights, temperatures for thermostats).
-     * </p>
-     */
-    public Map<String,Object> properties;
+        /**
+         * Additional device-specific properties.
+         *
+         * <p>
+         * The structure varies depending on the device type
+         * (e.g., brightness for lights, temperatures for thermostats).
+         * </p>
+         */
+        Map<String, Object> properties
+
+) {
 
     /**
      * Converts a domain {@link ISmartDevice} into a {@link DeviceDTO}.
@@ -68,21 +81,18 @@ public class DeviceDTO {
      * @param device the device to convert
      * @return a populated DTO representing the device
      */
-    public static DeviceDTO fromISmartDevice(ISmartDevice device){
+    public static DeviceDTO fromISmartDevice(ISmartDevice device) {
 
-        DeviceDTO dto = new DeviceDTO();
-        dto.uuid = device.getUuid();
-        dto.name = device.getName();
-        dto.location = device.getLocation();
-        dto.deviceType = device.getDeviceType();
-        dto.isOn = device.getIsOn();
-        dto.state = device.getState();
-        dto.availableTransitions = device.getAvailableTransitions();
-        dto.updatableFields = device.getUpdatableFields();
-
-        dto.properties = device.getExtraProperties();
-
-        return dto;
+        return new DeviceDTO(
+                device.getUuid(),
+                device.getName(),
+                device.getLocation(),
+                device.getDeviceType(),
+                device.getIsOn(),
+                device.getState(),
+                device.getAvailableTransitions(),
+                device.getUpdatableFields(),
+                device.getExtraProperties()
+        );
     }
-
 }

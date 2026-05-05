@@ -12,11 +12,13 @@ import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import com.example.smarthome.exception.DeviceNotFoundException;
+import com.example.smarthome.exception.InvalidStateTransitionException;
 import com.example.smarthome.exception.NoDevicesException;
 import com.example.smarthome.exception.ThermostatAlreadyExistsException;
 import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.repository.ISmartDeviceRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -76,17 +78,19 @@ public class SmartDeviceService {
     @PostMapping
     public CallResult createDevice(DeviceCreationRequest request){
 
-        // Format the location so each word starts with a capital letter
-        request.setLocation(makeLocationPretty(request.location));
+        // Create a new request object with a formatted location
+        request = new DeviceCreationRequest(request.name(), makeLocationPretty(request.location()), request.deviceType(), request.attributes());
 
         // If the user tries to create a thermostat in a location that already has one, throw an exception
-        if (request.deviceType == DeviceType.THERMOSTAT && doesLocationHaveThermostat(request.location)) {
-            throw new ThermostatAlreadyExistsException(request.location + " already has a thermostat");
+        if (request.deviceType() == DeviceType.THERMOSTAT && doesLocationHaveThermostat(request.location())) {
+            throw new ThermostatAlreadyExistsException(request.location() + " already has a thermostat");
         }
         else {
 
             // Create the new device by passing the request into the factory
             SmartDeviceBase newDevice = deviceFactory.createDevice(request);
+
+
 
             // Save the device to the database
             saveDeviceUpdate(newDevice);
@@ -118,7 +122,7 @@ public class SmartDeviceService {
 
         // If the device was not found, throw an exception
         if (device == null){
-            throw new DeviceNotFoundException("Device with this ID was not found.");
+            throw new DeviceNotFoundException("Device with this ID: " + uuid + " was not found.");
         }
         else { // Otherwise, return the device
             return device;
@@ -130,9 +134,8 @@ public class SmartDeviceService {
      * Deletes a device with a given uuid
      *
      * @param uuid The uuid of the device the client wants to delete
-     * @return a boolean value that represents if the deletion was successful
      */
-    public boolean deleteDeviceById(UUID uuid){
+    public void deleteDeviceById(UUID uuid){
 
         // Check if a device with the specified uuid exists in the database
         if (repo.existsById(uuid)){
@@ -143,12 +146,10 @@ public class SmartDeviceService {
             // Create a device log and save it so we have the full device lifecycle
             deviceLogRepository.save(new DeviceLog(uuid, "Device Deletion", "This device has been deleted."));
 
-            // return that it was successful
-            return true;
         }
         else{
             // If the device could not be found in the database, throw an exception
-            throw new DeviceNotFoundException("Device with this ID cannot be found.");
+            throw new DeviceNotFoundException("Device with this ID: " + uuid + " cannot be found.");
         }
     }
 
@@ -196,7 +197,7 @@ public class SmartDeviceService {
             deviceLogRepository.save(result.getLog());
         }
         else{ // Otherwise throw an exception passing in the message from the statechart machine
-            throw new IllegalStateException(result.getMessage());
+            throw new InvalidStateTransitionException(result.getMessage());
         }
 
         // return the result of the call
@@ -239,6 +240,11 @@ public class SmartDeviceService {
      */
     @Transactional
     public String updateLocationAmbientTemperature(String location, double temperature){
+
+        // Check that a location was entered, a series of spaces does not count
+        if (location.trim().isEmpty()){
+            throw new IllegalArgumentException("A location must be specified");
+        }
 
         // Create the query that will retrieve the thermostat in the specified location
         IDeviceQuery query = queryBuilder.buildQuery(DeviceType.THERMOSTAT, location, null);

@@ -46,42 +46,48 @@ public class DatabaseSeeder implements CommandLineRunner {
             service.createDevice(
                     new DeviceCreationRequest("Garage Door Lock",
                             "Garage",
-                            DeviceType.DOORLOCK
+                            DeviceType.DOORLOCK,
+                            null
                     )
             );
 
             service.createDevice(
                     new DeviceCreationRequest("Front Door Lock",
                             "Living Room",
-                            DeviceType.DOORLOCK
+                            DeviceType.DOORLOCK,
+                            null
                     )
             );
 
             service.createDevice(
                     new DeviceCreationRequest("Bedroom Box Fan",
                             "Bedroom",
-                            DeviceType.FAN
+                            DeviceType.FAN,
+                            null
                     )
             );
 
             service.createDevice(
                     new DeviceCreationRequest("Kitchen Fan",
                             "Kitchen",
-                            DeviceType.FAN
+                            DeviceType.FAN,
+                            null
                     )
             );
 
             service.createDevice(
                     new DeviceCreationRequest("Living Room Ceiling Light",
                             "Living Room",
-                            DeviceType.LIGHT
+                            DeviceType.LIGHT,
+                            null
                     )
             );
 
             service.createDevice(
                     new DeviceCreationRequest("Bathroom Lights",
                             "Bathroom",
-                            DeviceType.LIGHT
+                            DeviceType.LIGHT,
+                            null
                     )
             );
 

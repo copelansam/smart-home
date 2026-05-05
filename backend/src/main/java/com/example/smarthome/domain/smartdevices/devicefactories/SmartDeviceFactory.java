@@ -40,37 +40,37 @@ public class SmartDeviceFactory implements ISmartDeviceFactory{
      */
     public SmartDeviceBase createDevice(DeviceCreationRequest request){
 
-        switch (request.deviceType){
+        switch (request.deviceType()){
 
             case FAN:
-                return new SmartFan(request.name, request.location);
+                return new SmartFan(request.name(), request.location());
 
             case LIGHT:
                 // If there isn't a brightness and color set, use the constructor that assigns default values
-                if (request.attributes == null){
-                    return new SmartLight(request.name, request.location);
+                if (request.attributes() == null){
+                    return new SmartLight(request.name(), request.location());
                 }
                 else { // Otherwise pass properties into the constructor appropriately
-                    return new SmartLight(request.name, request.location,
-                            ((Number) request.attributes.get("brightnessPercentage")).intValue(), // Bast brightness and colors to ints
-                            ((Number) request.attributes.get("redValue")).intValue(),
-                            ((Number) request.attributes.get("greenValue")).intValue(),
-                            ((Number) request.attributes.get("blueValue")).intValue()
+                    return new SmartLight(request.name(), request.location(),
+                            ((Number) request.attributes().get("brightnessPercentage")).intValue(), // Bast brightness and colors to ints
+                            ((Number) request.attributes().get("redValue")).intValue(),
+                            ((Number) request.attributes().get("greenValue")).intValue(),
+                            ((Number) request.attributes().get("blueValue")).intValue()
                     );
                 }
 
             case DOORLOCK:
-                return new SmartDoorLock(request.name, request.location);
+                return new SmartDoorLock(request.name(), request.location());
 
             case THERMOSTAT:
                 // If the attributes are empty, create a default thermostat
-                if (request.attributes == null){
-                    return new SmartThermostat(request.name, request.location);
+                if (request.attributes() == null){
+                    return new SmartThermostat(request.name(), request.location());
                 }
 
-               return new SmartThermostat(request.name, request.location,
-                       ((Number) request.attributes.get("desiredTemperature")).doubleValue(), // Cast the temperature values to doubles
-                       ((Number) request.attributes.get("ambientTemperature")).doubleValue());
+               return new SmartThermostat(request.name(), request.location(),
+                       ((Number) request.attributes().get("desiredTemperature")).doubleValue(), // Cast the temperature values to doubles
+                       ((Number) request.attributes().get("ambientTemperature")).doubleValue());
 
             default:
                 throw new IllegalArgumentException("Selected device type either not supported or empty");

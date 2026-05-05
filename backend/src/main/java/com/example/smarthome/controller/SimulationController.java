@@ -1,9 +1,12 @@
 package com.example.smarthome.controller;
 
-
 import com.example.smarthome.service.SmartDeviceService;
 import com.example.smarthome.simulation.SimulationSettings;
 import com.example.smarthome.simulation.TempRequest;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +23,9 @@ public class SimulationController {
 
     private final SimulationSettings simulationSettings;
     private final SmartDeviceService deviceService;
+    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(SimulationController.class);
 
-    public SimulationController(SimulationSettings simulationSettings, SmartDeviceService deviceService){
+    public SimulationController(SimulationSettings simulationSettings, SmartDeviceService deviceService) {
         this.simulationSettings = simulationSettings;
         this.deviceService = deviceService;
     }
@@ -34,16 +38,12 @@ public class SimulationController {
      */
     @PostMapping("/speed")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<String> updateSimulationRate(@RequestParam double timeMultiplier){
+    public ResponseEntity<String> updateSimulationRate(@RequestParam @Positive @NotNull double timeMultiplier) {
 
-        if (timeMultiplier <= 0){
-            return ResponseEntity.badRequest().body("Multiplier must be greater than zero.");
-        }
-        else{
-            simulationSettings.setTimeMultiplier(timeMultiplier);
-            System.out.println("The speed has been changed to: " + timeMultiplier + "x");
-            return ResponseEntity.ok("Simulation speed updated to: " + timeMultiplier + "x");
-        }
+        simulationSettings.setTimeMultiplier(timeMultiplier);
+        logger.info("Simulation speed changed to {}x", timeMultiplier);
+        return ResponseEntity.ok("Simulation speed updated to: " + timeMultiplier + "x");
+
     }
 
     /***
@@ -55,19 +55,13 @@ public class SimulationController {
     @PostMapping("/location/temperature")
     @CrossOrigin(origins = "*")
     public ResponseEntity<String> updateAmbientTemperatureByLocation(
-            @RequestBody TempRequest tempRequest){
+            @Valid @RequestBody TempRequest tempRequest) {
 
-        // Make sure that a location has been specified, if not return an error
-        if (tempRequest.getLocation().trim().isEmpty()){
-            return ResponseEntity.badRequest().body("Please enter a location");
-        }
-        else{ // Otherwise, pass the request to the service
+        // Pass the request values to the device service to update the location's temperature
+        deviceService.updateLocationAmbientTemperature(tempRequest.getLocation(), tempRequest.getTemperature());
 
-            String result = deviceService.updateLocationAmbientTemperature(tempRequest.getLocation(), tempRequest.getTemperature());
-
-            // return result
-            return ResponseEntity.ok(result);
-        }
+        // Return no content response
+        return ResponseEntity.noContent().build();
     }
 
     /***

@@ -1,24 +1,48 @@
 package com.example.smarthome.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ProblemDetail;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.http.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.net.URI;
 
+import static org.springframework.validation.BindingResultUtils.getBindingResult;
+
 /**
- * Global exception handler for the smart home API.
+ * Global exception handler for the Smart Home API.
  *
- * Intercepts exceptions thrown by controllers and translates them into
- * standardized HTTP error responses using {@link ProblemDetail}.
+ * <p>
+ * This class intercepts exceptions thrown across the application and converts them
+ * into standardized HTTP error responses compliant with RFC 9457 (Problem Details for HTTP APIs).
+ * </p>
  *
- * Provides centralized handling for application-specific exceptions and
- * ensures consistent error structure across all API endpoints.
+ * <p>
+ * All error responses follow a consistent structure using {@link ProblemDetail}, including:
+ * </p>
+ *
+ * <ul>
+ *   <li><b>type</b> – A URI identifying the problem category</li>
+ *   <li><b>title</b> – A short human-readable summary of the error</li>
+ *   <li><b>status</b> – The HTTP status code</li>
+ *   <li><b>detail</b> – A detailed explanation of the error</li>
+ *   <li><b>instance</b> – The specific request URI that triggered the error</li>
+ * </ul>
+ *
+ * <p>
+ * Each handler returns a {@link ResponseEntity} to ensure full control over HTTP status codes
+ * and response metadata, while maintaining RFC 9457-compliant body structure.
+ * </p>
+ *
+ * <p>
+ * This ensures consistent, machine-readable error responses across all API endpoints.
+ * </p>
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -28,105 +52,183 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Handles cases where a requested device cannot be found.
      *
-     * @param exception the thrown exception
-     * @return a {@link ProblemDetail} response describing the error
+     * <p>
+     * This exception is thrown when a device ID does not exist in the system
+     * or has been deleted. It maps to an RFC 9457 Problem Details response
+     * with HTTP 404 (Not Found).
+     * </p>
+     *
+     * @param exception the thrown {@link DeviceNotFoundException}
+     * @param request the current HTTP request used to populate the problem instance URI
+     * @return a RFC 9457-compliant {@link ProblemDetail} wrapped in a {@link ResponseEntity}
      */
-    @ExceptionHandler(DeviceNotFoundException.class)
-    public ProblemDetail handleDeviceNotFound(DeviceNotFoundException exception){
+    public ResponseEntity<ProblemDetail> handleDeviceNotFound(
+            DeviceNotFoundException exception,
+            HttpServletRequest request) {
 
-        // Create the ProblemDetail
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.CONFLICT,
-                "A device for this ID could not be found. Either it doesn't exist or it has been deleted."
-        );
+        logger.error("DeviceNotFound: {}", exception.getMessage());
 
-        problem.setType(URI.create("https://example.com/problems/device-not-found"));
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
         problem.setTitle("Device Not Found");
+        problem.setDetail("A device for this ID could not be found.");
+        problem.setType(URI.create("https://example.com/problems/device-not-found"));
+        problem.setInstance(URI.create(request.getRequestURI()));
 
-        // Log the exception
-        logger.error("Internal Error Detected: " + exception.getMessage());
-
-        problem.setInstance(null);
-
-        return problem;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
     }
 
     /**
      * Handles attempts to create a thermostat in a location that already has one.
      *
-     * @param exception the thrown exception
-     * @return a {@link ProblemDetail} response describing the error
+     * <p>
+     * This enforces a business rule that each location may only contain one thermostat.
+     * Violations result in an HTTP 409 (Conflict) response.
+     * </p>
+     *
+     * @param exception the thrown {@link ThermostatAlreadyExistsException}
+     * @param request the current HTTP request
+     * @return a RFC 9457 Problem Details response describing the conflict
      */
     @ExceptionHandler(ThermostatAlreadyExistsException.class)
-    public ProblemDetail handleInvalidStatechartTransition(ThermostatAlreadyExistsException exception){
+    public ResponseEntity<ProblemDetail> handleInvalidStatechartTransition(ThermostatAlreadyExistsException exception,
+                                                           HttpServletRequest request){
 
-        // Create the ProblemDetail
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.CONFLICT,
-                "The provided location already has a thermostat"
-        );
+        logger.error("ThermostatAlreadyExists: {}", exception.getMessage());
 
-        problem.setType(URI.create("https://example.com/problems/theromstat-already-exists"));
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.CONFLICT);
         problem.setTitle("Thermostat Already Exists");
+        problem.setDetail("The provided location already has a thermostat.");
+        problem.setType(URI.create("https://example.com/problems/thermostat-already-exists"));
+        problem.setInstance(URI.create(request.getRequestURI()));
 
-        // Log the exception
-        logger.error("Internal Error Detected: " + exception.getMessage());
-
-        problem.setInstance(null);
-
-        return problem;
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(problem);
     }
 
     /**
-     * Handles operations that require devices when none exist in the system.
+     * Handles operations attempted when no devices exist in the system.
      *
-     * @param exception the thrown exception
-     * @return a {@link ProblemDetail} response describing the error
+     * <p>
+     * This occurs when actions or queries require at least one device but the system
+     * contains none. Returns HTTP 404 (Not Found).
+     * </p>
+     *
+     * @param exception the thrown {@link NoDevicesException}
+     * @param request the current HTTP request
+     * @return a RFC 9457 Problem Details response indicating missing resources
      */
     @ExceptionHandler(NoDevicesException.class)
-    public ProblemDetail handleNoDevicesExceptions(NoDevicesException exception){
+    public ResponseEntity<ProblemDetail> handleNoDevices(
+            NoDevicesException exception,
+            HttpServletRequest request) {
 
-        // Create the ProblemDetail
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.CONFLICT,
-                "There are no devices in the smart home. Action cannot be performed"
-        );
+        logger.error("NoDevices: {}", exception.getMessage());
 
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problem.setTitle("No Devices Found");
+        problem.setDetail("There are no devices in the smart home.");
         problem.setType(URI.create("https://example.com/problems/no-devices"));
-        problem.setTitle("No Devices in Smart Home");
+        problem.setInstance(URI.create(request.getRequestURI()));
 
-        // Log the exception
-        logger.error("Internal Error Detected: " + exception.getMessage());
-
-        problem.setInstance(null);
-
-        return problem;
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(problem);
     }
 
     /**
-     * Handles all uncaught exceptions.
+     * Handles invalid state machine transitions for smart devices.
      *
-     * @param exception the thrown exception
-     * @return a generic {@link ProblemDetail} response for unexpected errors
+     * <p>
+     * This exception occurs when a requested transition is not valid for the device's
+     * current state. It maps to HTTP 400 (Bad Request).
+     * </p>
+     *
+     * @param exception the thrown {@link InvalidStateTransitionException}
+     * @param request the current HTTP request
+     * @return a RFC 9457 Problem Details response describing the invalid transition
+     */
+    @ExceptionHandler(InvalidStateTransitionException.class)
+    public ResponseEntity<ProblemDetail> handleInvalidTransition(
+            InvalidStateTransitionException exception,
+            HttpServletRequest request) {
+
+        logger.error("InvalidStateTransition: {}", exception.getMessage());
+
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problem.setTitle("Invalid State Transition");
+        problem.setDetail(exception.getMessage());
+        problem.setType(URI.create("https://example.com/problems/invalid-state-transition"));
+        problem.setInstance(URI.create(request.getRequestURI()));
+
+        return ResponseEntity.badRequest().body(problem);
+    }
+
+    /**
+     * Overrides Spring Boot’s default validation exception handler for request body validation failures.
+     *
+     * <p>
+     * This method overrides
+     * {@code ResponseEntityExceptionHandler#handleMethodArgumentNotValid} from Spring MVC.
+     * It is triggered automatically when a {@code @Valid} or Bean Validation constraint fails
+     * during request body binding (e.g., @NotNull, @Size, @Email).
+     * </p>
+     *
+     * <p>
+     * Instead of using Spring’s default error response, this implementation returns a
+     * standardized RFC 9457 Problem Details response with field-level validation feedback.
+     * </p>
+     *
+     * @param exception the {@link MethodArgumentNotValidException} thrown by Spring during validation
+     * @param request the current {@link WebRequest} associated with the request
+     * @return a RFC 9457-compliant {@link ProblemDetail} response containing validation error details
+     */
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException exception,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
+
+        String message = exception.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(err -> err.getField() + ": " + err.getDefaultMessage())
+                .findFirst()
+                .orElse("Invalid request");
+
+        logger.warn("Validation error: {}", message);
+
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problem.setTitle("Validation Error");
+        problem.setDetail(message);
+        problem.setType(URI.create("https://example.com/problems/validation-error"));
+        problem.setInstance(URI.create(request.getDescription(false).replace("uri=", "")));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
+    }
+
+    /**
+     * Handles all uncaught exceptions not explicitly mapped elsewhere.
+     *
+     * <p>
+     * This is a fallback handler ensuring the API never returns unstructured errors.
+     * It maps unexpected failures to HTTP 500 (Internal Server Error).
+     * </p>
+     *
+     * @param exception the unexpected exception
+     * @param request the current HTTP request
+     * @return a generic RFC 9457 Problem Details response
      */
     @ExceptionHandler(Exception.class)
-    public ProblemDetail handleGeneralExceptions(Exception exception){
+    public ResponseEntity<ProblemDetail> handleGeneric(
+            Exception exception,
+            HttpServletRequest request) {
 
-        // Create the ProblemDetail
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                "An error occurred on our end."
-        );
+        logger.error("Unhandled exception", exception);
 
-        // Log the exception
-        logger.error("Unhandled Error: ", exception);
-
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         problem.setTitle("Unexpected Error");
-        problem.setType(URI.create("https://example.com/problems/general-problems"));
+        problem.setDetail("An internal error occurred.");
+        problem.setType(URI.create("https://example.com/problems/internal-error"));
+        problem.setInstance(URI.create(request.getRequestURI()));
 
-        problem.setInstance(null);
-
-        return problem;
-
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(problem);
     }
 }
