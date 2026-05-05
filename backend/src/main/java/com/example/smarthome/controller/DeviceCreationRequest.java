@@ -38,18 +38,6 @@ public record DeviceCreationRequest(
          * Type of device being created (LIGHT, FAN, DOORLOCK, THERMOSTAT).
          */
         @NotNull(message = "Device type is required")
-        DeviceType deviceType,
-
-        /**
-         * Optional device-specific configuration attributes.
-         *
-         * <p>
-         * Example:
-         * - Light → brightness, color
-         * - Thermostat → temperature settings
-         * - Fan → speed
-         * </p>
-         */
-        Map<String, Object> attributes
+        DeviceType deviceType
 
 ) {}

@@ -41,7 +41,7 @@ public class SmartDoorLock extends SmartDeviceBase {
      */
     public SmartDoorLock(String name, String location){
         super(name, location, DeviceType.DOORLOCK);
-        this.state = new DoorUnlockedState();
+        factoryReset();
 
         // Invariant: For UI filtering purposes, all door lock objects are considered as "on"
         this.isOn = true;

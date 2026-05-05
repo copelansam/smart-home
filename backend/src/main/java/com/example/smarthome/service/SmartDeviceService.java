@@ -79,7 +79,7 @@ public class SmartDeviceService {
     public CallResult createDevice(DeviceCreationRequest request){
 
         // Create a new request object with a formatted location
-        request = new DeviceCreationRequest(request.name(), makeLocationPretty(request.location()), request.deviceType(), request.attributes());
+        request = new DeviceCreationRequest(request.name(), makeLocationPretty(request.location()), request.deviceType());
 
         // If the user tries to create a thermostat in a location that already has one, throw an exception
         if (request.deviceType() == DeviceType.THERMOSTAT && doesLocationHaveThermostat(request.location())) {

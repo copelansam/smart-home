@@ -60,26 +60,7 @@ public class SmartThermostat extends SmartDeviceBase {
      */
     public SmartThermostat(String name, String location){
         super(name, location, DeviceType.THERMOSTAT);
-        this.desiredTemperature = new Temperature();
-        this.ambientTemperature = new Temperature();
-        this.state = new ThermostatOffState();
-        this.mode = ThermostatMode.AUTO;
-    }
-
-    /**
-     * Creates a thermostat with specified temperature settings.
-     *
-     * @param desiredTemperature target temperature (°F, typically 60–80 range)
-     * @param ambientTemperature initial ambient temperature (°F)
-     */
-    public SmartThermostat(String name, String location, double desiredTemperature, double ambientTemperature){
-        super(name, location, DeviceType.THERMOSTAT);
-        setDesiredTemperature(desiredTemperature);
-        this.ambientTemperature = new Temperature();
-        this.state = new ThermostatOffState();
-        this.desiredTemperature = new Temperature(desiredTemperature);
-        this.ambientTemperature = new Temperature(ambientTemperature);
-        this.mode = ThermostatMode.AUTO;
+        factoryReset();
     }
 
     public Temperature getDesiredTemperature(){
@@ -180,6 +161,7 @@ public class SmartThermostat extends SmartDeviceBase {
      * - OFF state
      * - AUTO mode
      * - default desired temperature (75°F)
+     * - default ambient temperature (60°F)
      * </p>
      *
      * <p>
@@ -190,6 +172,7 @@ public class SmartThermostat extends SmartDeviceBase {
     public void factoryReset(){
         this.state = new ThermostatOffState();
         this.isOn = false;
+        this.ambientTemperature = new Temperature(60);
         this.desiredTemperature = new Temperature(75);
         this.mode = ThermostatMode.AUTO;
     }

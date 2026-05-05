@@ -41,7 +41,7 @@ public class SmartFan extends SmartDeviceBase {
      *
      * <ul>
      *     <li>Initial state: {@code FanOffState}</li>
-     *     <li>Default speed: LOW</li>
+     *     <li>Default speed: MEDIUM</li>
      * </ul>
      *
      * @param name the device name
@@ -49,8 +49,7 @@ public class SmartFan extends SmartDeviceBase {
      */
     public SmartFan(String name, String location){
         super(name, location, DeviceType.FAN);
-        this.state = new FanOffState();
-        this.speed = FanSpeed.LOW;
+        factoryReset();
     }
 
     /**
@@ -98,6 +97,6 @@ public class SmartFan extends SmartDeviceBase {
     public void factoryReset(){
         this.state = new FanOffState();
         this.isOn = false;
-        this.speed = FanSpeed.LOW;
+        this.speed = FanSpeed.MEDIUM;
     }
 }

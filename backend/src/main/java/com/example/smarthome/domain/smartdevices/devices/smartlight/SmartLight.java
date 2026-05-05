@@ -55,29 +55,7 @@ public class SmartLight extends SmartDeviceBase {
      */
     public SmartLight(String name, String location){
         super(name, location, DeviceType.LIGHT);
-        this.brightnessPercentage = 100;
-        setColor(new RGB(255,255,255));
-        this.state = new LightOffState();
-        this.isOn = false;
-    }
-
-    /**
-     * Creates a light with custom brightness and RGB color.
-     *
-     * @param name device name
-     * @param location device location
-     * @param brightnessPercentage brightness (must be 10–100)
-     * @param red red component (0–255)
-     * @param green green component (0–255)
-     * @param blue blue component (0–255)
-     * @throws IllegalArgumentException if brightness is out of range or RGB values are invalid
-     */
-    public SmartLight(String name, String location, int brightnessPercentage, int red, int green, int blue){
-        super(name, location, DeviceType.LIGHT);
-        setBrightnessPercentage(brightnessPercentage);
-        this. color = new RGB(red, green, blue);
-        this.state = new LightOffState();
-        this.isOn = false;
+        factoryReset();
     }
 
     /**

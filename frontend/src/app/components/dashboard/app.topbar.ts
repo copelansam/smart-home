@@ -26,6 +26,9 @@ import { InputTextModule } from 'primeng/inputtext';
 
         <div class="layout-topbar-actions">
             <div class="layout-config-menu">
+
+            <!-- Create Device button and popover menu -->
+
                 <button class="p-button-sm p-button-info" (click)="createDevicePopover.toggle($event)"> Add a Device </button>
 
                 <p-popover #createDevicePopover [style]="{ width: '33vw' }">
@@ -38,15 +41,42 @@ import { InputTextModule } from 'primeng/inputtext';
                   </div>
                   <div class="unique-info">
                     @if(this.newDeviceType==="THERMOSTAT"){
-                      <label class="w-4">Desired Temperature: </label><input pInputText [(ngModel)]="desiredTemp" class="w-8" type="number" min="60" max="80" placeholder="Desired Temperature (60 - 80)"><br>
-                      <label class="w-4">Ambient Temperature: </label><input pInputText [(ngModel)]="ambientTemp" class="w-8" type="number" placeholder="Ambient Temperature">
+                      <small>The thermostat will be created with the following default values:</small><br/>
+                      <small>
+                        <ul>
+                          <li> State: Off</li>
+                          <li> Mode:  Auto</li>
+                          <li> Desired Temperature: 75 °F</li>
+                          <li> Ambient Temperature: 60 °F</li>
+                        </ul>
+                      </small>
                       }
                     @if(this.newDeviceType==="LIGHT"){
-                      <label class="w-4">Brightness Percentage: </label><input pInputText [(ngModel)]="brightnessPercentage" class="w-8" type="number" min="10" max="100" placeholder="Brightness Percentage (10 - 100)"> <br>
-                      <label class="w-3">Color: </label> <br>
-                      <input pInputText [(ngModel)]="redValue" class="w-4" type="number" min="0" max="255" placeholder="R Value (0 - 255)">
-                      <input pInputText [(ngModel)]="greenValue" class="w-4" type="number" min="0" max="255" placeholder="G Value (0 - 255)">
-                      <input pInputText [(ngModel)]="blueValue" class="w-4" type="number" min="0" max="255" placeholder="B Value (0 - 255)">
+                      <small>The light will be created with the following default values:</small><br/>
+                      <small>
+                        <ul>
+                          <li> State: Off</li>
+                          <li> Color: White</li>
+                          <li> Brightness Percentage: 100 %</li>
+                        </ul>
+                      </small>
+                      }
+                    @if(this.newDeviceType==="FAN"){
+                      <small>The fan will be created with the following default values:</small>
+                      <small>
+                        <ul>
+                          <li> State: Off</li>
+                          <li> Speed: Medium</li>
+                        </ul>
+                      </small>
+                      }
+                    @if(this.newDeviceType==="DOORLOCK"){
+                      <small>The lock will be created with the following default values:</small>
+                      <small>
+                        <ul>
+                          <li> State: Unlocked</li>
+                        </ul>
+                      </small>
                       }
                   </div>
                   <hr>
@@ -106,17 +136,6 @@ export class AppTopbar {
   newDeviceLocation: string = '';
   newDeviceType: string = 'THERMOSTAT';
 
-  // Thermostat exclusive variables
-  desiredTemp?: number;
-  ambientTemp?: number;
-
-  // Light exclusive variables
-  brightnessPercentage?: number;
-  redValue?: number;
-  greenValue?: number;
-  blueValue?: number;
-
-
     layoutService = inject(LayoutService);
     deviceService = inject(DeviceService);
 
@@ -175,27 +194,11 @@ export class AppTopbar {
 
     createDevice(){
 
-      // Assign device specific attributes
-      const attributes : any = {};
-
-      if (this.newDeviceType === 'THERMOSTAT'){
-        attributes.ambientTemperature = this.ambientTemp;
-        attributes.desiredTemperature = this.desiredTemp;
-        }
-
-      if (this.newDeviceType === 'LIGHT'){
-        attributes.brightnessPercentage = this.brightnessPercentage;
-        attributes.redValue = this.redValue;
-        attributes.greenValue = this.greenValue;
-        attributes.blueValue = this.blueValue;
-        }
-
       // assign fields common to all devices
       const newDevice: any = {
               deviceType: this.newDeviceType,
               name: this.newDeviceName,
               location: this.newDeviceLocation,
-              attributes: attributes
               }
 
       console.log("Creating Device!", newDevice);

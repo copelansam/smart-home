@@ -37,57 +37,49 @@ public class DatabaseSeeder implements CommandLineRunner {
             service.createDevice(
                     new DeviceCreationRequest("Living Room Thermostat",
                                             "Living Room",
-                                                    DeviceType.THERMOSTAT,
-                                                    Map.of("ambientTemperature", 67,
-                                                            "desiredTemperature", 72)
+                                                    DeviceType.THERMOSTAT
                                             )
             );
 
             service.createDevice(
                     new DeviceCreationRequest("Garage Door Lock",
                             "Garage",
-                            DeviceType.DOORLOCK,
-                            null
+                            DeviceType.DOORLOCK
                     )
             );
 
             service.createDevice(
                     new DeviceCreationRequest("Front Door Lock",
                             "Living Room",
-                            DeviceType.DOORLOCK,
-                            null
+                            DeviceType.DOORLOCK
                     )
             );
 
             service.createDevice(
                     new DeviceCreationRequest("Bedroom Box Fan",
                             "Bedroom",
-                            DeviceType.FAN,
-                            null
+                            DeviceType.FAN
                     )
             );
 
             service.createDevice(
                     new DeviceCreationRequest("Kitchen Fan",
                             "Kitchen",
-                            DeviceType.FAN,
-                            null
+                            DeviceType.FAN
                     )
             );
 
             service.createDevice(
                     new DeviceCreationRequest("Living Room Ceiling Light",
                             "Living Room",
-                            DeviceType.LIGHT,
-                            null
+                            DeviceType.LIGHT
                     )
             );
 
             service.createDevice(
                     new DeviceCreationRequest("Bathroom Lights",
                             "Bathroom",
-                            DeviceType.LIGHT,
-                            null
+                            DeviceType.LIGHT
                     )
             );
 
