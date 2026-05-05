@@ -130,6 +130,7 @@ executeAction(uuid: string, action: string, parameters: any){
   }
 
 deleteDevice(uuid: string){
+
   return this.http.delete(`${this.apiUrl}/${uuid}`);
   }
 

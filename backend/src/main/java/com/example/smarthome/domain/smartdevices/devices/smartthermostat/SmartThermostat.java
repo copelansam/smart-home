@@ -179,7 +179,6 @@ public class SmartThermostat extends SmartDeviceBase {
      * Restores:
      * - OFF state
      * - AUTO mode
-     * - default ambient temperature (70°F)
      * - default desired temperature (75°F)
      * </p>
      *
@@ -191,7 +190,6 @@ public class SmartThermostat extends SmartDeviceBase {
     public void factoryReset(){
         this.state = new ThermostatOffState();
         this.isOn = false;
-        this.ambientTemperature = new Temperature(70);
         this.desiredTemperature = new Temperature(75);
         this.mode = ThermostatMode.AUTO;
     }

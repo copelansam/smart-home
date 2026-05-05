@@ -124,6 +124,24 @@ export class AppTopbar {
     deviceTypes = this.deviceService.getDeviceTypes();
 
     factoryResetDevices() {
+
+      const confirmed = window.confirm(
+            'Are you sure you want to factory reset all devices?\n\n' +
+            'The following settings will be applied:\n\n' +
+            '• Thermostat:\n' +
+            '   - State: OFF\n' +
+            '   - Desired Temperature: 75°F\n' +
+            '   - Mode: AUTO\n\n' +
+            '• Light:\n' +
+            '   - State: OFF\n' +
+            '   - Brightness: 100%\n' +
+            '   - Color: WHITE\n\n' +
+            '• Fan:\n' +
+            '   - State: OFF\n' +
+            '   - Speed: MEDIUM\n\n' +
+            '• Door Lock:\n' +
+            '   - State: UNLOCKED'
+);
         this.deviceService.factoryResetAllDevices().subscribe({
           next: (res : any) => {
             console.log(res.message);

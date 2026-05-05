@@ -52,6 +52,13 @@ export class DashboardComponent implements OnInit {
 
   // Deletes the specified device, device's logs will still be visible through API calls
   removeDevice(device: SmartDevice) {
+
+      const confirmed = window.confirm(`Are you sure you want to delete ${device.name}?`);
+
+      if (!confirmed) {
+        return;
+      }
+
     this.deviceService.deleteDevice(device.uuid).subscribe({
       next: () => {
         this.messageService.add({
