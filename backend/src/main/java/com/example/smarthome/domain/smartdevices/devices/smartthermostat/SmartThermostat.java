@@ -163,7 +163,7 @@ public class SmartThermostat extends SmartDeviceBase {
      *
      * @param amount change in temperature (can be positive or negative)
      */
-    public void updateTemperature(int amount){
+    public void updateAmbientTemperature(int amount){
 
         // Calculate the new temperature by retrieving the current and adding the delta
         double newTemp = this.ambientTemperature.temperature() + amount;

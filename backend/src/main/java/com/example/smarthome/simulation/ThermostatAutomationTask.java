@@ -1,142 +1,89 @@
 package com.example.smarthome.simulation;
 
-import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devices.DeviceDTO;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
-import com.example.smarthome.domain.smartdevices.devices.smartthermostat.ThermostatMode;
-import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.service.SmartDeviceService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 /**
- * Automates thermostat behavior in the smart home simulation.
+ * Orchestrates thermostat simulation cycles in the smart home system.
  *
- * Periodically evaluates all thermostat devices and adjusts their state
- * and ambient temperature based on desired temperature settings.
+ * This task coordinates the execution of thermostat simulation logic
+ * and applies resulting state changes.
  *
- * Handles:
- * - Heating and cooling state transitions
- * - Temperature adjustments toward target values
- * - Logging of device activity
- * - Broadcasting updates to connected WebSocket clients
+ * For each simulation cycle it:
+ *
+ * - Retrieves all thermostat devices
+ * - Delegates behavior evaluation to ThermostatSimulationService
+ * - Persists updated device state when changes occur
+ * - Stores generated device logs
+ * - Broadcasts updated device state to connected WebSocket clients
+ *
+ * This class does not contain business logic itself; it only
+ * coordinates simulation and side-effect handling.
  */
 @Component
 public class ThermostatAutomationTask {
 
     private final SmartDeviceService deviceService;
     private final DeviceLogRepository logRepository;
-    @Autowired
+    ThermostatSimulationService thermostatSimulation;
     private SimpMessagingTemplate messagingTemplate;
 
-    ThermostatAutomationTask(SmartDeviceService deviceService, DeviceLogRepository logRepository){
+    ThermostatAutomationTask(SmartDeviceService deviceService, DeviceLogRepository logRepository,
+                             ThermostatSimulationService thermostatSimulation, SimpMessagingTemplate messagingTemplate){
 
         this.deviceService = deviceService;
         this.logRepository = logRepository;
+        this.thermostatSimulation = thermostatSimulation;
+        this.messagingTemplate = messagingTemplate;
     }
 
     /**
-     * Executes one simulation cycle for all thermostat devices.
+     * Orchestrates a single thermostat simulation cycle.
      *
-     * Evaluates current and desired temperatures, updates thermostat state
-     * (heating, cooling, idle), persists logs, and broadcasts updates
-     * to connected clients if changes occur.
+     * Acts as a coordination layer between device retrieval, simulation logic,
+     * persistence, and real-time client notification.
+     *
+     * Delegates all behavioral decisions to ThermostatSimulationService.
      */
     public void simulateTemperatureChange(){
 
+        // Retrieve a list of all of the thermostats from the device service
+        // (method returns items as interfaces, cast them to thermostat class)
         List<ISmartDevice> devices = deviceService.getDevices(DeviceType.THERMOSTAT,null,null);
 
         List<SmartThermostat> thermostats = devices.stream().map(device -> (SmartThermostat) device).toList();
 
+        // Iterate through the list of thermostats and perform the simulation on each
         for (SmartThermostat thermostat : thermostats){
 
-            if (thermostat.getState().contains("Off")){
+            // Store result of the simulation
+            ThermostatResult simulationResult = thermostatSimulation.evaluate(thermostat);
+
+            // If nothing changed, go to the next thermostat
+            if (!simulationResult.hasChanged()){
                 continue;
             }
 
-            double ambientTemperature = thermostat.getAmbientTemperature().temperature();
-            double desiredTemperature = thermostat.getDesiredTemperature().temperature();
-            double difference = ambientTemperature - desiredTemperature;
-            boolean hasChanged = false;
-            ThermostatMode mode = thermostat.getMode();
+            // Persist device state
+            deviceService.saveDeviceUpdate(thermostat);
 
-            System.out.println("Mode: " + thermostat.getMode());
-            System.out.println("State: " + thermostat.getState());
+            // Persist Logs by iterating through them and saving them to the log repository
+            simulationResult.getLogs().forEach(logRepository::save);
 
-            // If it is hotter than what the user wants and the thermostat is either in auto or cooling mode, start cooling
-            if (difference >= 1){
-                if (mode == ThermostatMode.AUTO || mode == ThermostatMode.COOL){
-                    if (!thermostat.getState().contains("Cooling")) {
-                        CallResult result = thermostat.execute("START_COOLING", null);
+            // Notify clients
+            ISmartDevice updatedDevice = deviceService.getDeviceById(thermostat.getUuid());
+            DeviceDTO updatedDto = DeviceDTO.fromISmartDevice(updatedDevice);
 
-                        if (result != null && result.getLog() != null) {
-                            logRepository.save(result.getLog());
-                        }
-                    }
-                    thermostat.updateTemperature(-1);
-                    hasChanged = true;
-                    logRepository.save(new DeviceLog(
-                            thermostat.getUuid(),
-                            "Temperature Update",
-                            "The temperature in " + thermostat.getLocation() + " has been adjusted to "
-                                    + (ambientTemperature - 1)));
-                }
-            }
-            else if (difference <= -1){ // If it is colder that the user wants and the thermostat is in auto or heating mode, start heating
-                if (thermostat.getMode() == ThermostatMode.AUTO || thermostat.getMode() == ThermostatMode.HEAT){
-                    if (!thermostat.getState().contains("Heating")) {
-                        CallResult result = thermostat.execute("START_HEATING", null);
+            messagingTemplate.convertAndSend("/topic/devices", updatedDto);
 
-                        if (result != null && result.getLog() != null) {
-                            logRepository.save(result.getLog());
-                        }
-                    }
-                    thermostat.updateTemperature(1);
-                    hasChanged = true;
-
-                    logRepository.save(new DeviceLog(
-                            thermostat.getUuid(),
-                            "Temperature Update",
-                            "The temperature in " + thermostat.getLocation() + " has been adjusted to "
-                                    + (ambientTemperature + 1)));
-                }
-            }
-            else if (ambientTemperature <= desiredTemperature   // Checks if the cooling thermostat overshot it and
-                    && thermostat.getState().contains("Cooling")){ // goes to idle. Possible if the user enters a decimal for temperatures
-                CallResult result = thermostat.execute("STOP_COOLING", null);
-                hasChanged = true;
-
-                if (result != null && result.getLog() != null) {
-                    logRepository.save(result.getLog());
-                }
-
-            }
-            else if (ambientTemperature >= desiredTemperature  // Checks if the heating thermostat overshot it and goes
-                    && thermostat.getState().contains("Heating")){ // to idle. Possible if the user enters a decimal for temperatures
-                CallResult result = thermostat.execute("STOP_HEATING", null);
-                hasChanged = true;
-
-                if (result != null && result.getLog() != null) {
-                    logRepository.save(result.getLog());
-                }
-            }
-
-            if (hasChanged) {
-
-                deviceService.saveDeviceUpdate(thermostat);
-
-                ISmartDevice updatedDevice = deviceService.getDeviceById(thermostat.getUuid());
-
-                DeviceDTO dto = DeviceDTO.fromISmartDevice(updatedDevice);
-
-                messagingTemplate.convertAndSend("/topic/devices", dto);
-            }
         }
     }
 }
