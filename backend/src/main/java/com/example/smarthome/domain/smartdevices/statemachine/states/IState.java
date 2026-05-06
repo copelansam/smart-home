@@ -73,4 +73,9 @@ public interface IState <D extends ISmartDevice>{
      * @return state identifier used for persistence and reconstruction
      */
     String getName();
+
+    /***
+     * @return the material icon name for the state's corresponding icon
+     */
+    String getIconName();
 }

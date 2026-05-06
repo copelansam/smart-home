@@ -49,6 +49,7 @@ public class ThermostatCoolingState extends StateBase<SmartThermostat> {
      */
     public ThermostatCoolingState(){
         super("Thermostat Cooling",
+                "ac_unit",
                 List.of(
                 new ThermostatTransition(ThermostatAction.STOP_COOLING),
                 new ThermostatTransition(ThermostatAction.POWER_THERMOSTAT_OFF)

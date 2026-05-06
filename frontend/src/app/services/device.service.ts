@@ -17,6 +17,7 @@ interface DeviceDto{
   location: string;
   deviceType: DeviceType;
   state: string;
+  materialIcon: string;
   isOn: boolean;
   availableTransitions: ITransition[];
   properties: Record<string, any>;
@@ -232,6 +233,7 @@ private mapDtoToModel(dto : DeviceDto){
       // Turn state into a structured object
       state: {
         name: dto.state,
+        materialIcon: dto.materialIcon,
         availableTransitions: dto.availableTransitions || [],
         updatableFields: dto.updatableFields || []
         },

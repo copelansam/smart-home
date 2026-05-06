@@ -47,6 +47,7 @@ public class ThermostatOffState extends StateBase<SmartThermostat> {
      */
     public ThermostatOffState(){
         super("Thermostat Off",
+                "power_off",
                 List.of(
                 new ThermostatTransition(ThermostatAction.POWER_THERMOSTAT_ON)
                 ),

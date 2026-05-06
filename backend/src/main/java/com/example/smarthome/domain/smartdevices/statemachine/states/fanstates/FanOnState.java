@@ -48,6 +48,7 @@ public class FanOnState extends StateBase<SmartFan> {
      */
     public FanOnState(){
         super("Fan On",
+                "air",
                 List.of(
                 new FanTransition(FanAction.TURN_FAN_OFF)
                 ),

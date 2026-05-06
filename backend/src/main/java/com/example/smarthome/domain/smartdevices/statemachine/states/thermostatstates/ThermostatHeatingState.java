@@ -48,6 +48,7 @@ public class ThermostatHeatingState extends StateBase<SmartThermostat> {
      */
     public ThermostatHeatingState(){
         super("Thermostat Heating",
+                "local_fire_department",
                 List.of(
                 new ThermostatTransition(ThermostatAction.STOP_HEATING),
                 new ThermostatTransition(ThermostatAction.POWER_THERMOSTAT_OFF)

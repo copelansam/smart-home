@@ -108,6 +108,11 @@ public abstract class SmartDeviceBase implements ISmartDevice{
         getUpdatableFields();
     }
 
+    @Override
+    public String getMaterialIcon(){
+        return this.state.getIconName();
+    }
+
     /**
      * @return an immutable list of transitions available in the current state
      */

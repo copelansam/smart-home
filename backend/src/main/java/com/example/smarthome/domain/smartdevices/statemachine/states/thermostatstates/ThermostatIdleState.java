@@ -48,6 +48,7 @@ public class ThermostatIdleState extends StateBase<SmartThermostat> {
      */
     public ThermostatIdleState(){
         super("Thermostat Idle",
+                "pause_circle",
                 List.of(
                 new ThermostatTransition(ThermostatAction.START_COOLING),
                 new ThermostatTransition(ThermostatAction.START_HEATING),

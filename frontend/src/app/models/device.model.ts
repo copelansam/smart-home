@@ -14,6 +14,7 @@ export interface ITransition{
 export interface IState{
 
   name: string;
+  materialIcon: string;
   availableTransitions: ITransition[];
   updatableFields: ITransition[];
 

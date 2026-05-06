@@ -47,6 +47,7 @@ public class DoorUnlockedState extends StateBase<SmartDoorLock> {
      */
     public DoorUnlockedState(){
         super("Door Unlocked",
+                "lock_open",
                 List.of(
                         new DoorTransition(DoorLockAction.LOCK)
                 ),

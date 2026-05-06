@@ -1,17 +1,18 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { DeviceService } from '../../services/device.service';
 import { SmartDevice, SmartFan, SmartThermostat, SmartLight, SmartLock, FAN_SPEEDS, THERMOSTAT_MODES } from '../../models/device.model';
-import { CommonModule, JsonPipe, DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { PopoverModule } from 'primeng/popover';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, JsonPipe, DatePipe, SelectModule, FormsModule, PopoverModule, ToastModule ],
+  imports: [CommonModule, DatePipe, SelectModule, FormsModule, PopoverModule, ToastModule, DialogModule ],
   providers: [ MessageService ],
   templateUrl: './dashboard.html',
   styleUrl: '../../app.css'
@@ -43,6 +44,8 @@ export class DashboardComponent implements OnInit {
         console.log(this.deviceService.devices());
       }, 1000);
   }
+
+  showLogs = false;
 
   // Check what type of device the device is. Used to display device specific information
   isLight(device: SmartDevice): device is SmartLight { return device.deviceType == 'LIGHT'; }
@@ -81,10 +84,12 @@ export class DashboardComponent implements OnInit {
   viewLogs(device: SmartDevice) {
     this.selectedDevice.set(device);
     this.deviceService.fetchLogs(device.uuid);
+    this.showLogs = true;
   }
   // Reset the selected device to null when closing device logs
   closeLogs() {
     this.selectedDevice.set(null);
+    this.showLogs = false;
   }
 
 // Turns a light's RGB value into a CSS rgb color function to display the correct color

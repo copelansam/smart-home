@@ -64,6 +64,12 @@ public interface ISmartDevice {
     String getState();
 
     /**
+     *
+     * @return the string that represents the state's corresponding material icon
+     */
+    String getMaterialIcon();
+
+    /**
      * Returns the list of transitions currently available for this device.
      *
      * @return list of valid state transitions

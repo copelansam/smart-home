@@ -12,11 +12,20 @@ import { SelectModule } from 'primeng/select';
   selector: 'app-filterbar',
   standalone: true,
   imports: [ RouterModule, CommonModule, StyleClassModule, FormsModule, SelectButtonModule, SelectModule ],
-  template: `<div class="layout-filterbar" style="position:sticky; top: 55px; padding:5px; background-color:white;">
-              <span>Filter Devices: </span>
-              Device Type: <p-selectButton [options]="deviceTypes" [(ngModel)]="deviceTypeFilter" optionLabel="label" optionValue="value"></p-selectButton>
-              Location: <p-select [options]="deviceService.locations()" [(ngModel)]="deviceLocationFilter" optionLabel="label" optionValue="value"></p-select>
-              Power Status: <p-selectButton [options]="powerStatuses" [(ngModel)]="devicePowerStatusFilter" optionLabel="label" optionValue="value"></p-selectButton>
+  template: `
+        <!-- The filter bar that allows users to filter devices -->
+        <div class="layout-filterbar flex align-items-center gap-3 flex-wrap"
+             style="position:sticky; top: 55px; padding:5px; background-color:white;">
+              <b>Filter Devices: </b>
+              Device Type:
+              <p-selectButton [options]="deviceTypes" [(ngModel)]="deviceTypeFilter"
+                optionLabel="label" optionValue="value"></p-selectButton>
+              Location:
+              <p-select [options]="deviceService.locations()" [(ngModel)]="deviceLocationFilter"
+                optionLabel="label" optionValue="value"></p-select>
+              Power Status:
+              <p-selectButton [options]="powerStatuses" [(ngModel)]="devicePowerStatusFilter"
+                optionLabel="label" optionValue="value"></p-selectButton>
               <button class="p-button-sm p-button-info" (click)="filterSmartDevices()">Apply Filters</button>
               <button class="p-button-sm p-button-info" (click)="resetFilters()">Reset Filters</button>
              </div>

@@ -13,36 +13,70 @@
     @if (device.location == location.value){
 
     <div class="col-12 md:col-6 lg:col-6" >
-      <div class="card h-full border-round-xl">
+      <div class="card h-full border-round-xl" [ngClass]="device.isOn? 'device-on' : 'device-off'">
         <div class="flex flex-column align-items-center">
         <h2>{{ device.name }}</h2>
         <p> {{ device.deviceType }}</p>
-        <h5>Current State: {{ device.state.name }}</h5>
 
         </div>
+        <br/>
 
         <!-- Device specific attributes -->
         <div class="extra-info flex flex-column align-items-center">
 
           @if(isFan(device)){
+          <!-- Fan State -->
+
+          <div class="inline-flex gap-2">
+
+            <p>State: {{ device.state.name }}</p>
+           <span class="material-icons">{{ device.state.materialIcon }}</span>
+          </div>
+
           <!-- Fan Attributes-->
           <span>Fan Speed: {{ device.attributes['speed']}}</span><br>
-          } @else if(isThermostat(device)){
+          }
+
+          @else if(isThermostat(device)){
+          <!-- Thermostat State -->
+
+          <div class="inline-flex gap-2">
+
+            <p>State: {{ device.state.name }}</p>
+            <span class="material-icons">{{ device.state.materialIcon }}</span>
+          </div>
+
           <!-- Thermostat Attributes-->
-          <span>Ambient Temperature: {{ device.attributes['ambientTemperature']}}</span><br>
-          <span>Desired Temperature: {{ device.attributes['desiredTemperature']}}</span><br>
+          <span>Ambient Temperature: {{ device.attributes['ambientTemperature']}}</span>
+          <span>Desired Temperature: {{ device.attributes['desiredTemperature']}}</span>
           <span>Mode: {{ device.attributes['mode'] }}</span><br>
-          } @else if(isLight(device)){
+          }
+
+          @else if(isLight(device)){
+          <!-- Light State -->
+
+          <div class="inline-flex gap-2">
+
+            <p>State: {{ device.state.name }}</p>
+            <span class="material-icons">{{ device.state.materialIcon }}</span>
+          </div>
           <!-- Light Attributes-->
-          <span>Brightness Percentage: {{ device.attributes['brightnessPercentage']}}</span> <br>
+          <span>Brightness Percentage: {{ device.attributes['brightnessPercentage']}}</span>
           <div> <!-- A little square that shows what color the light is set to -->
             <span>Color: </span>
             <div style="width: 20px; height: 20px; border: 1px solid black; display: inline-block;"
                  [style.backgroundColor]="getRGBString(device.attributes['color'])"></div>
           </div>
           }
-          <!-- There are no unique attributes for door lock devices, if some are added in the future just add an
-          else if (isDoorLook(device)) conditional branch -->
+          @else if(isDoorLock(device)){
+          <!-- Display class name and a corresponding icon (inline) -->
+          <div class="inline-flex gap-2">
+            <p>Current State: {{ device.state.name }}</p>
+            <span class="material-icons">{{ device.state.materialIcon }}</span>
+            <!-- There are no lock specific attributes. If any get added, add them here -->
+          </div>
+          }
+
 
           <hr/>
 
@@ -107,22 +141,25 @@
 
               } @else if (isLight(device)) {
               <!-- Light fields -->
-              <label>Brightness Percentage: </label>
-              <input [(ngModel)]="selectedBrightness" type="number" min="10" max="100"> <br>
-              <small>Note: brightness percentage must be between 10 and 100 percent</small> <br>
 
               <label>Color: </label>
               R: <input [(ngModel)]="selectedRedValue" type="number" min="0" max="255">
               G: <input [(ngModel)]="selectedGreenValue" type="number" min="0" max="255">
               B: <input [(ngModel)]="selectedBlueValue" type="number" min="0" max="255"> <br>
-              <small>Note: each color value must be between 0 and 255</small>
+              <small>Note: each color value must be between 0 and 255</small> <br>
+
+              <label>Brightness Percentage: </label>
+              <input [(ngModel)]="selectedBrightness" type="number" min="10" max="100"> <br>
+              <small>Note: brightness percentage must be between 10 and 100 percent</small>
               }
               <br>
 
+              <div class="update-field-buttons flex align-items-center gap-3 flex-wrap">
               @for (field of device.state.updatableFields; track field.action) {
               <!-- Lists buttons for updating fields per device. Will dynamically load based on the updatable fields decided by the device's state-->
-              <button (click)="handleAction(device.uuid, field.action)"> {{ field.label || field.action }} </button>
+              <button class="p-button" (click)="handleAction(device.uuid, field.action)"> {{ field.label || field.action }} </button>
               }
+              </div>
 
               <hr/>
               <!-- Delete device button -->
@@ -138,15 +175,16 @@
               <div class="log-modal">
                 <div class ="log-header">
                   <h2>History: {{ selectedDevice()?.name }}</h2>
-                  <button (click)="closeLogs()">Close Device Logs</button>
+                  <button class="p-button" (click)="closeLogs()">Close Device Logs</button>
                 </div>
                 <div class="log-content">
                   <!-- Iterates through the device's logs displaying relevant info (date/time, event type, message) -->
                   @for(log of deviceService.currentLogs(); track log.timestamp){
-                  <div class="log-item">
-                    <span class="log-time"> Date/Time: {{ log.timestamp | date:'short' }}: </span> <br>
+                  <div class="log-item my-3">
+                    <span class="log-time"> Date/Time: {{ log.timestamp | date:'short' }} </span> <br>
                     <span class ="log-event"> Event type: {{ log.event }}</span> <br>
                     <span class="log-msg"> Message: {{ log.message }}</span>
+                    <hr/>
                   </div>
                   } @empty {
                   <p class="empty-logs">No history found for this device.</p>

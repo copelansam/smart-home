@@ -38,9 +38,14 @@ public abstract class StateBase<D extends ISmartDevice> implements IState<D> {
     /** Unique name identifying this state. */
     public final String name;
 
+    /**
+     * String that represents a UI icon to be retrieved from material icon
+     * Full list of available icons can be found here: https://fonts.google.com/icons
+     */
+    private final String materialIcon;
+
     /** Transitions that are allowed while the device is in this state. */
     protected final List<ITransition<?>> availableTransitions;
-
 
     /**
      * Transitions that represent fields which can be modified while in this state.
@@ -55,8 +60,11 @@ public abstract class StateBase<D extends ISmartDevice> implements IState<D> {
      * @param availableTransitions list of valid transitions from this state
      * @param transitionsRepresentingUpdatableFields list of transitions representing editable fields
      */
-    public StateBase(String name, List<ITransition<?>> availableTransitions, List<ITransition<?>> transitionsRepresentingUpdatableFields){
+    public StateBase(String name, String materialIcon,
+                     List<ITransition<?>> availableTransitions,
+                     List<ITransition<?>> transitionsRepresentingUpdatableFields){
         this.name = name;
+        this.materialIcon = materialIcon;
         this.availableTransitions = availableTransitions;
         this.transitionsRepresentingUpdatableFields = transitionsRepresentingUpdatableFields;
     }
@@ -95,5 +103,10 @@ public abstract class StateBase<D extends ISmartDevice> implements IState<D> {
     @Override
     public List<ITransition<?>> provideUpdatableFields(){
         return Collections.unmodifiableList(transitionsRepresentingUpdatableFields);
+    }
+
+    @Override
+    public String getIconName(){
+        return this.materialIcon;
     }
 }

@@ -28,6 +28,7 @@ import java.util.UUID;
         "deviceType",
         "state",
         "isOn",
+        "materialIcon",
         "properties",
         "availableActions",
         "updatableFields"
@@ -51,6 +52,11 @@ public record DeviceDTO(
 
         /** Current state of the device (state machine name). */
         String state,
+
+        /**
+         *  Material Icon that represents the corresponding state
+         */
+        String materialIcon,
 
         /** List of transitions/actions that can be executed in the current state. */
         List<ITransition<?>> availableTransitions,
@@ -90,6 +96,7 @@ public record DeviceDTO(
                 device.getDeviceType(),
                 device.getIsOn(),
                 device.getState(),
+                device.getMaterialIcon(),
                 device.getAvailableTransitions(),
                 device.getUpdatableFields(),
                 device.getExtraProperties()

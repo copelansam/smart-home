@@ -47,6 +47,7 @@ public class LightOffState extends StateBase<SmartLight> {
      */
     public LightOffState(){
         super("Light Off",
+                "power_off",
                 List.of(
                     new LightTransition(LightAction.TURN_LIGHT_ON)
                 ),
