@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-/***
- * REST controller for controlling the smart house simulation settings
+/**
+ * REST controller for controlling smart home simulation settings.
  *
- * provides endpoints to update the simulation speed, update a location's ambient temperature, and reset smart devices
+ * These endpoints are COMMAND operations that mutate simulation state.
+ * They return HTTP 204 (No Content) when successful.
  */
 @RestController
 @RequestMapping("/api/simulation")
@@ -30,31 +31,35 @@ public class SimulationController {
         this.deviceService = deviceService;
     }
 
-    /***
-     * Updates the speed of the thermostat temperature simulation
+    /**
+     * Updates the speed multiplier of the thermostat temperature simulation.
      *
-     * @param timeMultiplier the multiplier by which the rate that the temperature changes will be multiplied
-     * @return a response entity that says whether or not the speed was successfully updated
+     * This affects how quickly simulated temperatures change over time.
+     *
+     * @param timeMultiplier multiplier applied to simulation speed (> 0)
+     * @return HTTP 204 No Content if the update is successful
      */
     @PostMapping("/speed")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<String> updateSimulationRate(@RequestParam @Positive @NotNull double timeMultiplier) {
+    public ResponseEntity<Void> updateSimulationRate(@RequestParam @Positive @NotNull double timeMultiplier) {
 
         simulationSettings.setTimeMultiplier(timeMultiplier);
         logger.info("Simulation speed changed to {}x", timeMultiplier);
-        return ResponseEntity.ok("Simulation speed updated to: " + timeMultiplier + "x");
+        return ResponseEntity.noContent().build();
 
     }
 
-    /***
-     * Updates the ambient temperature of a specific location
+    /**
+     * Updates the ambient temperature for a specific location in the simulation.
      *
-     * @param tempRequest an object that contains information needed to update a location's temperature (location and temperautre)
-     * @return a response entity that says whether or not the location's temperature was successfully updated
+     * This directly affects the thermostat associated with that location.
+     *
+     * @param tempRequest request containing location and temperature values
+     * @return HTTP 204 No Content if the update is successful
      */
     @PostMapping("/location/temperature")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<String> updateAmbientTemperatureByLocation(
+    public ResponseEntity<Void> updateAmbientTemperatureByLocation(
             @Valid @RequestBody TempRequest tempRequest) {
 
         // Pass the request values to the device service to update the location's temperature
@@ -64,21 +69,20 @@ public class SimulationController {
         return ResponseEntity.noContent().build();
     }
 
-    /***
-     * factory resets all smart devices
+    /**
+     * Resets all smart devices in the simulation to their factory default state.
      *
-     * @return a response entity that says whether or not it was successful
+     * This clears runtime state and restores initial configuration.
+     *
+     * @return HTTP 204 No Content if reset is successful
      */
     @PostMapping("/reset")
     @CrossOrigin(origins = "*")
-    public ResponseEntity<Map<String,String>> factoryResetAllDevices(){
+    public ResponseEntity<Void> factoryResetAllDevices(){
 
-        // Call the service's reset device method, and store the amount of devices reset
-        int devicesReset = deviceService.resetAllDevices();
+        // Call the service's reset devices method
+        deviceService.resetAllDevices();
 
-        // Return result including how many devices were reset
-        return ResponseEntity.ok(Map.of(
-                "message","All " + devicesReset + " device(s) successfully reset to their factory conditions"));
-
+        return ResponseEntity.noContent().build();
     }
 }

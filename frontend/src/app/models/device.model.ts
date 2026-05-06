@@ -28,9 +28,7 @@ export interface SmartDeviceBase{
   isOn: boolean;
   state: IState;
   attributes: Record<string, any>;
-  availableTransitions: Array<{ action: string, label: string }>;
-  updatableFields: Array< { action: string, label: string}>;
-  }
+ }
 
 export interface SmartLight extends SmartDeviceBase{
   attributes:{

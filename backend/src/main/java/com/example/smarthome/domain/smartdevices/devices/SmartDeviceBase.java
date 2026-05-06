@@ -94,22 +94,32 @@ public abstract class SmartDeviceBase implements ISmartDevice{
         return this.isOn;
     }
     public String getState(){return this.state.getName();}
+
+    /**
+     * Update the device's state to the provided state and generate that state's available actions and updatable fields
+     *
+     * @param newState the new state to assign to the device
+     */
     public void setState(IState newState){
+
         this.state = newState;
+
+        getAvailableTransitions();
+        getUpdatableFields();
     }
 
     /**
      * @return an immutable list of transitions available in the current state
      */
     public List<ITransition<?>> getAvailableTransitions(){
-        return Collections.unmodifiableList(this.availableActions);
+        return Collections.unmodifiableList(this.state.provideAvailableTransitions());
     }
 
     /**
      * @return an immutable list of fields that can be updated in the current state
      */
     public List<ITransition<?>>  getUpdatableFields(){
-        return Collections.unmodifiableList(this.updatableFields);
+        return Collections.unmodifiableList(this.state.provideUpdatableFields());
     }
 
     /**

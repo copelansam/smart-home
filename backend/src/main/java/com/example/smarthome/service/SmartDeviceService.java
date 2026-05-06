@@ -19,6 +19,7 @@ import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.repository.ISmartDeviceRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -40,15 +41,18 @@ public class SmartDeviceService {
     private final ISmartDeviceFactory deviceFactory;
     private final QueryBuilder queryBuilder;
     private final DeviceLogRepository deviceLogRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     public SmartDeviceService(ISmartDeviceRepository repo,
                               ISmartDeviceFactory deviceFactory,
                               QueryBuilder queryBuilder,
-                              DeviceLogRepository deviceLogRepository){
+                              DeviceLogRepository deviceLogRepository,
+                              SimpMessagingTemplate messagingTemplate){
         this.repo = repo;
         this.deviceFactory = deviceFactory;
         this.queryBuilder = queryBuilder;
         this.deviceLogRepository = deviceLogRepository;
+        this.messagingTemplate = messagingTemplate;
     }
 
     /**
@@ -75,7 +79,6 @@ public class SmartDeviceService {
      * @return A call result that signals whether the device was successfully created or not
      *
      */
-    @PostMapping
     public CallResult createDevice(DeviceCreationRequest request){
 
         // Create a new request object with a formatted location
@@ -90,8 +93,6 @@ public class SmartDeviceService {
             // Create the new device by passing the request into the factory
             SmartDeviceBase newDevice = deviceFactory.createDevice(request);
 
-
-
             // Save the device to the database
             saveDeviceUpdate(newDevice);
 
@@ -101,6 +102,9 @@ public class SmartDeviceService {
 
             // Save creation log
             deviceLogRepository.save(result.getLog());
+
+            // Emit a DTO of the new device to the frontend
+            messagingTemplate.convertAndSend("/topic/devices", DeviceDTO.fromISmartDevice(newDevice));
 
             // return call result
             return result;
@@ -151,6 +155,9 @@ public class SmartDeviceService {
             // If the device could not be found in the database, throw an exception
             throw new DeviceNotFoundException("Device with this ID: " + uuid + " cannot be found.");
         }
+
+        // Emit the ID of the deleted device to the frontend so it knows to delete the device locally
+        messagingTemplate.convertAndSend("/topic/devices/delete", uuid);
     }
 
     /***
@@ -200,6 +207,9 @@ public class SmartDeviceService {
             throw new InvalidStateTransitionException(result.getMessage());
         }
 
+        // Emit updated device to the frontend
+        messagingTemplate.convertAndSend("/topic/devices", DeviceDTO.fromISmartDevice(device));
+
         // return the result of the call
         return result;
     }
@@ -239,7 +249,7 @@ public class SmartDeviceService {
      * @return
      */
     @Transactional
-    public String updateLocationAmbientTemperature(String location, double temperature){
+    public void updateLocationAmbientTemperature(String location, double temperature){
 
         // Check that a location was entered, a series of spaces does not count
         if (location.trim().isEmpty()){
@@ -256,16 +266,20 @@ public class SmartDeviceService {
             throw new DeviceNotFoundException("Thermostat in " + location + " not found. Either it does not exist or it was deleted.");
         }
         else{
+
             // Otherwise, retrieve the thermostat from the list, cast it to a thermostat and update its ambient temperature
             ISmartDevice thermostat = thermostats.get(0);
             ((SmartThermostat) thermostat).setAmbientTemperature(temperature);
 
             // Save the updates to the device repository and log it in the device log repository
-            deviceLogRepository.save(new DeviceLog(thermostat.getUuid(),"Location Temperature Update" ,
-                    "Ambient Temperature in: " + location + " was updated to: " + temperature));
             saveDeviceUpdate(thermostat);
 
-            return "Ambient Temperature in: " + location + " was updated to: " + temperature;
+            deviceLogRepository.save(new DeviceLog(thermostat.getUuid(),"Location Temperature Update" ,
+                    "Ambient Temperature in: " + location + " was updated to: " + temperature));
+
+            // Emit the change to the frontend
+            messagingTemplate.convertAndSend("/topic/devices",
+                    DeviceDTO.fromISmartDevice(thermostat));
         }
     }
 
@@ -276,7 +290,7 @@ public class SmartDeviceService {
      * @return the amount of devices that were reset
      */
     @Transactional
-    public int resetAllDevices(){
+    public void resetAllDevices(){
 
         // Retrieve a list of all of the devices
         List<ISmartDevice> devices = getDevices(null,null,null);
@@ -303,8 +317,8 @@ public class SmartDeviceService {
                     "Device reset to factory settings"));
         }
 
-        // Return the number of devices reset
-        return devices.size();
+        // Emit that the reset devices to the front end
+        messagingTemplate.convertAndSend("/topic/devices", deviceListToDto(devices));
     }
 
     /***

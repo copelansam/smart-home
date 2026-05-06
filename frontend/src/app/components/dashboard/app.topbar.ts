@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { LayoutService } from '../../services/layout.service';
 import { DeviceService } from '../../services/device.service';
+import { SimulationService } from '../../services/simulation.service';
 import { MenuModule } from 'primeng/menu';
 import { PopoverModule } from 'primeng/popover';
 import { FormsModule } from '@angular/forms';
@@ -138,6 +139,7 @@ export class AppTopbar {
 
     layoutService = inject(LayoutService);
     deviceService = inject(DeviceService);
+    simulationService = inject(SimulationService);
 
     // List of device types
     deviceTypes = this.deviceService.getDeviceTypes();
@@ -161,10 +163,8 @@ export class AppTopbar {
             '• Door Lock:\n' +
             '   - State: UNLOCKED'
 );
-        this.deviceService.factoryResetAllDevices().subscribe({
+        this.simulationService.factoryResetAllDevices().subscribe({
           next: (res : any) => {
-            console.log(res.message);
-            this.deviceService.fetchDevices('null', 'null', null); // refresh UI across app
           },
           error: (err) => console.error('Device Reset Failed', err)
          });
@@ -173,10 +173,9 @@ export class AppTopbar {
     updateTemperature(){
       if (!this.selectedLocation || this.tempValue === null) return;
 
-      this.deviceService.updateLocationTemperature(this.selectedLocation, this.tempValue).subscribe({
+      this.simulationService.updateLocationTemperature(this.selectedLocation, this.tempValue).subscribe({
         next: (res: any) =>{
-          console.log(`Updating the temperature in: ${this.selectedLocation} to: ${this.tempValue} degrees F`),
-          this.deviceService.fetchDevices('null', 'null', null);
+          console.log(`Updating the temperature in: ${this.selectedLocation} to: ${this.tempValue} degrees F`);
           },
         error: (err: any) => {
                     console.error('Temperature update failed', err);
@@ -186,8 +185,8 @@ export class AppTopbar {
 
     updateSimulationSpeed(){
       console.log("New Simulation Speed: ", this.selectedSpeed ,"X");
-      this.deviceService.updateSimulationSpeed(this.selectedSpeed).subscribe({
-        next: (res) => console.log('Speed updated successfully',res),
+      this.simulationService.updateSimulationSpeed(this.selectedSpeed).subscribe({
+        next: (res) => console.log('Speed updated successfully'),
         error: (err) => console.error('Failed', err)
         });
       }
@@ -201,10 +200,8 @@ export class AppTopbar {
               location: this.newDeviceLocation,
               }
 
-      console.log("Creating Device!", newDevice);
       this.deviceService.createNewDevice(newDevice).subscribe({
         next: () => {
-          this.deviceService.fetchDevices('null', 'null', null);
           },
         error: (err) => console.log('Device Creation Failed', err)
       });

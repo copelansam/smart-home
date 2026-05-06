@@ -66,7 +66,6 @@ export class DashboardComponent implements OnInit {
           summary: 'Success',
           detail: `${ device.name } was successfully deleted`
           });
-        this.deviceService.fetchDevices('null', 'null', null);
       },
       error: (err) => {
         this.messageService.add({
@@ -110,9 +109,6 @@ handleAction(uuid: string, action: string) {
           detail: detailMessage,
           life: 2000
         });
-
-        // fetch updated devices
-        this.deviceService.fetchDevices('null', 'null', null);
       },
       error: (err) => {
         this.messageService.add({
