@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { WebSocketService } from './websocket.service'
 import { SmartDevice, DeviceType, DeviceLog, ITransition } from '../models/device.model'
+import { environment } from 'src/environments/environment';
 
 /**
  * DTO (Data Transfer Object) representing the raw shape of device data
@@ -39,7 +40,7 @@ export class DeviceService {
   private socket = inject(WebSocketService);
 
   // Base API endpoint for device-related operations
-  private apiUrl = 'http://localhost:8080/api/devices';
+  private apiUrl = `${environment.apiUrl}/api/devices`;
 
  /**
    * When the service is created, we immediately start listening

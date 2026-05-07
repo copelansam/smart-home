@@ -1,6 +1,10 @@
+// This file was made with the help of ChatGPT
+
 import { RxStomp } from '@stomp/rx-stomp';
 import { Injectable } from '@angular/core';
 import { map, filter } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+
 
 @Injectable({ providedIn: 'root' })
 
@@ -10,7 +14,7 @@ export class WebSocketService{
 
   constructor() {
       this.rxStomp.configure({
-        brokerURL: 'ws://localhost:8080/ws/websocket',
+        brokerURL: environment.wsUrl,
         reconnectDelay: 5000,
         debug: (str) => console.log(str),
       });

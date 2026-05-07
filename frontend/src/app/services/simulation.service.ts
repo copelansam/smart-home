@@ -1,12 +1,13 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 
 export class SimulationService{
 
   private http = inject(HttpClient);
-  private simulationUrl = 'http://localhost:8080/api/simulation';
+  private simulationUrl = `${environment.apiUrl}/api/simulation`;
 
   /**
    * Resets all simulated devices back to factory state.
