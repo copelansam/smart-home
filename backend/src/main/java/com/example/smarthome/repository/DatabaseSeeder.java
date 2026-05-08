@@ -1,12 +1,10 @@
 package com.example.smarthome.repository;
 
-import com.example.smarthome.controller.DeviceCreationRequest;
+import com.example.smarthome.api.request.DeviceCreationRequest;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.service.SmartDeviceService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 /***
  * Seeds the database with initial smart device data on application startup.

@@ -1,4 +1,4 @@
-package com.example.smarthome.simulation;
+package com.example.smarthome.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

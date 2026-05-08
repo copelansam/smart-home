@@ -1,10 +1,8 @@
-package com.example.smarthome.controller;
+package com.example.smarthome.api.request;
 
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
-import java.util.Map;
 
 /**
  * Request object used to create a new smart device.

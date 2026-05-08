@@ -1,4 +1,4 @@
-package com.example.smarthome.simulation;
+package com.example.smarthome.api.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

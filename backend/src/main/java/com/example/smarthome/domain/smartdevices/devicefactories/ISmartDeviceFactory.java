@@ -1,10 +1,7 @@
 package com.example.smarthome.domain.smartdevices.devicefactories;
 
-import com.example.smarthome.controller.DeviceCreationRequest;
-import com.example.smarthome.domain.smartdevices.devices.DeviceType;
+import com.example.smarthome.api.request.DeviceCreationRequest;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
-
-import java.util.Map;
 
 
 /**

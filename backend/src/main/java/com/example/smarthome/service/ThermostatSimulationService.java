@@ -1,6 +1,7 @@
-package com.example.smarthome.simulation;
+package com.example.smarthome.service;
 
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
+import com.example.smarthome.simulation.ThermostatResult;
 import com.example.smarthome.simulation.strategies.IThermostatStrategy;
 import com.example.smarthome.simulation.strategies.ThermostatStrategyFactory;
 import org.springframework.stereotype.Service;

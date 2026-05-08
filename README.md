@@ -13,7 +13,8 @@ This project will make use of the following principles of design & Software Engi
 - All SOLID principles
 - Various OO design patterns including state machine, strategy, and factory
 - Docker for containerization and deployment 
-- Unit Testing for validating core application logic 
+- Unit Testing for validating core application logic
+- Using AI tools to aid in the development process (specifically with testing)
 
 ***
 
@@ -133,7 +134,7 @@ URL: `PUT /simulation/speed?timeMultiplier=2.0`
 
 \* Updates the application's simulation speed rate to 2x
 
-### Facotry Reset all Devices
+### Factory Reset all Devices
 
 URL: `POST /simulation/reset`
 
@@ -157,34 +158,31 @@ If it already has one, the API call does not create a device
 
 This application supports units tests, API tests, and frontend tests, to execute each testing suite do the following:
 - Unit Tests: navigate to the `/backend` directory in the CLI and run `mnv test` to execute the tests
-- API Tests: navigate to the `/bruno` directory in the CLI and run `bru run --env tests` to execute the API tests
-- Front End Tests: navigate to the `/frontend` directory in the CLI and run `ng test` to execute the frontend tests
+- API Tests: While the backend is running, navigate to the `/bruno` directory in the CLI and run `bru run --env tests` to execute the API tests
+- Front End Tests: 
+  - navigate to the `/frontend` directory in the CLI and run `ng test` to execute the frontend tests
 
 ***
 
 ## OO Design Patterns
+
 This project makes use of several OO Design patterns which will be documented below:
-- State: 
-  - Each smart device is controlled by its own statechart machine which determines what actions a device may perform 
-while in each state. For more info, click [here](backend/src/main/java/com/example/smarthome/domain/smartdevices/statemachine/README.md)
-- Factory:
-  - The factory pattern is used in two different locations: [device creation](backend/src/main/java/com/example/smarthome/domain/smartdevices/devicefactories/README.md)
-and [thermostat strategy](backend/src/main/java/com/example/smarthome/simulation/strategies/README.md) selection. 
-  - This pattern was implemented in both of these areas to help centralize object creation logic
-- Strategy:
-  - The strategy pattern is implemented in the [thermostat simulation](backend/src/main/java/com/example/smarthome/simulation/strategies/README.md) 
-feature. It is specifically used to dynamically choose thermostat behavior during runtime
-- Repository:
-  - This project makes use Object-Relational Mapping (ORM) & the [repository pattern](backend/src/main/java/com/example/smarthome/repository/README.md) 
-to help store data without needing to worry about writing SQL statements
-  - Services are able to rely on an abstraction that promises common features (save, update, delete, etc.) instead of having to keep track of different SQL queries
-- Decorator:
-  - The [decorator pattern](backend/src/main/java/com/example/smarthome/domain/devicequeries/README.md) is used while filtering device queries by type, location, and power status. 
-  - It allows the system to dynamically alter its behavior without the need for a large number of classes
+
+| Pattern | Location                                                                                                      | Justification                                                                                                                                                                                                                                              |
+|---------|---------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| State   | `backend/src/main/java/com/example/smarthome/domain/smartdevices/statemachine`                                | Each smart device is controlled by its own statechart machine which determines what actions a device may perform while in each state. For more info, click [here](backend/src/main/java/com/example/smarthome/domain/smartdevices/statemachine/README.md)  |
+| Facotry | `backend/src/main/java/com/example/smarthome/domain/smartdevices/devicefactories` & `smarthome/simulation/strategies/ThermostatStrategyFactory` | Help centralize creation logic for [smart devices](backend/src/main/java/com/example/smarthome/domain/smartdevices/devicefactories/README.md) and [thermostat strategies](backend/src/main/java/com/example/smarthome/simulation/strategies/README.md)     |
+| Strategy | `backend/src/main/java/com/example/smarthome/simulation/strategies/*`                                                                           | Allow the system to dynamically determine how a thermostate should behave in the simulation based on factors unknown before runtime. More info [here](backend/src/main/java/com/example/smarthome/simulation/strategies/README.md)                         |
+| Repository| `backend/src/main/java/com/example/smarthome/repository/DeviceLogRepository` & `smarthome/repository/ISmartDeviceRepository`                    | Enables the use of ORM mapping by hiding persistence logic behind and interface. Service do not need to know how domain objects are saved/ deleted, just that they are. More info [here](backend/src/main/java/com/example/smarthome/repository/README.md) |
+| Decorator | `backend/src/main/java/com/example/smarthome/domain/devicequeries/*`                                                                            | Allows the system to dynamically alter its device retireval behavior without the need for a large number of classess. More info [here](backend/src/main/java/com/example/smarthome/domain/devicequeries/README.md)                                                                                                                   |
+
 
 ***
 
-## Extra Credit
+## Team Size & Extra Credit
+
+My team consisted of 1 person (Myself)
+
 This project implements the Object-Relational Mapping (ORM) extra credit opportunity. 
 Device and Log objects are mapped directly to tables within the database. 
 The application services utilize Hibernate and the Repository Pattern to manage records.
@@ -194,14 +192,15 @@ By abstracting the data access layer, this approach ensures a clean separation b
 ***
 
 ## Known Bugs
+
 - While filtering devices in the UI, if a location is not included in the results it will not be selectable in 
 the location select filter or update temperature dropdown menus. This is because the frontend retrieves the list 
-of locations from the devices that it retrieves from the backend. 
+of locations from the devices that are retrieved from the backend. 
 When filters are applied and a location is not included, it is dropped from the locations list. 
 You can get around this hitting the reset filters button which will send a default device retrieval 
 request and return all devices with all locations.
 - If you filter by device type and a thermostat is in heating or cooling, it will appear in the device list on the 
-front end. the websocket sends the updated thermostat to the front end, and it gets displayed in the UI. 
+front end. The websocket sends the updated thermostat to the front end, and it gets displayed in the UI. 
 Currently no work around as I am discovering this bug a few hours before the project is due.
 
 ***
@@ -214,6 +213,7 @@ I plan on making some adjustments to better align with modern software engineeri
 These changes include:
 - Implementing a proper singleton pattern implementation. Currently, there are some classes that would work if they 
 were placed in a singleton (simulation settings, websocket config)
+- Implement a Device Log DTO class. Currently, I am exposing the Device Log itself. I forgot to make a DTO for it :( . 
 - Updating the UI to have device settings inline with device information for a sleeker UI
 - Add a CI/CD pipeline to get experience with it
 - Fix bugs mentioned above

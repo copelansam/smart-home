@@ -1,16 +1,14 @@
 package com.example.smarthome.controller;
 
 import com.example.smarthome.service.SmartDeviceService;
-import com.example.smarthome.simulation.SimulationSettings;
-import com.example.smarthome.simulation.TempRequest;
+import com.example.smarthome.config.SimulationSettings;
+import com.example.smarthome.api.request.TempRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 /**
  * REST controller for controlling smart home simulation settings.

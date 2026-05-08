@@ -1,8 +1,9 @@
 package com.example.smarthome.controller;
 
 
+import com.example.smarthome.api.request.DeviceCreationRequest;
 import com.example.smarthome.domain.history.DeviceLog;
-import com.example.smarthome.domain.smartdevices.devices.DeviceDTO;
+import com.example.smarthome.api.response.DeviceDTO;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;

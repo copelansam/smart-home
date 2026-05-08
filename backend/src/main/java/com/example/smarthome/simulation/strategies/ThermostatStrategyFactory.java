@@ -2,7 +2,7 @@ package com.example.smarthome.simulation.strategies;
 
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.ThermostatMode;
-import com.example.smarthome.simulation.ThermostatSimulationService;
+import com.example.smarthome.service.ThermostatSimulationService;
 import org.springframework.stereotype.Component;
 
 /**

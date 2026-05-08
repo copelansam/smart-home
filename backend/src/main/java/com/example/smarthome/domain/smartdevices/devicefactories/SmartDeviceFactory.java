@@ -1,16 +1,13 @@
 package com.example.smarthome.domain.smartdevices.devicefactories;
 
-import com.example.smarthome.controller.DeviceCreationRequest;
+import com.example.smarthome.api.request.DeviceCreationRequest;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
 import com.example.smarthome.domain.smartdevices.devices.smartdoorlock.SmartDoorLock;
 import com.example.smarthome.domain.smartdevices.devices.smartfan.SmartFan;
 import com.example.smarthome.domain.smartdevices.devices.smartlight.SmartLight;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
-import com.example.smarthome.domain.smartdevices.devices.smartthermostat.ThermostatMode;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
 
 
 /**

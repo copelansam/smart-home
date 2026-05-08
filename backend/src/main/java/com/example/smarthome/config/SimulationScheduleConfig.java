@@ -1,12 +1,12 @@
-package com.example.smarthome.simulation;
+package com.example.smarthome.config;
 
+import com.example.smarthome.simulation.ThermostatAutomationTask;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
 import java.time.Instant;
-import java.util.Date;
 
 /***
  * Configures dynamic scheduling for the smart home simulation system

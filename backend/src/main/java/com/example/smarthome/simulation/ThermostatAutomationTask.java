@@ -1,11 +1,12 @@
 package com.example.smarthome.simulation;
 
-import com.example.smarthome.domain.smartdevices.devices.DeviceDTO;
+import com.example.smarthome.api.response.DeviceDTO;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
 import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.service.SmartDeviceService;
+import com.example.smarthome.service.ThermostatSimulationService;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 

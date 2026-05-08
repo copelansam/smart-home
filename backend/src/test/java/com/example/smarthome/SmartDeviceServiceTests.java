@@ -1,6 +1,6 @@
 package com.example.smarthome;
 
-import com.example.smarthome.controller.DeviceCreationRequest;
+import com.example.smarthome.api.request.DeviceCreationRequest;
 import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devicefactories.ISmartDeviceFactory;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
@@ -19,7 +19,7 @@ import com.example.smarthome.repository.DeviceLogRepository;
 import com.example.smarthome.repository.ISmartDeviceRepository;
 import com.example.smarthome.service.SmartDeviceService;
 import com.example.smarthome.simulation.ThermostatResult;
-import com.example.smarthome.simulation.ThermostatSimulationService;
+import com.example.smarthome.service.ThermostatSimulationService;
 import com.example.smarthome.simulation.strategies.IThermostatStrategy;
 import com.example.smarthome.simulation.strategies.ThermostatStrategyFactory;
 

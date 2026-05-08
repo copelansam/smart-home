@@ -19,7 +19,7 @@ public class SmartHomeApplication {
 
 	public static void main(String[] args) {
 
-        // Initializes the state machine
+        // Initializes the state machine prior to Hibernate & JPA hydration
          StateInitializer.init();
 
          // Starts the application

@@ -1,7 +1,8 @@
-package com.example.smarthome.domain.smartdevices.devices;
+package com.example.smarthome.api.response;
 
+import com.example.smarthome.domain.smartdevices.devices.DeviceType;
+import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.ITransition;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.util.List;

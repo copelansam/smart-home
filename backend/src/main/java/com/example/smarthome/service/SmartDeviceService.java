@@ -1,11 +1,11 @@
 package com.example.smarthome.service;
 
-import com.example.smarthome.controller.DeviceCreationRequest;
+import com.example.smarthome.api.request.DeviceCreationRequest;
 import com.example.smarthome.domain.devicequeries.IDeviceQuery;
 import com.example.smarthome.domain.devicequeries.QueryBuilder;
 import com.example.smarthome.domain.history.DeviceLog;
 import com.example.smarthome.domain.smartdevices.devicefactories.ISmartDeviceFactory;
-import com.example.smarthome.domain.smartdevices.devices.DeviceDTO;
+import com.example.smarthome.api.response.DeviceDTO;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.domain.smartdevices.devices.ISmartDevice;
 import com.example.smarthome.domain.smartdevices.devices.SmartDeviceBase;
