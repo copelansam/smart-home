@@ -1,0 +1,47 @@
+info:
+  name: Create Device - Success
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/devices/create-device"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "Test Device",
+        "location": "Test Location",
+        "deviceType": "FAN"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Device created successfully", () => {
+          expect(res.status).to.equal(200);
+          expect(res.body.isSuccess).to.equal(true);
+          expect(res.body.message).to.contain("created");
+
+          const uuid = res.body.log.deviceId;
+
+          expect(uuid).to.exist;
+          expect(uuid).to.be.a("string");
+
+          bru.setVar("deviceUuid", uuid);
+        });
+
+        test("UUID was stored in environment", () => {
+          const uuid = bru.getVar("deviceUuid");
+
+          expect(uuid).to.exist;
+          expect(uuid).to.not.equal("");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

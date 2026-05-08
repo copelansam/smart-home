@@ -1,0 +1,32 @@
+info:
+  name: Create Device - Failure (Missing Field)
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/devices/create-device"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "test bad name",
+        "location": "test"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Should fail when a parameter is missing (deviceType in this case)", () => {
+          expect(res.status).to.equal(400);
+          expect(res.body.title).to.equal("Validation Error");
+          expect(res.body.detail).to.contain("Device type is required");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

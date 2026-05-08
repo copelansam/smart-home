@@ -103,6 +103,8 @@ There are 2 main methods to run this application:
 
 ## Running Tests
 
+This application supports API tests with Bruno. To run the bruno tests, run the backend, navigate to the `bruno` directory in the CLI and run `bru run --env tests`
+
 ***
 
 ## OO Design Patterns

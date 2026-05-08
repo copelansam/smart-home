@@ -1,0 +1,23 @@
+info:
+  name: Retrieve All Devices - Failure (Wrong Requet Type)
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{baseUrl}}/api/devices"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Should reject POST method on retrieve all items endpoint", () => {
+          expect(res.status).to.equal(405);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

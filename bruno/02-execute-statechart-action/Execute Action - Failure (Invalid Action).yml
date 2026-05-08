@@ -1,0 +1,33 @@
+info:
+  name: Execute Action - Failure (Invalid Action)
+  type: http
+  seq: 12
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/api/devices/{{deviceUuid}}/state?action=TURN_THERMOSTAT_ON"
+  params:
+    - name: action
+      value: TURN_THERMOSTAT_ON
+      type: query
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Invalid action returns error", () => {
+          expect(res.status).to.equal(500);
+
+          expect(res.body.title).to.equal("Unexpected Error");
+
+          expect(res.body.detail).to.include("internal error");
+
+          expect(res.body.instance).to.include("/state");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

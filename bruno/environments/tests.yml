@@ -1,0 +1,8 @@
+name: test
+variables:
+  - name: deviceUuid
+    value: 82145970-1b1a-4a45-b2f7-76875b4d50f2
+  - name: baseUrl
+    value: http://localhost:8080
+  - name: simulationUrl
+    value:  http://localhost:8080/api/simulation

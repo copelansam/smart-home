@@ -1,0 +1,28 @@
+info:
+  name: Retireve Devices - Success (With Filters)
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: "{{baseUrl}}/api/devices?type=FAN"
+  params:
+    - name: type
+      value: FAN
+      type: query
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Should retrieve all fans", () => {
+          expect(res.status).to.equal(200);
+          expect(res.body).to.be.an("array");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

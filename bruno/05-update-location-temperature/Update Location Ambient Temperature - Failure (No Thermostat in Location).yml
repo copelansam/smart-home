@@ -1,0 +1,30 @@
+info:
+  name: Update Location Ambient Temperature - Failure (No Thermostat in Location)
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{simulationUrl}}/location/temperature"
+  body:
+    type: json
+    data: |-
+      {
+       "location": "Impossible Location",
+        "temperature": 100
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Should reject request if there is no thermostat in the specified location", () => {
+          expect(res.status).to.equal(404);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

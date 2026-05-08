@@ -150,7 +150,8 @@ public class SmartDeviceController {
     @CrossOrigin(origins = "*")
     public ResponseEntity<List<DeviceLog>> getDeviceLogs(@PathVariable("id") UUID uuid){
 
-        List<DeviceLog> logs = deviceLogRepository.findByDeviceIdOrderByTimestampDesc(uuid);
+        List<DeviceLog> logs = deviceService.getLogs(uuid);
+
         return ResponseEntity.ok(logs);
     }
 }

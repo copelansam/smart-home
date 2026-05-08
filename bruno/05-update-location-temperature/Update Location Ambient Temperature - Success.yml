@@ -1,0 +1,31 @@
+info:
+  name: Update Location Ambient Temperature - Success
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{simulationUrl}}/location/temperature"
+  body:
+    type: json
+    data: |-
+      {
+       "location": "Test Location",
+        "temperature": 100
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Update ambient temperature of a location", () => {
+          expect(res.status).to.equal(204);
+          expect(res.body).to.be.empty;
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

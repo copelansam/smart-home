@@ -1,0 +1,28 @@
+info:
+  name: Update Simulation Speed - Success
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{simulationUrl}}/speed?timeMultiplier=10"
+  params:
+    - name: timeMultiplier
+      value: "10"
+      type: query
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Update ambient temperature of a location", () => {
+          expect(res.status).to.equal(204);
+          expect(res.body).to.be.empty;
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

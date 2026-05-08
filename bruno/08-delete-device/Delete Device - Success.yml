@@ -1,0 +1,24 @@
+info:
+  name: Delete Device - Success
+  type: http
+  seq: 13
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/api/devices/{{deviceUuid}}"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Delete the Deivce", () => {
+          expect(res.status).to.equal(204);
+          expect(res.body).to.be.empty;
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,0 +1,31 @@
+info:
+  name: Update Location Ambient Temperature - Failure (Missing Parameter)
+  type: http
+  seq: 5
+
+http:
+  method: POST
+  url: "{{simulationUrl}}/location/temperature"
+  body:
+    type: json
+    data: |-
+      {
+        "location": "missing parameters"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Should fail when a parameter is missing (temperature in this case)", () => {
+          expect(res.status).to.equal(400);
+          expect(res.body.title).to.equal("Validation Error");
+          expect(res.body.detail).to.contain("temperature: temperature is required");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

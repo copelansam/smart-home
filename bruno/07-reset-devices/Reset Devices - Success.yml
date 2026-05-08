@@ -1,0 +1,24 @@
+info:
+  name: Reset Devices - Success
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{simulationUrl}}/reset"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Factory reset all devices", () => {
+          expect(res.status).to.equal(204);
+          expect(res.body).to.be.empty;
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

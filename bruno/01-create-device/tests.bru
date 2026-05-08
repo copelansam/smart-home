@@ -1,0 +1,19 @@
+test("Device created successfully", () => {
+  expect(res.status).to.equal(200);
+  expect(res.body.isSuccess).to.equal(true);
+  expect(res.body.message).to.contain("created");
+
+  const uuid = res.body.log.deviceId;
+
+  expect(uuid).to.exist;
+  expect(uuid).to.be.a("string");
+
+  bru.setEnvVar("deviceUuid", uuid);
+});
+
+test("UUID was stored in environment", () => {
+  const uuid = bru.getEnvVar("deviceUuid");
+
+  expect(uuid).to.exist;
+  expect(uuid).to.not.equal("");
+});

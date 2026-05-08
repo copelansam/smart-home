@@ -1,0 +1,23 @@
+info:
+  name: Reset Devices - Failure (Wrong Request Type)
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{simulationUrl}}/reset"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Should reject GET method on reset endpoint", () => {
+          expect(res.status).to.equal(405);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

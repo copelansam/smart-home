@@ -1,0 +1,25 @@
+info:
+  name: Delete Device - Failure (Device not in Database)
+  type: http
+  seq: 14
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/api/devices/00000000-0000-0000-0000-000000000000"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Should throw an error if the user tries to delete a device that doesn't exist", () => {
+          expect(res.status).to.equal(404);
+          expect(res.body.title).to.equal("Device Not Found");
+          expect(res.body.detail).to.contain("A device with this ID could not be found.");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

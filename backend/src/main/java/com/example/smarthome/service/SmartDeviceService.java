@@ -356,4 +356,22 @@ public class SmartDeviceService {
     public boolean doesLocationHaveThermostat(String location){
         return repo.existsByDeviceTypeAndLocation(DeviceType.THERMOSTAT, location);
     }
+
+    /***
+     * Retrieves a list of device logs for the client specified device
+     *
+     * @param uuid uuid of the device the user wants logs of
+     * @return a list of logs for the specified device
+     */
+    public List<DeviceLog> getLogs(UUID uuid){
+
+        List<DeviceLog> logs = deviceLogRepository.findByDeviceIdOrderByTimestampDesc(uuid);
+
+        if (logs.isEmpty()){
+            throw new DeviceNotFoundException("Device with the specified uuid does not exist. No Logs to display");
+        }
+
+        return Collections.unmodifiableList(logs);
+
+    }
 }

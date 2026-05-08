@@ -62,6 +62,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @param request the current HTTP request used to populate the problem instance URI
      * @return a RFC 9457-compliant {@link ProblemDetail} wrapped in a {@link ResponseEntity}
      */
+    @ExceptionHandler(DeviceNotFoundException.class)
     public ResponseEntity<ProblemDetail> handleDeviceNotFound(
             DeviceNotFoundException exception,
             HttpServletRequest request) {
@@ -70,7 +71,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
         problem.setTitle("Device Not Found");
-        problem.setDetail("A device for this ID could not be found.");
+        problem.setDetail("A device with this ID could not be found.");
         problem.setType(URI.create("https://example.com/problems/device-not-found"));
         problem.setInstance(URI.create(request.getRequestURI()));
 

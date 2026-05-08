@@ -8,6 +8,14 @@ services:
       - SPRING_PROFILES_ACTIVE=prod
     volumes:
       - ./data:/app/data
+    # ADD THIS: Ensures the test container waits for the app to be READY, not just started
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/devices/retrieve-all-devices"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
   frontend:
     build: ./frontend
     container_name: angular-frontend
@@ -15,3 +23,15 @@ services:
       - "4200:80"
     depends_on:
       - backend
+
+  bruno-tests:
+    image: alpine/bruno:latest
+    container_name: bruno-api-tests
+    volumes:
+      - .:/tests
+    working_dir: /tests
+    # Use the 'backend' service name for networking inside Docker
+    command: run --env tests --env-var baseUrl=http://backend:8080
+    depends_on:
+      backend:
+        condition: service_healthy

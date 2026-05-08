@@ -1,0 +1,17 @@
+meta {
+  name: Create Device - Success
+  type: http
+}
+
+post {
+  url: {{baseUrl}}/api/devices/create-device
+
+  body: json
+  {
+    "name": "Test Device",
+    "location": "Test Location",
+    "deviceType": "FAN"
+  }
+
+  auth: inherit
+}

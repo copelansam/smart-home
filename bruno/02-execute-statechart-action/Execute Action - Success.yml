@@ -1,0 +1,37 @@
+info:
+  name: Execute Action - Success
+  type: http
+  seq: 11
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/api/devices/{{deviceUuid}}/state?action=TURN_FAN_ON"
+  params:
+    - name: action
+      value: TURN_FAN_ON
+      type: query
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("Device state change succeeds", () => {
+          expect(res.status).to.equal(200);
+
+          expect(res.body.isSuccess).to.equal(true);
+
+          expect(res.body.message).to.equal("Fan is now on");
+
+          expect(res.body.log).to.exist;
+
+          expect(res.body.log.deviceId).to.equal(bru.getVar("deviceUuid"));
+
+          expect(res.body.log.event).to.equal("State Change");
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
