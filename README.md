@@ -30,13 +30,14 @@ This project provides support for a wide variety of features including:
 
 ## Tech Stack
 
-| Area | Technology |
-|------|-------|
-| Front End | Angular |
-| Backend | Spring Boot |
-| Database | SQLite |
-| ORM | Nibernate |
-| API Testing | Bruno |
+| Area              | Technology  |
+|-------------------|-------------|
+| Front End         | Angular     |
+| Back End          | Spring Boot |
+| Database          | SQLite      |
+| ORM               | Hibernate   |
+| Component Library | PrimeNG     |  
+| API Testing       | Bruno       |
 
 ***
 
@@ -101,9 +102,63 @@ There are 2 main methods to run this application:
 
 ***
 
+## Example API Calls with Payloads
+
+### Turn Light On
+
+URL: `PUT /devices/{id}/state?action=TURN_LIGHT_ON`
+
+Body: None (body is used to pass in optional parameters that are used by some state transitions (primarily those that update device attributes))
+
+\* Performs the TURN_LIGHT_ON action on the device with the specified id. 
+(If the device is a light in the off state, it will turn the light on. Otherwise, nothing will happen)
+
+\* A list of all available actions for each device and state can be found [here](backend/src/main/java/com/example/smarthome/domain/smartdevices/statemachine/README.md)
+
+### Update Thermostat Mode
+
+URL: `PUT /devices/{id}/state?action=UPDATE_MODE`
+
+Body: 
+`{
+"mode" : "HEAT"
+}
+`
+\* Performs the UPDATE_MODE action on the device with the specified id and specified "mode" value in the body.
+(If the device is a thermostat, it will change its mode to HEAT. Otherwise, nothing will happen)
+
+### Update Simulation Speed
+
+URL: `PUT /simulation/speed?timeMultiplier=2.0`
+
+\* Updates the application's simulation speed rate to 2x
+
+### Facotry Reset all Devices
+
+URL: `POST /simulation/reset`
+
+\* Sets all devices to their factory settings
+
+### Create a new Thermostat
+
+URL: `POST /devices/create-device`
+
+Body: 
+`{
+"name": "Example Thermostat",
+"type": "THERMOSTAT",
+"location": "Bathroom" }
+`
+
+\* Creates a new thermostat device in the bathroom if that location does not already have a thermostat. 
+If it already has one, the API call does not create a device 
+
 ## Running Tests
 
-This application supports API tests with Bruno. To run the bruno tests, run the backend, navigate to the `bruno` directory in the CLI and run `bru run --env tests`
+This application supports units tests, API tests, and frontend tests, to execute each testing suite do the following:
+- Unit Tests: navigate to the `/backend` directory in the CLI and run `mnv test` to execute the tests
+- API Tests: navigate to the `/bruno` directory in the CLI and run `bru run --env tests` to execute the API tests
+- Front End Tests: navigate to the `/frontend` directory in the CLI and run `ng test` to execute the frontend tests
 
 ***
 
@@ -126,3 +181,61 @@ to help store data without needing to worry about writing SQL statements
 - Decorator:
   - The [decorator pattern](backend/src/main/java/com/example/smarthome/domain/devicequeries/README.md) is used while filtering device queries by type, location, and power status. 
   - It allows the system to dynamically alter its behavior without the need for a large number of classes
+
+***
+
+## Extra Credit
+This project implements the Object-Relational Mapping (ORM) extra credit opportunity. 
+Device and Log objects are mapped directly to tables within the database. 
+The application services utilize Hibernate and the Repository Pattern to manage records.
+By abstracting the data access layer, this approach ensures a clean separation between business logic and persistence logic.
+
+
+***
+
+## Known Bugs
+- While filtering devices in the UI, if a location is not included in the results it will not be selectable in 
+the location select filter or update temperature dropdown menus. This is because the frontend retrieves the list 
+of locations from the devices that it retrieves from the backend. 
+When filters are applied and a location is not included, it is dropped from the locations list. 
+You can get around this hitting the reset filters button which will send a default device retrieval 
+request and return all devices with all locations.
+- If you filter by device type and a thermostat is in heating or cooling, it will appear in the device list on the 
+front end. the websocket sends the updated thermostat to the front end, and it gets displayed in the UI. 
+Currently no work around as I am discovering this bug a few hours before the project is due.
+
+***
+
+## Future Refinements
+
+While this project is for a college course, I plan to keep developing this project into a more refined portfolio piece.
+I plan on making some adjustments to better align with modern software engineering practices and principles. 
+
+These changes include:
+- Implementing a proper singleton pattern implementation. Currently, there are some classes that would work if they 
+were placed in a singleton (simulation settings, websocket config)
+- Updating the UI to have device settings inline with device information for a sleeker UI
+- Add a CI/CD pipeline to get experience with it
+- Fix bugs mentioned above
+
+
+***
+
+## AI Acknowledgement
+
+Portions of this project were made with the help of AI Tools
+
+The AI was used to help me understand some of the more abstract concepts that were introduced as a part of the course and project.
+Some examples of prompts that would have been used during this project include:
+
+- "How does ORM work?"
+- "How can I make my API error responses meet the standards set by RFC 9457?"
+- "How should I handle sending backend data through API calls?"
+- "How does Angular work?"
+
+Any instances of AI tools generating code that is used in the project will be annotated inline with the code
+
+Any instances of AI tools generating larger parts of the project will be noted below:
+- ChatGPT was used to generate most of this project's documentation (specifically the Javadoc comments) before being reviewed and edited by myself
+- Calude Code was used to generate the backend unit tests and front ends tests for this application 
+- in compliance with the assignment's instructions. They were reviewed by myself before acceptance.

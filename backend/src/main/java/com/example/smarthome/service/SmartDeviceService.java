@@ -116,19 +116,14 @@ public class SmartDeviceService {
      * @return The device with the specified uuid
      * @throws DeviceNotFoundException if the database does not contain a device with the specified uuid
      */
-    public ISmartDevice getDeviceById(UUID uuid){
+    public ISmartDevice getDeviceById(UUID uuid) {
 
         // pass the uuid into the database and try to find the corresponding smart device. If there is not a device
-        // with the specified uuid, set the device to null
-        ISmartDevice device = repo.findById(uuid).orElse(null);
+        // with the specified uuid, throw Device Not Found Exception
+        ISmartDevice device = repo.findById(uuid)
+                .orElseThrow(() -> new DeviceNotFoundException("Device with ID " + uuid + " not found."));
 
-        // If the device was not found, throw an exception
-        if (device == null){
-            throw new DeviceNotFoundException("Device with this ID: " + uuid + " was not found.");
-        }
-        else { // Otherwise, return the device
             return device;
-        }
     }
 
 
@@ -190,8 +185,9 @@ public class SmartDeviceService {
      */
     public CallResult executeAction(UUID uuid, String transition, Map<String, Object> parameters){
 
-        // Retrieve the device
-        ISmartDevice device = repo.getReferenceById(uuid);
+        /// Retrieve the device, throwing a 404 if not found
+        ISmartDevice device = getDeviceById(uuid);
+
 
         // Call the device's execute method, passing in the transition and parameters, and store the result
         CallResult result = device.execute(transition, parameters);

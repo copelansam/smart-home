@@ -15,3 +15,12 @@ FROM nginx:alpine
 COPY --from=build /app/dist/frontend/browser/ /usr/share/nginx/html
 
 EXPOSE 80
+
+
+
+# Serve stage
+FROM nginx:alpine
+
+COPY --from=build /app/dist/frontend/browser/ /usr/share/nginx/html
+
+EXPOSE 80

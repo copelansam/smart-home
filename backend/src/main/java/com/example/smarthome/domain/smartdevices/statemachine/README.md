@@ -116,34 +116,43 @@ Each device type defines its own set of states:
 
 ## Transitions
 
+Each device defines its own set of transitions. When calling the API, use one of the values below as the action to perform:
+
 ### Door Lock
-- Locked -- (Unlock) --> Unlocked
-- Unlocked -- (Lock) --> Locked
+- Locked -- (UNLOCK) --> Unlocked
+- Unlocked -- (LOCK) --> Locked
 
 ### Fan
-- On -- (Turn Off) --> Off
-- Off -- (Turn On) --> On
+- On -- (TURN_FAN_OFF) --> Off
+- Off -- (TURN_FAN_ON) --> On
+- On -- (UPDATE_SPEED) --> On
+
+\* “UPDATE_SPEED” is handled internally by each state and does not trigger a state transition.
+
 
 ### Light
-- On -- (Turn Off) --> Off
-- Off -- (Turn On) --> On
+- On -- (TURN_LIGHT_OFF) --> Off
+- Off -- (TURN_LIGHT_ON) --> On
+- On -- (UPDATE_COLOR) --> On
+- On -- (UPDATE_BRIGHTNESS) --> On
+
+\* “UPDATE_BRIGHTNESS” and "UPDATE_COLOR" are handled internally by each state and do not trigger a state transition.
 
 ### Thermostat
-  - Off -- (Power On) --> Idle
-  - Idle -- (Start Heating) --> Heating
-  - Idle -- (Start Cooling) --> Cooling
-  - Idle -- (Power Off) --> Off
-  - Cooling -- (Stop Cooling) --> Idle
-  - Cooling -- (Power Off) --> Off
-  - Heating -- (Stop Heating) --> Idle
-  - Heating -- (Power Off) --> Off
-  - Any State -- (Update Desired Temperature) --> Same State
-  - Any State -- (Update Mode) --> Same State
+  - Off -- (POWER_THERMOSTAT_ON) --> Idle
+  - Idle -- (START_HEATING) --> Heating
+  - Idle -- (START_COOLING) --> Cooling
+  - Idle -- (POWER_THERMOSTAT_OFF) --> Off
+  - Cooling -- (STOP_COOLING) --> Idle
+  - Cooling -- (POWER_THERMOSTAT_OFF) --> Off
+  - Heating -- (STOP_HEATING) --> Idle
+  - Heating -- (POWER_THERMOSTAT_OFF) --> Off
+  - Any State -- (UPDATE_DESIRED_TEMP) --> Same State
+  - Any State -- (UPDATE_MODE) --> Same State
 
-\* “Update Desired Temperature” and "Update Mode" are handled internally by each state and do not trigger a state transition.
+\* “UPDATE_DESIRED_TEMP” and "UPDATE_MODE" are handled internally by each state and do not trigger a state transition.
 
 ---
-
 
 ## Design Benefits
 

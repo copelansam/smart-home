@@ -74,6 +74,10 @@ public class DoorUnlockedState extends StateBase<SmartDoorLock> {
 
         DoorLockAction action = DoorLockAction.getActionFromString(transition);
 
+        if (action == null){
+            return new CallResult();
+        }
+
         switch(action){
 
             case LOCK:

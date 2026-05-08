@@ -75,6 +75,10 @@ public class DoorLockedState extends StateBase<SmartDoorLock> {
 
         DoorLockAction action = DoorLockAction.getActionFromString(transition);
 
+        if (action == null){
+            return new CallResult();
+        }
+
         switch (action){
             case UNLOCK:
                 // Unlock the door by transitioning to the unlocked state

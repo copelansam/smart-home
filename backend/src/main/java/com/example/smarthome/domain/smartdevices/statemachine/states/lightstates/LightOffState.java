@@ -74,6 +74,10 @@ public class LightOffState extends StateBase<SmartLight> {
 
         LightAction action = LightAction.getActionFromString(transition);
 
+        if (action == null){
+            return new CallResult();
+        }
+
         switch (action){
 
             case TURN_LIGHT_ON:

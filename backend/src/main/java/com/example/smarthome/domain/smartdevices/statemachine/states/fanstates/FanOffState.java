@@ -73,6 +73,10 @@ public class FanOffState extends StateBase<SmartFan> {
 
         FanAction action = FanAction.getActionFromString(transition);
 
+        if (action == null){
+            return new CallResult();
+        }
+
         switch (action){
 
             case TURN_FAN_ON:
