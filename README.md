@@ -49,7 +49,7 @@ There are 2 main methods to run this application:
      2. Ensure that Docker is installed on your machine. You can install Docker from [here](https://www.docker.com/get-started/)
      3. From the CLI, navigate to the application's root directory
      4. Build the Docker image by running `docker compose up`
-     5. Access the application by visiting http://localhost in your browser of choice
+     5. Access the application by visiting http://localhost:4200 in your browser of choice
      6. When you are finished with the application, end it by running `docker compose down` in the CLI
 
 
@@ -70,8 +70,7 @@ There are 2 main methods to run this application:
 ## How to Access the Application
 
 ### UI Access
-- Docker: http://localhost
-- Local Development: http://localhost:4200
+-  http://localhost:4200
 
 ### Swagger Documentation
 - http://localhost:8080/swagger-ui/index.html

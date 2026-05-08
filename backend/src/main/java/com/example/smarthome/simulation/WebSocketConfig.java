@@ -34,12 +34,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     /**
      * Registers the WebSocket endpoint used by clients to connect to the server.
      *
-     * Enables SockJS fallback and allows cross-origin connections.
      */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("*")
-                .withSockJS();
+                .setAllowedOriginPatterns("*");
     }
 }

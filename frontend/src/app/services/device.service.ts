@@ -136,15 +136,26 @@ console.log('🔥 RAW WS EVENT:', event);
      /**
        * DELETE events
        */
-    this.socket.deviceDelete$.subscribe(
-      (uuid: string) => {
+   this.socket.deviceDelete$.subscribe((uuid: string) => {
+     console.log("🔥 DELETE EVENT RECEIVED:", uuid);
 
-        this.zone.run(() => {
-          this.devices.update(current =>
-            current.filter(d => d.uuid != uuid)
-            );
-          });
-      });
+       const cleanUuid = uuid.replace(/"/g, '');
+
+       console.log("🔥 CLEAN DELETE UUID:", cleanUuid);
+
+
+     this.zone.run(() => {
+       this.devices.update(current => {
+         console.log("CURRENT DEVICES:", current);
+         console.log("TRYING TO DELETE:", cleanUuid);
+
+         return current.filter(d => {
+           console.log("COMPARING:", d.uuid, cleanUuid);
+           return d.uuid !== cleanUuid;
+         });
+       });
+     });
+   });
   }
 
  /**
