@@ -52,8 +52,6 @@ public class SmartDeviceController {
             @RequestParam(required = false)Boolean isOn
             ){
 
-        System.out.println("Retrieving devices with these filters: Type: " + type + " location: " + location + " isOn: " + isOn);
-
         // Retrieve a list of smart devices based on the specified filters
         List<ISmartDevice> device = deviceService.getDevices(type,location,isOn);
 
@@ -130,8 +128,6 @@ public class SmartDeviceController {
     public ResponseEntity<CallResult> executeAction(@PathVariable("id") UUID id,
                                                     @RequestParam(required = true) @NotBlank String action,
                                                     @RequestBody(required = false) Map<String, Object> parameters){
-        System.out.println("Transition: " + action);
-        System.out.println("Parameters: " + parameters);
 
         // pass the parameters to the service so it can try to execute the action
         CallResult result = deviceService.executeAction(id, action, parameters);

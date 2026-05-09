@@ -159,8 +159,7 @@ If it already has one, the API call does not create a device
 This application supports units tests, API tests, and frontend tests, to execute each testing suite do the following:
 - Unit Tests: navigate to the `/backend` directory in the CLI and run `mnv test` to execute the tests
 - API Tests: While the backend is running, navigate to the `/bruno` directory in the CLI and run `bru run --env tests` to execute the API tests
-- Front End Tests: 
-  - navigate to the `/frontend` directory in the CLI and run `ng test` to execute the frontend tests
+- Front End Tests: navigate to the `/frontend` directory in the CLI and run `ng test` to execute the frontend tests
 
 ***
 

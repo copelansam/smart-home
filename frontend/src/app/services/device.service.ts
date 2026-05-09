@@ -66,7 +66,6 @@ export class DeviceService {
            */
          map((event: unknown): DeviceEvent => {
 
-console.log('🔥 RAW WS EVENT:', event);
            /**
              RESET (array of DTOs)
              Backend sends a full list of devices.
@@ -137,20 +136,13 @@ console.log('🔥 RAW WS EVENT:', event);
        * DELETE events
        */
    this.socket.deviceDelete$.subscribe((uuid: string) => {
-     console.log("🔥 DELETE EVENT RECEIVED:", uuid);
 
        const cleanUuid = uuid.replace(/"/g, '');
 
-       console.log("🔥 CLEAN DELETE UUID:", cleanUuid);
-
-
      this.zone.run(() => {
        this.devices.update(current => {
-         console.log("CURRENT DEVICES:", current);
-         console.log("TRYING TO DELETE:", cleanUuid);
 
          return current.filter(d => {
-           console.log("COMPARING:", d.uuid, cleanUuid);
            return d.uuid !== cleanUuid;
          });
        });
@@ -219,7 +211,6 @@ console.log('🔥 RAW WS EVENT:', event);
       params = params.set('isOn', String(isOn));
     }
 
-    console.log('FINAL PARAMS:', params.toString());
     /**
          * Fetch devices from API, convert each DTO into SmartDevice,
          * then update the reactive state.
@@ -260,8 +251,6 @@ private mapDtoToModel(dto : DeviceDto){
    * Executes a state transition/action on a device.
    */
 executeAction(uuid: string, action: string, parameters: any){
-  console.log('executing action: ', action);
-  console.log('action parameters: ', parameters)
   return this.http.put(`${this.apiUrl}/${uuid}/state`, parameters , {params: {action: action} });
   }
 

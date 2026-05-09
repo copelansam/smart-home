@@ -11,7 +11,6 @@ import com.example.smarthome.simulation.strategies.IdleStrategy;
 import com.example.smarthome.simulation.strategies.ThermostatStrategyFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.smarthome.api.request.DeviceCreationRequest;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -20,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import javax.sql.DataSource;
 import java.util.Map;
 import java.util.UUID;
 
@@ -37,24 +37,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Uses @SpringBootTest to load the full application context with an in-memory SQLite database.
  * @DirtiesContext resets the database between test classes so tests are fully isolated.
  */
-@Transactional
 @SpringBootTest
 @AutoConfigureMockMvc
 public class SmartHomeIntegrationTests {
 
     @Autowired private MockMvc mockMvc;
-    @Autowired
-    private ISmartDeviceRepository deviceRepository;
+    @Autowired private ISmartDeviceRepository deviceRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
-
-    // =========================================================================
-    // HELPERS
-    // =========================================================================
 
     @BeforeEach
     void clearDatabase() {
-        // delete logs first if they have a FK to devices
-        // logRepository.deleteAll();
+        deviceRepository.deleteAll();
+    }
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Test
+    void checkDataSource() throws Exception {
+        System.out.println(">>>>> DATASOURCE URL: " + dataSource.getConnection().getMetaData().getURL());
+    }
+
+    @AfterEach
+    void cleanup() {
         deviceRepository.deleteAll();
     }
 

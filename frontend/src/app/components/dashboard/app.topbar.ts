@@ -175,10 +175,8 @@ export class AppTopbar {
 
       this.simulationService.updateLocationTemperature(this.selectedLocation, this.tempValue).subscribe({
         next: (res: any) =>{
-          console.log(`Updating the temperature in: ${this.selectedLocation} to: ${this.tempValue} degrees F`);
           },
         error: (err: any) => {
-                    console.error('Temperature update failed', err);
                 }
         });
       }
@@ -186,8 +184,8 @@ export class AppTopbar {
     updateSimulationSpeed(){
       console.log("New Simulation Speed: ", this.selectedSpeed ,"X");
       this.simulationService.updateSimulationSpeed(this.selectedSpeed).subscribe({
-        next: (res) => console.log('Speed updated successfully'),
-        error: (err) => console.error('Failed', err)
+        next: (res) => {},
+        error: (err) => {}
         });
       }
 
@@ -203,7 +201,7 @@ export class AppTopbar {
       this.deviceService.createNewDevice(newDevice).subscribe({
         next: () => {
           },
-        error: (err) => console.log('Device Creation Failed', err)
+        error: (err) => {}
       });
     }
 }

@@ -64,11 +64,6 @@ export class DashboardComponent implements OnInit {
 
     this.deviceService.deleteDevice(device.uuid).subscribe({
       next: () => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: `${ device.name } was successfully deleted`
-          });
       },
       error: (err) => {
         this.messageService.add({
@@ -105,24 +100,8 @@ handleAction(uuid: string, action: string) {
 
   this.deviceService.executeAction(uuid, action, parameters).subscribe({
       next: () => {
-        // Generate success message
-        const detailMessage = this.getSuccessMessage(action, parameters);
-
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: detailMessage,
-          life: 2000
-        });
       },
       error: (err) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: `${action} failed to execute. Please try again.`,
-          life: 2000
-        });
-        console.error(err);
       }
     });
   }
@@ -160,17 +139,5 @@ handleAction(uuid: string, action: string) {
       default:
         return {};
     }
-  }
-
-  // Generates success message based on what actin is being performed
-  private getSuccessMessage(action: string, parameters: Record<string, any>): string {
-    const entries = Object.entries(parameters);
-
-    if (entries.length === 0) {
-      return `Action ${action} has been executed successfully`;
-    }
-
-    const mapping = entries.map(([key, value]) => `${key} updated to ${value}`).join(', ');
-    return mapping;
   }
 }

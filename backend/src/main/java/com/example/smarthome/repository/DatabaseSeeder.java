@@ -4,6 +4,7 @@ import com.example.smarthome.api.request.DeviceCreationRequest;
 import com.example.smarthome.domain.smartdevices.devices.DeviceType;
 import com.example.smarthome.service.SmartDeviceService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 /***
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
  * If data already exists, seeding is skipped to avoid duplication.
  */
 @Component
+@Profile("!test")
 public class DatabaseSeeder implements CommandLineRunner {
 
     private final ISmartDeviceRepository repo;
