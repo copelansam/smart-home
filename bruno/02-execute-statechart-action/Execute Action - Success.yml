@@ -5,10 +5,10 @@ info:
 
 http:
   method: PUT
-  url: "{{baseUrl}}/api/devices/{{deviceUuid}}/state?action=TURN_FAN_ON"
+  url: "{{baseUrl}}/api/devices/{{deviceUuid}}/state?action=POWER_THERMOSTAT_ON"
   params:
     - name: action
-      value: TURN_FAN_ON
+      value: POWER_THERMOSTAT_ON
       type: query
   auth: inherit
 
@@ -21,7 +21,7 @@ runtime:
 
           expect(res.body.isSuccess).to.equal(true);
 
-          expect(res.body.message).to.equal("Fan is now on");
+          expect(res.body.message).to.equal("Thermostat has been set to idle. Awaiting further instruction");
 
           expect(res.body.log).to.exist;
 

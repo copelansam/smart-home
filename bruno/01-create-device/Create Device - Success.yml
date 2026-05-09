@@ -12,7 +12,7 @@ http:
       {
         "name": "Test Device",
         "location": "Test Location",
-        "deviceType": "FAN"
+        "deviceType": "THERMOSTAT"
       }
   auth: inherit
 
