@@ -1,6 +1,7 @@
 package com.example.smarthome.simulation.strategies;
 
 import com.example.smarthome.domain.smartdevices.devices.smartthermostat.SmartThermostat;
+import com.example.smarthome.domain.smartdevices.devices.smartthermostat.ThermostatMode;
 import com.example.smarthome.domain.smartdevices.statemachine.transitions.CallResult;
 import com.example.smarthome.simulation.ThermostatResult;
 import org.springframework.stereotype.Component;
@@ -60,6 +61,18 @@ public class IdleStrategy implements IThermostatStrategy {
         // If the thermostat is in the heating state, stop heating
         else if (ambient >= desired && thermostat.getState().contains("Heating")){
             CallResult thermostatStateChange = thermostat.execute("STOP_HEATING", null);
+            result.addTransitionLog(thermostatStateChange);
+            result.markChanged();
+        }
+
+        else if (thermostat.getState().contains("Heating") && thermostat.getMode() == ThermostatMode.COOL){
+            CallResult thermostatStateChange = thermostat.execute("STOP_HEATING", null);
+            result.addTransitionLog(thermostatStateChange);
+            result.markChanged();
+        }
+
+        else if (thermostat.getState().contains("Cooling") && thermostat.getMode() == ThermostatMode.HEAT){
+            CallResult thermostatStateChange = thermostat.execute("STOP_COOLING", null);
             result.addTransitionLog(thermostatStateChange);
             result.markChanged();
         }

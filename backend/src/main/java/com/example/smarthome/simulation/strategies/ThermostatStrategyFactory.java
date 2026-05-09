@@ -92,16 +92,21 @@ public class ThermostatStrategyFactory {
      */
     public IThermostatStrategy decideStrategy(SmartThermostat thermostat, double tempDifference){
 
-        if ((tempDifference >= ThermostatSimulationService.TEMP_THRESHOLD) &&
-        (thermostat.getMode() == ThermostatMode.AUTO || thermostat.getMode() == ThermostatMode.COOL)){
+        if ((thermostat.getState().contains("Heating") && thermostat.getMode() == ThermostatMode.COOL) ||
+                (thermostat.getState().contains("Cooling") && thermostat.getMode() == ThermostatMode.HEAT)) {
+            return idleStrategy;
+        }
+
+        if (Math.abs(tempDifference) < ThermostatSimulationService.TEMP_THRESHOLD){
+
+            return idleStrategy;
+        } else if ((tempDifference >= ThermostatSimulationService.TEMP_THRESHOLD) &&
+                (thermostat.getMode() == ThermostatMode.AUTO || thermostat.getMode() == ThermostatMode.COOL)){
             return coolingStrategy;
         }
         else if((tempDifference <= -ThermostatSimulationService.TEMP_THRESHOLD) &&
                 (thermostat.getMode() == ThermostatMode.AUTO || thermostat.getMode() == ThermostatMode.HEAT)){
             return heatingStrategy;
-        }
-        else if (Math.abs(tempDifference) < ThermostatSimulationService.TEMP_THRESHOLD){
-            return idleStrategy;
         }
         else{
             throw new IllegalStateException("No strategy matched");
