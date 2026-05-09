@@ -18,6 +18,12 @@ This project will make use of the following principles of design & Software Engi
 
 ***
 
+## Video Presentations
+
+- [UI Presentation](https://mediaspace.kennesaw.edu/media/SWE%204743%20Semester%20Project%20UI%20Presentation/1_q4xzidh9)
+- [Architecture Presentation](https://mediaspace.kennesaw.edu/media/SWE%204743%20Semester%20Project%20Architecture%20Presentation/1_xpnnfpc0)
+
+
 ## Features
 This project provides support for a wide variety of features including:
 - View devices grouped by location.
